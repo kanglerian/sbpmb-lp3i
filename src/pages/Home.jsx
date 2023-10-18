@@ -8,7 +8,7 @@ import LearningIllustration from "../assets/illustration/learning.svg";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [student, setStudent] = useState([]);
+  const [student, setStudent] = useState({});
   const token = localStorage.getItem("token");
   const identity = localStorage.getItem("identity");
   const getUser = async () => {
@@ -20,7 +20,6 @@ const Home = () => {
         },
       })
       .then((res) => {
-        console.log(res);
         setStudent(res.data.applicant);
       })
       .catch((err) => {
@@ -45,7 +44,7 @@ const Home = () => {
       <section className="container mx-auto px-5 mt-10 md:mt-0">
         <div className="flex flex-col md:flex-row items-center justify-between">
           <div className="w-full md:w-1/2">
-            {student.length > 0 && <p className="mb-5">Selamat datang, {student.name}</p>}
+            {student.identity && <p className="mb-5">Selamat datang, {student.name}</p>}
             <div className="space-y-2">
               <h1 className="font-bold text-4xl">SBPMB - LP3I 2024</h1>
               <h2 className="font-bold text-2xl">
@@ -56,8 +55,7 @@ const Home = () => {
                 Tasikmalaya.
               </p>
             </div>
-            {student.length}
-            {student.length > 0 ? (
+            {student.identity ? (
               <div className="flex items-center gap-2 mt-5">
                 <Link to={`/dashboard`}>
                   <button className="cursor-pointer text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import logoLP3I from "../assets/logo/lp3i.svg";
 
@@ -56,7 +56,7 @@ const Dashboard = () => {
       <div className="container mx-auto ">
         <nav className="flex flex-col md:flex-row items-center justify-between p-5">
           <div>
-            <img src={logoLP3I} alt="" className="w-48" />
+            <Link to={`/`}><img src={logoLP3I} alt="" className="w-48" /></Link>
           </div>
           <ul className="flex items-center gap-5 text-sm">
             <li>Biodata</li>
