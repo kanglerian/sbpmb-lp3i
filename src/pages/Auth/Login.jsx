@@ -89,11 +89,11 @@ const Login = () => {
             >
               Masuk
             </button>
-            <Link to={`/register`}>
+            {/* <Link to={`/register`}> */}
               <button className="text-sm text-gray-600 underline">
                 Belum memiliki akun? Daftar disini.
               </button>
-            </Link>
+            {/* </Link> */}
           </div>
         </form>
       </section>
