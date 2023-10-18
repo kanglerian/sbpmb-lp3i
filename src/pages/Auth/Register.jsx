@@ -17,7 +17,7 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/register", {
+      const response = await axios.post("https://database.politekniklp3i-tasikmalaya.ac.id/api/register", {
         name: name,
         nisn: nisn,
         email: email,

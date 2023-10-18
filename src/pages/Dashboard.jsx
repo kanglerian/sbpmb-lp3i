@@ -12,7 +12,7 @@ const Dashboard = () => {
   const identity = localStorage.getItem("identity");
   const getUser = async () => {
     await axios
-      .get("http://127.0.0.1:8000/api/user/get", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -23,9 +23,9 @@ const Dashboard = () => {
       })
       .catch((err) => {
         if (err.message == "Request failed with status code 404") {
-          // localStorage.removeItem("identity");
-          // localStorage.removeItem("token");
-          // navigate("/");
+          localStorage.removeItem("identity");
+          localStorage.removeItem("token");
+          navigate("/");
         }
       });
   };
@@ -40,7 +40,7 @@ const Dashboard = () => {
   const logoutHanlder = async () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await axios
-      .post("http://127.0.0.1:8000/api/logout")
+      .post("https://database.politekniklp3i-tasikmalaya.ac.id/api/logout")
       .then(() => {
         localStorage.removeItem("identity");
         localStorage.removeItem("token");
