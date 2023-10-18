@@ -57,19 +57,19 @@ const Home = () => {
             </div>
             {student.identity ? (
               <div className="flex items-center gap-2 mt-5">
-                {/* <Link to={`/dashboard`}> */}
+                <Link to={`/dashboard`}>
                   <button className="cursor-pointer text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">
                     Dashboard
                   </button>
-                {/* </Link> */}
+                </Link>
               </div>
             ) : (
               <div className="flex items-center gap-2 mt-5">
-                <Link to={`/register`}>
+                {/* <Link to={`/register`}> */}
                   <button className="cursor-pointer text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">
                     Daftar
                   </button>
-                </Link>
+                {/* </Link> */}
                 <Link to={`/login`}>
                   <button className="cursor-pointer py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-300 hover:border-gray-400 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-200">
                     Masuk
