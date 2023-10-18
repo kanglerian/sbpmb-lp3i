@@ -57,11 +57,11 @@ const Home = () => {
             </div>
             {student.identity ? (
               <div className="flex items-center gap-2 mt-5">
-                <Link to={`/dashboard`}>
+                {/* <Link to={`/dashboard`}> */}
                   <button className="cursor-pointer text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">
                     Dashboard
                   </button>
-                </Link>
+                {/* </Link> */}
               </div>
             ) : (
               <div className="flex items-center gap-2 mt-5">
