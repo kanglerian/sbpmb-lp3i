@@ -56,6 +56,7 @@ const Home = () => {
                 Tasikmalaya.
               </p>
             </div>
+            {student.length}
             {student.length > 0 ? (
               <div className="flex items-center gap-2 mt-5">
                 <Link to={`/dashboard`}>
