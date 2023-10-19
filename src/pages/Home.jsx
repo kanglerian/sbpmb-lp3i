@@ -26,6 +26,7 @@ const Home = () => {
         if (err.message == "Request failed with status code 404") {
           localStorage.removeItem("identity");
           localStorage.removeItem("token");
+          localStorage.removeItem("expiry");
           navigate("/");
         }
       });

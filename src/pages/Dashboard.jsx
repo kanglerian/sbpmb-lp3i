@@ -26,6 +26,7 @@ const Dashboard = () => {
         if (err.message == "Request failed with status code 404") {
           localStorage.removeItem("identity");
           localStorage.removeItem("token");
+          localStorage.removeItem("expiry");
           navigate("/");
         }
       });
@@ -38,6 +39,7 @@ const Dashboard = () => {
       .then(() => {
         localStorage.removeItem("identity");
         localStorage.removeItem("token");
+        localStorage.removeItem("expiry");
         navigate("/");
       })
       .catch((err) => {
