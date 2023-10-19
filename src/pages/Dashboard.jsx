@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import checkExpiry from '../config/checkExpiry.js';
 
 import logoLP3I from "../assets/logo/lp3i.svg";
 
@@ -12,7 +13,7 @@ const Dashboard = () => {
   const identity = localStorage.getItem("identity");
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("http://127.0.0.1:8000/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -30,17 +31,10 @@ const Dashboard = () => {
       });
   };
 
-  useEffect(() => {
-    if (!token) {
-      return navigate("/");
-    }
-    getUser();
-  }, []);
-
-  const logoutHanlder = async () => {
+  const logoutHandler = async () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await axios
-      .post("https://database.politekniklp3i-tasikmalaya.ac.id/api/logout")
+      .post("http://127.0.0.1:8000/api/logout")
       .then(() => {
         localStorage.removeItem("identity");
         localStorage.removeItem("token");
@@ -50,6 +44,14 @@ const Dashboard = () => {
         console.log(err.message);
       });
   };
+
+  useEffect(() => {
+    if (!token) {
+      return navigate("/");
+    }
+    getUser();
+    checkExpiry();
+  }, []);
 
   return (
     <section className="bg-gray-100">
@@ -65,7 +67,7 @@ const Dashboard = () => {
             <li>Upload Berkas</li>
             <li className="border border-gray-300 px-4 py-1 rounded-lg">{student.name}</li>
             <li>
-              <button onClick={logoutHanlder}>Keluar</button>
+              <button onClick={logoutHandler}>Keluar</button>
             </li>
           </ul>
         </nav>

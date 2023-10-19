@@ -13,19 +13,22 @@ const Login = () => {
     e.preventDefault();
     try {
       await axios
-        .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/login`, {
+        .post(`http://127.0.0.1:8000/api/login`, {
           email: email,
           password: password,
         })
         .then((res) => {
           console.log(res.data);
-          console.log("Login successful", res.data);
+          const expiry = new Date(new Date().getTime() + 60 * 60 * 1000);
           localStorage.setItem("identity", res.data.user.identity);
           localStorage.setItem("token", res.data.token);
+          localStorage.setItem("expiry", expiry);
           return navigate("/dashboard");
         })
         .catch((err) => {
-          console.log(err.message);
+          if(err.response.data.success == false){
+            alert(err.response.data.message);
+          }
         });
     } catch (error) {
       console.error("login failed", error);
@@ -89,11 +92,11 @@ const Login = () => {
             >
               Masuk
             </button>
-            {/* <Link to={`/register`}> */}
+            <Link to={`/register`}>
               <button className="text-sm text-gray-600 underline">
                 Belum memiliki akun? Daftar disini.
               </button>
-            {/* </Link> */}
+            </Link>
           </div>
         </form>
       </section>

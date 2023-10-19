@@ -13,7 +13,7 @@ const Home = () => {
   const identity = localStorage.getItem("identity");
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("http://127.0.0.1:8000/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -65,11 +65,11 @@ const Home = () => {
               </div>
             ) : (
               <div className="flex items-center gap-2 mt-5">
-                {/* <Link to={`/register`}> */}
+                <Link to={`/register`}>
                   <button className="cursor-pointer text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">
                     Daftar
                   </button>
-                {/* </Link> */}
+                </Link>
                 <Link to={`/login`}>
                   <button className="cursor-pointer py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-300 hover:border-gray-400 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-200">
                     Masuk

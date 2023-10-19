@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import CreatableSelect from "react-select/creatable";
 import logoLP3I from "../../assets/logo/lp3i.svg";
 import axios from "axios";
 
@@ -14,10 +15,19 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [passwordConf, setPasswordConf] = useState("");
 
+  const [selectedSchool, setSelectedSchool] = useState(null);
+
+  const [schoolsAPI, setSchoolsAPI] = useState([]);
+
   const handleRegister = async (e) => {
     e.preventDefault();
+
+    if(password != passwordConf){
+      return alert('Kata sandi tidak sama!');
+    };
+
     try {
-      const response = await axios.post("https://database.politekniklp3i-tasikmalaya.ac.id/api/register", {
+      const response = await axios.post("http://127.0.0.1:8000/api/register", {
         name: name,
         nisn: nisn,
         email: email,
@@ -26,10 +36,102 @@ const Register = () => {
         password: password,
         password_confirmation: passwordConf,
       });
-      console.log("Registration successful", response.data);
-      return navigate("/login");
+      if (response.data.info) {
+        if (response.data.login) {
+          let confirmed = confirm(
+            `${response.data.message}`
+          );
+          if (confirmed) {
+            let message = `Hore! Anda telah berhasil terdaftar. Sekarang saatnya untuk memulai pengisian data Anda! Silakan masuk ke akun Anda menggunakan detail berikut:\n\nEmail: ${response.data.user.email}\nKata Sandi: ${response.data.user.phone}\n\nKunjungi situs web kami di https://sbpmb.politekniklp3i-tasikmalaya.ac.id dan jangan ragu untuk bertanya kepada admin jika belum mengerti!`;
+            let target = `${response.data.user.phone}@c.us`;
+            await axios
+              .post(
+                `https://api.politekniklp3i-tasikmalaya.ac.id/whatsappbot/send`,
+                {
+                  target: target,
+                  message: message,
+                }
+              )
+              .then((res) => {
+                navigate('/login');
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+        } else {
+          let confirmed = confirm(
+            `${response.data.message}`
+          );
+          if (confirmed) {
+            if (response.data.applicant.name) {
+              setName(response.data.applicant.name);
+            }
+
+            if (response.data.applicant.nisn) {
+              setNisn(response.data.applicant.nisn);
+            }
+
+            if (response.data.applicant.school) {
+              setSelectedSchool({
+                value: response.data.applicant.school_applicant.id,
+                label: response.data.applicant.school_applicant.name,
+              });
+              setSchool(response.data.applicant.school);
+            }
+
+            if (response.data.applicant.email) {
+              setEmail(response.data.applicant.email);
+            }
+
+            if (response.data.applicant.phone) {
+              setPhone(response.data.applicant.phone);
+            }
+          }
+        }
+      } else {
+        return navigate("/login");
+      }
     } catch (error) {
       console.error("Registration failed", error);
+    }
+  };
+
+  const getSchools = async () => {
+    await axios
+      .get(`http://127.0.0.1:8000/api/school/getall`)
+      .then((res) => {
+        let bucket = [];
+        let dataSchools = res.data.schools;
+        dataSchools.forEach((data) => {
+          bucket.push({
+            value: data.id,
+            label: data.name,
+          });
+        });
+        setSchoolsAPI(bucket);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+  const schoolHandle = (selectedOption) => {
+    if (selectedOption) {
+      setSchool(selectedOption.value);
+      setSelectedSchool(selectedOption);
+    }
+  };
+
+  const handlePhoneChange = (e) => {
+    let input = e.target.value;
+
+    if (input.startsWith("62")) {
+      setPhone(input);
+    } else if (input.startsWith("0")) {
+      setPhone("62" + input.substring(1));
+    } else {
+      setPhone("62");
     }
   };
 
@@ -37,11 +139,12 @@ const Register = () => {
     if (localStorage.getItem("token")) {
       navigate("/dashboard");
     }
+    getSchools();
   }, []);
 
   return (
     <div className="bg-gray-50">
-      <section className="flex flex-col container justify-center items-center mx-auto h-screen gap-5 p-5">
+      <section className="flex flex-col container justify-center items-center mx-auto md:h-screen gap-5 p-5">
         <Link to={`/`}>
           <img src={logoLP3I} className="w-52" />
         </Link>
@@ -92,13 +195,12 @@ const Register = () => {
             >
               Asal Sekolah
             </label>
-            <input
-              type="text"
-              id="school"
-              value={school}
-              onChange={(e) => setSchool(e.target.value)}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+            <CreatableSelect
+              options={schoolsAPI}
+              value={selectedSchool}
+              onChange={schoolHandle}
               placeholder="Isi dengan nama sekolah anda..."
+              className="text-sm"
               required
             />
           </div>
@@ -132,7 +234,7 @@ const Register = () => {
                 type="number"
                 id="phone"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={handlePhoneChange}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Isi dengan No. Whatsapp anda..."
                 required
