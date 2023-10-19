@@ -10,6 +10,8 @@ import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
+import Biodata from './pages/Biodata'
+import Keluarga from './pages/Keluarga'
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,12 @@ const router = createBrowserRouter([
   },{
     path: "/register",
     element: <Register/>,
+  },{
+    path: "/biodata",
+    element: <Biodata/>,
+  },{
+    path: "/keluarga",
+    element: <Keluarga/>,
   },
 ]);
 

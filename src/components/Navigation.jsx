@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
+import logoLP3I from "../assets/logo/lp3i.svg";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import checkExpiry from '../config/checkExpiry.js';
-import Navigation from "../components/Navigation.jsx";
+import { Link, useNavigate } from "react-router-dom";
+import checkExpiry from "../config/checkExpiry.js";
 
-const Dashboard = () => {
+const Navigation = () => {
   const navigate = useNavigate();
   const [student, setStudent] = useState([]);
 
@@ -55,15 +55,32 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <section className="bg-white">
-      <Navigation/>
-      <section className="container mx-auto h-screen">
+    <div className="container mx-auto">
+      <nav className="flex flex-col md:flex-row items-center justify-between p-5">
         <div>
-          <h1>Dashboard</h1>
+          <Link to={`/`}>
+            <img src={logoLP3I} alt="" className="w-48" />
+          </Link>
         </div>
-      </section>
-    </section>
+        <ul className="flex items-center gap-5 text-sm">
+          <li>
+            <Link to={`/biodata`}>Biodata</Link>
+          </li>
+          <li>
+            <Link to={`/keluarga`}>Keluarga</Link>
+          </li>
+          <li>Prestasi</li>
+          <li className="border border-gray-300 px-4 py-1 rounded-lg">
+            {student.name}
+          </li>
+          <li>
+            <button onClick={logoutHandler}>Keluar</button>
+          </li>
+        </ul>
+      </nav>
+      <hr />
+    </div>
   );
 };
 
-export default Dashboard;
+export default Navigation;
