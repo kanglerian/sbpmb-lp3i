@@ -14,6 +14,7 @@ import Biodata from './pages/Biodata'
 import Keluarga from './pages/Keluarga'
 import Prestasi from './pages/Prestasi'
 import Organisasi from './pages/Organisasi'
+import Berkas from './pages/Berkas'
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,9 @@ const router = createBrowserRouter([
   },{
     path: "/organisasi",
     element: <Organisasi/>,
+  },{
+    path: "/berkas",
+    element: <Berkas/>,
   },
 ]);
 
