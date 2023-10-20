@@ -1,0 +1,32 @@
+
+td,
+th {
+  white-space: nowrap;
+}
+
+.dataTables_length>label {
+  font-size: 14px !important;
+  color: #6b7280 !important;
+}
+
+.dataTables_info,
+.paginate_button {
+  font-size: 14px !important;
+  color: #6b7280 !important;
+}
+
+.dataTables_length>label>select {
+  font-size: 14px !important;
+  padding: 3px 20px 3px 15px !important;
+  border-radius: 10px !important;
+  margin: 5px !important;
+}
+
+.dataTables_filter>label {
+  font-size: 14px !important;
+}
+
+.dataTables_filter>label>input {
+  margin: 5px !important;
+  border-radius: 10px !important;
+}

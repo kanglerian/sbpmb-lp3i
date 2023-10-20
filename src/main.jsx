@@ -12,6 +12,8 @@ import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
 import Biodata from './pages/Biodata'
 import Keluarga from './pages/Keluarga'
+import Prestasi from './pages/Prestasi'
+import Organisasi from './pages/Organisasi'
 
 const router = createBrowserRouter([
   {
@@ -32,6 +34,12 @@ const router = createBrowserRouter([
   },{
     path: "/keluarga",
     element: <Keluarga/>,
+  },{
+    path: "/prestasi",
+    element: <Prestasi/>,
+  },{
+    path: "/organisasi",
+    element: <Organisasi/>,
   },
 ]);
 
