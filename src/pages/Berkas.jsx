@@ -13,11 +13,6 @@ const Berkas = () => {
     const targetFile = e.target.files[0];
     const targetId = e.target.dataset.id;
     const targetNamefile = e.target.dataset.namefile;
-    let data = {
-      targetFile: targetFile,
-      targetId: targetId,
-      targetNamefile: targetNamefile,
-    };
     if (targetFile) {
       const reader = new FileReader();
       reader.onload = async (event) => {
@@ -39,7 +34,7 @@ const Berkas = () => {
           )
           .then(async (res) => {
             await axios
-              .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload`, status)
+              .post(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/userupload`, status)
               .then((res) => {
                 console.log(res.data);
                 alert('Berhasil diupload!');
@@ -60,7 +55,7 @@ const Berkas = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -69,7 +64,7 @@ const Berkas = () => {
       .then((res) => {
         let applicant = res.data.applicant;
         let fileuploadData = res.data.fileupload;
-        let useruploadData = res.data.userupload;
+        let useruploadData = res.data.fileuploaded;
         console.log(res.data);
         setfileUpload(fileuploadData);
         setuserUpload(useruploadData);
@@ -162,12 +157,6 @@ const Berkas = () => {
                               className="text-xs"
                               onChange={handleFileChange}
                             />
-                            <button
-                              type="submit"
-                              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
-                            >
-                              Upload
-                            </button>
                           </div>
                         </form>
                       </td>

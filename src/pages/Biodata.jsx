@@ -28,7 +28,7 @@ const Biodata = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -69,7 +69,7 @@ const Biodata = () => {
 
   const getSchools = async () => {
     await axios
-      .get(`https://database.politekniklp3i-tasikmalaya.ac.id/api/school/getall`)
+      .get(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/school/getall`)
       .then((res) => {
         let bucket = [];
         let dataSchools = res.data.schools;
@@ -96,7 +96,7 @@ const Biodata = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     await axios
-      .patch(`https://database.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`, {
+      .patch(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`, {
         nisn: nisn,
         kip: kip,
         name: name,

@@ -11,14 +11,14 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
+    console.log('oey');
+
       await axios
-        .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/login`, {
+        .post(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/login`, {
           email: email,
           password: password,
         })
         .then((res) => {
-          console.log(res.data);
           const expiry = new Date(new Date().getTime() + 60 * 60 * 1000);
           localStorage.setItem("identity", res.data.user.identity);
           localStorage.setItem("token", res.data.token);
@@ -30,9 +30,6 @@ const Login = () => {
             alert(err.response.data.message);
           }
         });
-    } catch (error) {
-      console.error("login failed", error);
-    }
   };
 
   useEffect(() => {
