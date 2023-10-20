@@ -75,9 +75,9 @@ const Navigation = () => {
           <li>
           <Link to={`/organisasi`}>Pengalaman Organisasi</Link>
           </li>
-          {/* <li>
+          <li>
           <Link to={`/berkas`}>Upload Berkas</Link>
-          </li> */}
+          </li>
           <li className="border border-gray-300 px-4 py-1 rounded-lg">
             {student.name}
           </li>

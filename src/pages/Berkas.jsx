@@ -37,7 +37,7 @@ const Berkas = () => {
               .post(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/userupload`, status)
               .then((res) => {
                 console.log(res.data);
-                alert('Berhasil diupload!');
+                alert("Berhasil diupload!");
                 getUser();
               })
               .catch((err) => {
@@ -53,6 +53,37 @@ const Berkas = () => {
     }
   };
 
+  const handleDelete = async (user) => {
+    if (confirm(`Apakah kamu yakin akan menghapus data?`)) {
+      var data = {
+        identity: user.identity_user,
+        namefile: user.fileupload.namefile,
+        typefile: user.typefile,
+      };
+      await axios
+        .delete(
+          `https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/delete`,
+          {
+            params: data,
+          }
+        )
+        .then(async (res) => {
+          await axios
+            .delete(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`)
+            .then((res) => {
+              console.log(res.data);
+              getUser();
+            })
+            .catch((err) => {
+              console.log(err.message);
+            });
+        })
+        .catch((err) => {
+          console.log(err.message);
+        });
+    }
+  };
+
   const getUser = async () => {
     await axios
       .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
@@ -64,7 +95,7 @@ const Berkas = () => {
       .then((res) => {
         let applicant = res.data.applicant;
         let fileuploadData = res.data.fileupload;
-        let useruploadData = res.data.fileuploaded;
+        let useruploadData = res.data.userupload;
         console.log(res.data);
         setfileUpload(fileuploadData);
         setuserUpload(useruploadData);
@@ -118,9 +149,9 @@ const Berkas = () => {
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                       >
-                        {user.name}
+                        {user.fileupload.name}
                       </th>
-                      <td className="px-6 py-4">
+                      <td className="px-6 py-4 space-x-1">
                         <button className="inline-block bg-green-500 hover:bg-green-600 px-3 py-1 rounded-md text-xs text-white">
                           <i className="fa-solid fa-circle-check" />
                         </button>
@@ -130,6 +161,12 @@ const Berkas = () => {
                         >
                           <i className="fa-solid fa-download" />
                         </a>
+                        <button
+                          onClick={() => handleDelete(user)}
+                          className="inline-block bg-red-500 hover:bg-red-600 px-3 py-1 rounded-md text-xs text-white"
+                        >
+                          <i className="fa-solid fa-trash"></i>
+                        </button>
                       </td>
                     </tr>
                   ))}
