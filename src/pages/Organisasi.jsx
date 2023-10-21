@@ -18,7 +18,7 @@ const Organisasi = () => {
 
   const getUser = async () => {
     await axios
-      .get("http://127.0.0.1:8000/api/user/get", {
+      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -47,7 +47,7 @@ const Organisasi = () => {
     let year = prompt("Tulis tanggalnya (YYYY-MM-DD):");
     if (name && position && year) {
       await axios
-        .post(`http://127.0.0.1:8000/api/organization`, {
+        .post(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/organization`, {
           name: name,
           position: position,
           year: year,
@@ -69,7 +69,7 @@ const Organisasi = () => {
     );
     if (confirmDelete) {
       await axios
-        .delete(`http://127.0.0.1:8000/api/organization/${id}`)
+        .delete(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/organization/${id}`)
         .then((res) => {
           console.log(res.data);
           getUser();

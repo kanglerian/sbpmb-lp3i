@@ -17,7 +17,7 @@ const Program = () => {
 
   const getUser = async () => {
     await axios
-      .get("http://127.0.0.1:8000/api/user/get", {
+      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -55,7 +55,7 @@ const Program = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     await axios
-      .patch(`http://127.0.0.1:8000/api/user/updateprogram/${student.identity}`, {
+      .patch(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/updateprogram/${student.identity}`, {
         program: program,
         program_second: programSecond,
       })

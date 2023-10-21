@@ -29,7 +29,7 @@ const Keluarga = () => {
 
   const getUser = async () => {
     await axios
-      .get("http://127.0.0.1:8000/api/user/get", {
+      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -71,7 +71,7 @@ const Keluarga = () => {
     e.preventDefault();
     await axios
       .patch(
-        `http://127.0.0.1:8000/api/user/updatefamily/${student.identity}`,
+        `https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/updatefamily/${student.identity}`,
         {
           fatherName: fatherName,
           fatherPhone: fatherPhone,
