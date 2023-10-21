@@ -105,7 +105,7 @@ const Program = () => {
               >
                 {
                   program && 
-                  <option value={program}>{program}</option>
+                  <option value={program} selected>{program}</option>
                 }
                 {programs.map((program) => (
                   <option value={program.title}>{program.title}</option>
@@ -124,7 +124,7 @@ const Program = () => {
               >
               {
                 programSecond && 
-                <option value={programSecond}>{programSecond}</option>
+                <option value={programSecond} selected>{programSecond}</option>
               }
                 {programs.map((program) => (
                   <option value={program.title}>{program.title}</option>
