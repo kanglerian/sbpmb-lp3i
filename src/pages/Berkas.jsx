@@ -144,7 +144,7 @@ const Berkas = () => {
               <tbody>
                 {userUpload.length > 0 &&
                   userUpload.map((user) => (
-                    <tr className="bg-white border-b dark:bg-gray-800">
+                    <tr key={user.id} className="bg-white border-b dark:bg-gray-800">
                       <th
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
@@ -155,12 +155,12 @@ const Berkas = () => {
                         <button className="inline-block bg-green-500 hover:bg-green-600 px-3 py-1 rounded-md text-xs text-white">
                           <i className="fa-solid fa-circle-check" />
                         </button>
-                        <a
+                        {/* <a
                           href="https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/download?identity"
                           className="bg-sky-500 px-3 py-1 rounded-md text-xs text-white"
                         >
                           <i className="fa-solid fa-download" />
-                        </a>
+                        </a> */}
                         <button
                           onClick={() => handleDelete(user)}
                           className="inline-block bg-red-500 hover:bg-red-600 px-3 py-1 rounded-md text-xs text-white"
@@ -172,7 +172,7 @@ const Berkas = () => {
                   ))}
                 {fileUpload.length > 0 &&
                   fileUpload.map((file) => (
-                    <tr className="bg-white border-b dark:bg-gray-800">
+                    <tr key={file.id} className="bg-white border-b dark:bg-gray-800">
                       <th
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"

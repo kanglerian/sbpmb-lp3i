@@ -9,27 +9,29 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [icon, setIcon] = useState(false);
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log('oey');
+    console.log("oey");
 
-      await axios
-        .post(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/login`, {
-          email: email,
-          password: password,
-        })
-        .then((res) => {
-          const expiry = new Date(new Date().getTime() + 60 * 60 * 1000);
-          localStorage.setItem("identity", res.data.user.identity);
-          localStorage.setItem("token", res.data.token);
-          localStorage.setItem("expiry", expiry);
-          return navigate("/dashboard");
-        })
-        .catch((err) => {
-          if(err.response.data.success == false){
-            alert(err.response.data.message);
-          }
-        });
+    await axios
+      .post(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/login`, {
+        email: email,
+        password: password,
+      })
+      .then((res) => {
+        const expiry = new Date(new Date().getTime() + 60 * 60 * 1000);
+        localStorage.setItem("identity", res.data.user.identity);
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("expiry", expiry);
+        return navigate("/dashboard");
+      })
+      .catch((err) => {
+        if (err.response.data.success == false) {
+          alert(err.response.data.message);
+        }
+      });
   };
 
   useEffect(() => {
@@ -72,16 +74,29 @@ const Login = () => {
             >
               Kata sandi
             </label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="Password"
-              required
-            />
+            <div className="flex">
+              <span
+                onClick={() => setIcon(!icon)}
+                className="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md"
+              >
+                {icon ? (
+                  <i className="fa-solid fa-eye-slash"></i>
+                ) : (
+                  <i className="fa-solid fa-eye"></i>
+                )}
+              </span>
+              <input
+                type={icon ? "text" : "password"}
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5"
+                placeholder="Kata Kunci"
+                required
+              />
+            </div>
           </div>
+
           <div className="flex flex-col md:flex-row items-center gap-3">
             <button
               type="submit"

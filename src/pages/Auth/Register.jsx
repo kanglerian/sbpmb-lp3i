@@ -7,6 +7,8 @@ import axios from "axios";
 const Register = () => {
   const navigate = useNavigate();
 
+  const [icon, setIcon] = useState(false);
+
   const [name, setName] = useState("");
   const [nisn, setNisn] = useState("");
   const [email, setEmail] = useState("");
@@ -22,9 +24,9 @@ const Register = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if(password != passwordConf){
-      return alert('Kata sandi tidak sama!');
-    };
+    if (password != passwordConf) {
+      return alert("Kata sandi tidak sama!");
+    }
 
     try {
       const response = await axios.post("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/register", {
@@ -38,9 +40,7 @@ const Register = () => {
       });
       if (response.data.info) {
         if (response.data.login) {
-          let confirmed = confirm(
-            `${response.data.message}`
-          );
+          let confirmed = confirm(`${response.data.message}`);
           if (confirmed) {
             let message = `Hore! Anda telah berhasil terdaftar. Sekarang saatnya untuk memulai pengisian data Anda! Silakan masuk ke akun Anda menggunakan detail berikut:\n\nEmail: ${response.data.user.email}\nKata Sandi: ${response.data.user.phone}\n\nKunjungi situs web kami di https://sbpmb.politekniklp3i-tasikmalaya.ac.id dan jangan ragu untuk bertanya kepada admin jika belum mengerti!`;
             let target = `${response.data.user.phone}@c.us`;
@@ -53,16 +53,14 @@ const Register = () => {
                 }
               )
               .then((res) => {
-                navigate('/login');
+                navigate("/login");
               })
               .catch((err) => {
                 console.log(err);
               });
           }
         } else {
-          let confirmed = confirm(
-            `${response.data.message}`
-          );
+          let confirmed = confirm(`${response.data.message}`);
           if (confirmed) {
             if (response.data.applicant.name) {
               setName(response.data.applicant.name);
@@ -248,17 +246,29 @@ const Register = () => {
                 htmlFor="password"
                 className="block mb-2 text-sm font-medium text-gray-900"
               >
-                Kata Sandi
+                Kata sandi
               </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Kata sandi"
-                required
-              />
+              <div className="flex">
+                <span
+                  onClick={() => setIcon(!icon)}
+                  className="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md"
+                >
+                  {icon ? (
+                    <i className="fa-solid fa-eye-slash"></i>
+                  ) : (
+                    <i className="fa-solid fa-eye"></i>
+                  )}
+                </span>
+                <input
+                  type={icon ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5"
+                  placeholder="Kata Kunci"
+                  required
+                />
+              </div>
             </div>
 
             <div className="w-full">
@@ -268,15 +278,27 @@ const Register = () => {
               >
                 Konfirmasi Kata Sandi
               </label>
-              <input
-                type="password"
-                id="password_confirmation"
-                value={passwordConf}
-                onChange={(e) => setPasswordConf(e.target.value)}
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Konfirmasi kata sandi"
-                required
-              />
+              <div className="flex">
+                <span
+                  onClick={() => setIcon(!icon)}
+                  className="inline-flex items-center px-3 text-sm text-gray-700 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md"
+                >
+                  {icon ? (
+                    <i className="fa-solid fa-eye-slash"></i>
+                  ) : (
+                    <i className="fa-solid fa-eye"></i>
+                  )}
+                </span>
+                <input
+                  type={icon ? "text" : "password"}
+                  id="password_confirmation"
+                  value={passwordConf}
+                  onChange={(e) => setPasswordConf(e.target.value)}
+                  className="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5"
+                  placeholder="Konfirmasi kata sandi"
+                  required
+                />
+              </div>
             </div>
           </div>
           <hr className="my-5" />
