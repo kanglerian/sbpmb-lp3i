@@ -218,6 +218,7 @@ const Biodata = () => {
                 onChange={(e) => setYear(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Tahun Lulus"
+                required
               />
             </div>
 
@@ -231,6 +232,7 @@ const Biodata = () => {
                 onChange={(e) => setPlaceOfBirth(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Tempat Lahir"
+                required
               />
             </div>
 
@@ -244,6 +246,7 @@ const Biodata = () => {
                 onChange={(e) => setDateOfBirth(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Tanggal Lahir"
+                required
               />
             </div>
 
@@ -296,6 +299,7 @@ const Biodata = () => {
                 onChange={(e) => setReligion(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Agama"
+                required
               />
             </div>
 
@@ -309,6 +313,7 @@ const Biodata = () => {
                 onChange={(e) => setAddress(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Alamat"
+                required
               >
                 {address}
               </textarea>
@@ -324,6 +329,7 @@ const Biodata = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Email"
+                required
               />
             </div>
 
@@ -337,6 +343,7 @@ const Biodata = () => {
                 onChange={(e) => setPhone(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="No. Telpon (Whatsapp}"
+                readOnly  
               />
             </div>
 

@@ -163,7 +163,6 @@ const Keluarga = () => {
                   onChange={handleFatherPhoneChange}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="No. HP Ayah"
-                  required
                 />
               </div>
               <div className="flex gap-5">
@@ -262,7 +261,6 @@ const Keluarga = () => {
                   onChange={handleMotherPhoneChange}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="No. HP Ayah"
-                  required
                 />
               </div>
               <div className="flex gap-5">
