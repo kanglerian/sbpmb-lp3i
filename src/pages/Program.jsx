@@ -95,7 +95,7 @@ const Program = () => {
           <form onSubmit={handleUpdate} className="w-full md:w-1/2 p-5">
             <div className="mb-5">
               <label className="block mb-2 text-sm font-medium text-gray-900">
-                Program Studi Pilihan 1 {program}
+                Program Studi Pilihan 1
               </label>
               
               <select

@@ -221,7 +221,7 @@ const Biodata = () => {
 
             <div className="mb-5">
               <label className="block mb-2 text-sm font-medium text-gray-900">
-                Tempat Lahir {placeOfBirth}
+                Tempat Lahir
               </label>
               <input
                 type="text"
