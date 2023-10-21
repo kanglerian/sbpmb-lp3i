@@ -34,7 +34,7 @@ const Berkas = () => {
           )
           .then(async (res) => {
             await axios
-              .post(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/userupload`, status)
+              .post(`http://127.0.0.1:8000/api/userupload`, status)
               .then((res) => {
                 console.log(res.data);
                 alert("Berhasil diupload!");
@@ -69,7 +69,7 @@ const Berkas = () => {
         )
         .then(async (res) => {
           await axios
-            .delete(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`)
+            .delete(`http://127.0.0.1:8000/api/userupload/${user.id}`)
             .then((res) => {
               console.log(res.data);
               getUser();
@@ -86,7 +86,7 @@ const Berkas = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("http://127.0.0.1:8000/api/user/get", {
         params: {
           identity: identity,
           token: token,

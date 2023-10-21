@@ -16,7 +16,7 @@ const Prestasi = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("http://127.0.0.1:8000/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -45,7 +45,7 @@ const Prestasi = () => {
     let result = prompt("Anda juara ke berapa?");
     if (name && level && year && result) {
       await axios
-        .post(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/achievement`, {
+        .post(`http://127.0.0.1:8000/api/achievement`, {
           name: name,
           level: level,
           year: year,
@@ -66,7 +66,7 @@ const Prestasi = () => {
     let confirmDelete = confirm("Apakah anda yakin ingin menghapus prestasi?");
     if (confirmDelete) {
       await axios
-        .delete(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/achievement/${id}`)
+        .delete(`http://127.0.0.1:8000/api/achievement/${id}`)
         .then((res) => {
           console.log(res.data);
           getUser();

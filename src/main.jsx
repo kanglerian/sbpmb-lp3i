@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard'
 import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
 import Biodata from './pages/Biodata'
+import Program from './pages/Program'
 import Keluarga from './pages/Keluarga'
 import Prestasi from './pages/Prestasi'
 import Organisasi from './pages/Organisasi'
@@ -32,6 +33,9 @@ const router = createBrowserRouter([
   },{
     path: "/biodata",
     element: <Biodata/>,
+  },{
+    path: "/programstudi",
+    element: <Program/>,
   },{
     path: "/keluarga",
     element: <Keluarga/>,

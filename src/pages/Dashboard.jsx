@@ -12,7 +12,7 @@ const Dashboard = () => {
   const identity = localStorage.getItem("identity");
   const getUser = async () => {
     await axios
-      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("http://127.0.0.1:8000/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -34,7 +34,7 @@ const Dashboard = () => {
   const logoutHandler = async () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await axios
-      .post("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/logout")
+      .post("http://127.0.0.1:8000/api/logout")
       .then(() => {
         localStorage.removeItem("identity");
         localStorage.removeItem("token");
