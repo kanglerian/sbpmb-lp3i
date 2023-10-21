@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import checkExpiry from "../config/checkExpiry.js";
-import Navigation from "../components/Navigation.jsx";
+import Navbar from "../templates/Navbar.jsx";
 
 const Berkas = () => {
   const [fileUpload, setfileUpload] = useState([]);
@@ -34,7 +34,10 @@ const Berkas = () => {
           )
           .then(async (res) => {
             await axios
-              .post(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/userupload`, status)
+              .post(
+                `https://pmb.politekniklp3i-tasikmalaya.ac.id/api/userupload`,
+                status
+              )
               .then((res) => {
                 console.log(res.data);
                 alert("Berhasil diupload!");
@@ -69,7 +72,9 @@ const Berkas = () => {
         )
         .then(async (res) => {
           await axios
-            .delete(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`)
+            .delete(
+              `https://pmb.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`
+            )
             .then((res) => {
               console.log(res.data);
               getUser();
@@ -127,7 +132,7 @@ const Berkas = () => {
   return (
     <section className="bg-white">
       <div className="container mx-auto px-5">
-        <Navigation />
+        <Navbar />
         <div className="block max-w-7xl px-6 py-4 bg-white border border-gray-200 rounded-2xl mx-auto mt-5">
           <div className="relative overflow-x-auto">
             <table className="w-full text-sm text-left text-gray-500">
@@ -144,7 +149,7 @@ const Berkas = () => {
               <tbody>
                 {userUpload.length > 0 &&
                   userUpload.map((user) => (
-                    <tr key={user.id} className="bg-white border-b dark:bg-gray-800">
+                    <tr key={user.id} className="bg-white border-b">
                       <th
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
@@ -155,12 +160,6 @@ const Berkas = () => {
                         <button className="inline-block bg-green-500 hover:bg-green-600 px-3 py-1 rounded-md text-xs text-white">
                           <i className="fa-solid fa-circle-check" />
                         </button>
-                        {/* <a
-                          href="https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/download?identity"
-                          className="bg-sky-500 px-3 py-1 rounded-md text-xs text-white"
-                        >
-                          <i className="fa-solid fa-download" />
-                        </a> */}
                         <button
                           onClick={() => handleDelete(user)}
                           className="inline-block bg-red-500 hover:bg-red-600 px-3 py-1 rounded-md text-xs text-white"
@@ -172,7 +171,7 @@ const Berkas = () => {
                   ))}
                 {fileUpload.length > 0 &&
                   fileUpload.map((file) => (
-                    <tr key={file.id} className="bg-white border-b dark:bg-gray-800">
+                    <tr key={file.id} className="bg-white border-b">
                       <th
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
@@ -183,18 +182,17 @@ const Berkas = () => {
                         <form
                           onSubmit={handleUpload}
                           encType="multipart/form-data"
+                          className="text-sm"
                         >
-                          <div>
-                            <input
-                              type="file"
-                              accept={file.accept}
-                              data-id={file.id}
-                              data-namefile={file.namefile}
-                              name="berkas"
-                              className="text-xs"
-                              onChange={handleFileChange}
-                            />
-                          </div>
+                          <input
+                            type="file"
+                            accept={file.accept}
+                            data-id={file.id}
+                            data-namefile={file.namefile}
+                            name="berkas"
+                            className="text-xs"
+                            onChange={handleFileChange}
+                          />
                         </form>
                       </td>
                     </tr>

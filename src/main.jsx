@@ -17,6 +17,9 @@ import Prestasi from './pages/Prestasi'
 import Organisasi from './pages/Organisasi'
 import Berkas from './pages/Berkas'
 
+import 'flowbite'
+import 'flowbite-react'
+
 const router = createBrowserRouter([
   {
     path: "/",

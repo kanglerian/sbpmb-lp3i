@@ -4,9 +4,9 @@ import "datatables.net-dt";
 import axios from "axios";
 import moment from "moment-timezone";
 import checkExpiry from "../config/checkExpiry.js";
-import Navigation from "../components/Navigation.jsx";
 
 import "../assets/css/datatables-custom.css";
+import Navbar from "../templates/Navbar.jsx";
 
 const Prestasi = () => {
   const [achievements, setAchievements] = useState([]);
@@ -94,7 +94,7 @@ const Prestasi = () => {
   return (
     <section className="bg-white">
       <div className="container mx-auto px-5">
-        <Navigation />
+        <Navbar />
 
         <div className="block max-w-7xl px-6 py-4 bg-white border border-gray-200 rounded-2xl mx-auto mt-5">
           <button

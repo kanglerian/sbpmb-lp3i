@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import checkExpiry from "../config/checkExpiry.js";
-import Navigation from "../components/Navigation.jsx";
+import Navbar from "../templates/Navbar.jsx";
 
 const Keluarga = () => {
   const [student, setStudent] = useState([]);
@@ -134,8 +134,7 @@ const Keluarga = () => {
   return (
     <section className="bg-white">
       <div className="container mx-auto px-5">
-        <Navigation />
-
+        <Navbar />
         <form onSubmit={handleUpdate} className="w-full p-5">
           <div className="flex flex-col md:flex-row justify-between">
             <div className="w-full md:w-1/2 p-5">

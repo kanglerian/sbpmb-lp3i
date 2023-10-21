@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import axios from "axios";
 import checkExpiry from "../config/checkExpiry.js";
-import Navigation from "../components/Navigation.jsx";
+import Navbar from "../templates/Navbar.jsx";
 
 const Biodata = () => {
   const [student, setStudent] = useState([]);
@@ -96,22 +96,25 @@ const Biodata = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     await axios
-      .patch(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`, {
-        nisn: nisn,
-        kip: kip,
-        name: name,
-        school: school,
-        year: year,
-        placeOfBirth: placeOfBirth,
-        dateOfBirth: dateOfBirth,
-        gender: gender,
-        religion: religion,
-        address: address,
-        email: email,
-        phone: phone,
-      })
+      .patch(
+        `https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`,
+        {
+          nisn: nisn,
+          kip: kip,
+          name: name,
+          school: school,
+          year: year,
+          placeOfBirth: placeOfBirth,
+          dateOfBirth: dateOfBirth,
+          gender: gender,
+          religion: religion,
+          address: address,
+          email: email,
+          phone: phone,
+        }
+      )
       .then((res) => {
-        alert('Data sudah diperbarui!');
+        alert("Data sudah diperbarui!");
         getUser();
       })
       .catch((err) => {
@@ -131,22 +134,16 @@ const Biodata = () => {
   return (
     <section className="bg-white">
       <div className="container mx-auto px-5">
-        <Navigation />
-        <div className="flex flex-col md:flex-row justify-between gap-10">
+        <Navbar />
+        <div className="flex flex-col md:flex-row justify-between md:gap-10">
           <div className="w-full md:w-1/2 p-5">
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel
-              quisquam id consequuntur mollitia, reprehenderit aut dolorem
-              fugiat doloribus a amet nobis cum nemo veniam doloremque nihil!
-              Maxime provident nam porro voluptate quam quo, neque illo dolores.
-              Beatae asperiores, assumenda fugiat ab modi deleniti ratione
-              numquam quisquam eos error quia quidem in iste quibusdam dolorum
-              eligendi consequuntur fuga commodi odit deserunt mollitia esse
-              magnam tenetur? Placeat, repellendus voluptatibus? Ullam tempora
-              quae deleniti laborum, temporibus sapiente repudiandae blanditiis
-              quidem eum mollitia deserunt aliquam est minus necessitatibus ut
-              culpa totam. Laboriosam recusandae magnam id earum sed corrupti.
-              Similique, est tempora! Harum, expedita et!
+              Selamat datang di situs resmi Seleksi Beasiswa Penerimaan
+              Mahasiswa Baru (SBPMB) Politeknik LP3I Kampus Tasikmalaya, tempat
+              di mana langkah pertama menuju perjalanan pendidikan yang gemilang
+              dimulai. Kami dengan tulus menyambut Anda untuk bergabung dalam
+              perjalanan pendidikan yang penuh inspirasi dan peluang tak
+              terbatas.
             </p>
           </div>
           <form onSubmit={handleUpdate} className="w-full md:w-1/2 p-5">
@@ -265,9 +262,7 @@ const Biodata = () => {
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                     checked={gender == 1 ? true : false}
                   />
-                  <label
-                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
+                  <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                     Laki-laki
                   </label>
                 </div>
@@ -343,7 +338,7 @@ const Biodata = () => {
                 onChange={(e) => setPhone(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="No. Telpon (Whatsapp}"
-                readOnly  
+                readOnly
               />
             </div>
 

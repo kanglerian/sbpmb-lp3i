@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import checkExpiry from '../config/checkExpiry.js';
-import Navigation from "../components/Navigation.jsx";
+import Navbar from "../templates/Navbar.jsx";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -56,7 +56,7 @@ const Dashboard = () => {
 
   return (
     <section className="bg-white">
-      <Navigation/>
+      <Navbar/>
       <section className="container mx-auto h-screen">
         <div>
           <h1>Dashboard</h1>
