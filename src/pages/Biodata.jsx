@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import checkExpiry from "../config/checkExpiry.js";
 import Navbar from "../templates/Navbar.jsx";
 
 const Biodata = () => {
-  const [student, setStudent] = useState([]);
+  const navigate = useNavigate();
 
+  const [student, setStudent] = useState([]);
   const [nisn, setNisn] = useState("");
   const [kip, setKip] = useState("");
   const [name, setName] = useState("");
@@ -28,7 +30,7 @@ const Biodata = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -64,12 +66,19 @@ const Biodata = () => {
           localStorage.removeItem("expiry");
           navigate("/");
         }
+        let networkError = err.message == "Network Error";
+        if (networkError) {
+          alert("Mohon maaf, ada kesalahan di sisi Server.");
+          navigate("/");
+        } else {
+          console.log(err.message);
+        }
       });
   };
 
   const getSchools = async () => {
     await axios
-      .get(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/school/getall`)
+      .get(`https://database.politekniklp3i-tasikmalaya.ac.id/api/school/getall`)
       .then((res) => {
         let bucket = [];
         let dataSchools = res.data.schools;
@@ -82,7 +91,12 @@ const Biodata = () => {
         setSchoolsAPI(bucket);
       })
       .catch((err) => {
-        console.log(err.message);
+        let networkError = err.message == "Network Error";
+        if (networkError) {
+          alert("Mohon maaf, data sekolah tidak bisa muncul. Periksa server.");
+        } else {
+          console.log(err.message);
+        }
       });
   };
 
@@ -96,29 +110,27 @@ const Biodata = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     await axios
-      .patch(
-        `https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`,
-        {
-          nisn: nisn,
-          kip: kip,
-          name: name,
-          school: school,
-          year: year,
-          placeOfBirth: placeOfBirth,
-          dateOfBirth: dateOfBirth,
-          gender: gender,
-          religion: religion,
-          address: address,
-          email: email,
-          phone: phone,
-        }
-      )
+      .patch(`https://database.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`, {
+        nisn: nisn,
+        kip: kip,
+        name: name,
+        school: school,
+        year: year,
+        placeOfBirth: placeOfBirth,
+        dateOfBirth: dateOfBirth,
+        gender: gender,
+        religion: religion,
+        address: address,
+        email: email,
+        phone: phone,
+      })
       .then((res) => {
         alert("Data sudah diperbarui!");
         getUser();
       })
       .catch((err) => {
-        console.log(err.message);
+        let networkError = err.message == "Network Error";
+        alert(networkError ? "Mohon maaf, ada kesalahan di sisi Server." : err.message);
       });
   };
 
@@ -188,22 +200,24 @@ const Biodata = () => {
               />
             </div>
 
-            <div className="mb-5">
-              <label
-                htmlFor="school"
-                className="block mb-2 text-sm font-medium text-gray-900"
-              >
-                Asal Sekolah
-              </label>
-              <CreatableSelect
-                options={schoolsAPI}
-                value={selectedSchool}
-                onChange={schoolHandle}
-                placeholder="Isi dengan nama sekolah anda..."
-                className="text-sm"
-                required
-              />
-            </div>
+            {schoolsAPI.length > 0 && (
+              <div className="mb-5">
+                <label
+                  htmlFor="school"
+                  className="block mb-2 text-sm font-medium text-gray-900"
+                >
+                  Asal Sekolah
+                </label>
+                <CreatableSelect
+                  options={schoolsAPI}
+                  value={selectedSchool}
+                  onChange={schoolHandle}
+                  placeholder="Isi dengan nama sekolah anda..."
+                  className="text-sm"
+                  required
+                />
+              </div>
+            )}
 
             <div className="mb-5">
               <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -257,10 +271,10 @@ const Biodata = () => {
                   <input
                     type="radio"
                     defaultValue
-                    value={gender}
+                    value={1}
                     onClick={() => setGender(1)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                    checked={gender == 1 ? true : false}
+                    checked={gender == 1}
                   />
                   <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                     Laki-laki
@@ -269,10 +283,10 @@ const Biodata = () => {
                 <div className="flex items-center mb-4">
                   <input
                     type="radio"
-                    value={gender}
+                    value={0}
                     onClick={() => setGender(0)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                    checked={gender == 0 ? true : false}
+                    checked={gender == 0}
                   />
                   <label
                     htmlFor="default-radio-1"
@@ -337,7 +351,7 @@ const Biodata = () => {
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="No. Telpon (Whatsapp}"
+                placeholder="No. Telpon (Whatsapp)"
                 readOnly
               />
             </div>

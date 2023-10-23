@@ -13,7 +13,7 @@ const Home = () => {
   const identity = localStorage.getItem("identity");
   const getUser = async () => {
     await axios
-      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,

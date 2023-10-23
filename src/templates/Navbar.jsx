@@ -13,7 +13,7 @@ const Navbar = () => {
   const identity = localStorage.getItem("identity");
   const getUser = async () => {
     await axios
-      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -35,7 +35,7 @@ const Navbar = () => {
   const logoutHandler = async () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     await axios
-      .post("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/logout")
+      .post("https://database.politekniklp3i-tasikmalaya.ac.id/api/logout")
       .then(() => {
         localStorage.removeItem("identity");
         localStorage.removeItem("token");
@@ -199,7 +199,7 @@ const Navbar = () => {
                 onClick={logoutHandler}
                 className="block py-2 pl-3 space-x-2 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
               >
-                <i class="fa-solid fa-right-from-bracket"></i>
+                <i className="fa-solid fa-right-from-bracket"></i>
                 <span>Keluar</span>
               </button>
             </li>

@@ -34,21 +34,18 @@ const Berkas = () => {
           )
           .then(async (res) => {
             await axios
-              .post(
-                `https://pmb.politekniklp3i-tasikmalaya.ac.id/api/userupload`,
-                status
-              )
+              .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload`, status)
               .then((res) => {
-                console.log(res.data);
                 alert("Berhasil diupload!");
                 getUser();
               })
               .catch((err) => {
+                alert("Mohon maaf, ada kesalahan di sisi Server.");
                 console.log(err.message);
               });
           })
           .catch((err) => {
-            console.log(err.message);
+            alert("Mohon maaf, ada kesalahan di sisi Server.");
           });
       };
 
@@ -58,7 +55,7 @@ const Berkas = () => {
 
   const handleDelete = async (user) => {
     if (confirm(`Apakah kamu yakin akan menghapus data?`)) {
-      var data = {
+      let data = {
         identity: user.identity_user,
         namefile: user.fileupload.namefile,
         typefile: user.typefile,
@@ -72,11 +69,9 @@ const Berkas = () => {
         )
         .then(async (res) => {
           await axios
-            .delete(
-              `https://pmb.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`
-            )
+            .delete(`https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`)
             .then((res) => {
-              console.log(res.data);
+              alert(res.data.message);
               getUser();
             })
             .catch((err) => {
@@ -91,7 +86,7 @@ const Berkas = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -101,7 +96,6 @@ const Berkas = () => {
         let applicant = res.data.applicant;
         let fileuploadData = res.data.fileupload;
         let useruploadData = res.data.userupload;
-        console.log(res.data);
         setfileUpload(fileuploadData);
         setuserUpload(useruploadData);
         setStudent(applicant);

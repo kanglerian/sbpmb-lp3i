@@ -16,7 +16,7 @@ const Login = () => {
     console.log("oey");
 
     await axios
-      .post(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/login`, {
+      .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/login`, {
         email: email,
         password: password,
       })

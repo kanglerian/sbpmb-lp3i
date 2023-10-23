@@ -29,7 +29,7 @@ const Keluarga = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -64,6 +64,13 @@ const Keluarga = () => {
           localStorage.removeItem("expiry");
           navigate("/");
         }
+        let networkError = err.message == "Network Error";
+        if (networkError) {
+          alert("Mohon maaf, ada kesalahan di sisi Server.");
+          navigate("/");
+        } else {
+          console.log(err.message);
+        }
       });
   };
 
@@ -71,7 +78,7 @@ const Keluarga = () => {
     e.preventDefault();
     await axios
       .patch(
-        `https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/updatefamily/${student.identity}`,
+        `https://database.politekniklp3i-tasikmalaya.ac.id/api/user/updatefamily/${student.identity}`,
         {
           fatherName: fatherName,
           fatherPhone: fatherPhone,
@@ -87,15 +94,16 @@ const Keluarga = () => {
           motherEducation: motherEducation,
           motherJob: motherJob,
           motherAddress: motherAddress,
-          incomeParent: incomeParent,
+          incomeParent: incomeParent == 0 ? '' : incomeParent,
         }
       )
       .then((res) => {
-        alert("Data sudah diperbarui!");
+        alert(res.data.message);
         getUser();
       })
       .catch((err) => {
-        console.log(err.message);
+        let networkError = err.message == "Network Error";
+        alert(networkError ? "Mohon maaf, ada kesalahan di sisi Server." : err.message);
       });
   };
 
@@ -344,8 +352,10 @@ const Keluarga = () => {
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required
               >
-                {incomeParent && (
+                {incomeParent ? (
                   <option value={incomeParent} selected>{incomeParent}</option>
+                ) : (
+                  <option value={0}>Pilih Penghasilan</option>
                 )}
                 <option value="< 1.000.000"> &lt; 1.000.000</option>
                 <option value="1.000.000 - 2.000.000">

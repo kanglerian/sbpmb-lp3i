@@ -29,7 +29,7 @@ const Register = () => {
     }
 
     try {
-      const response = await axios.post("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/register", {
+      const response = await axios.post("https://database.politekniklp3i-tasikmalaya.ac.id/api/register", {
         name: name,
         nisn: nisn,
         email: email,
@@ -97,7 +97,7 @@ const Register = () => {
 
   const getSchools = async () => {
     await axios
-      .get(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/school/getall`)
+      .get(`https://database.politekniklp3i-tasikmalaya.ac.id/api/school/getall`)
       .then((res) => {
         let bucket = [];
         let dataSchools = res.data.schools;

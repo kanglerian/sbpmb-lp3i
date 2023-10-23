@@ -17,7 +17,7 @@ const Program = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -37,6 +37,13 @@ const Program = () => {
           localStorage.removeItem("expiry");
           navigate("/");
         }
+        let networkError = err.message == "Network Error";
+        if (networkError) {
+          alert("Mohon maaf, ada kesalahan di sisi Server.");
+          navigate("/");
+        } else {
+          console.log(err.message);
+        }
       });
   };
 
@@ -48,23 +55,36 @@ const Program = () => {
         setPrograms(programsData);
       })
       .catch((err) => {
-        console.log(err.message);
+        let networkError = err.message == "Network Error";
+        if (networkError) {
+          alert("Mohon maaf, data sekolah tidak bisa muncul. Periksa server.");
+        } else {
+          console.log(err.message);
+        }
       });
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
     await axios
-      .patch(`https://pmb.politekniklp3i-tasikmalaya.ac.id/api/user/updateprogram/${student.identity}`, {
-        program: program,
-        program_second: programSecond,
-      })
+      .patch(
+        `https://database.politekniklp3i-tasikmalaya.ac.id/api/user/updateprogram/${student.identity}`,
+        {
+          program: program == 0 ? "" : program,
+          program_second: programSecond == 0 ? "" : programSecond,
+        }
+      )
       .then((res) => {
         alert("Data program studi sudah diperbarui!");
         getUser();
       })
       .catch((err) => {
-        console.log(err.message);
+        let networkError = err.message == "Network Error";
+        alert(
+          networkError
+            ? "Mohon maaf, ada kesalahan di sisi Server."
+            : err.message
+        );
       });
   };
 
@@ -80,7 +100,7 @@ const Program = () => {
   return (
     <section className="bg-white">
       <div className="container mx-auto px-5">
-        <Navbar/>
+        <Navbar />
         <div className="flex flex-col md:flex-row justify-between md:gap-10">
           <div className="w-full md:w-1/2 p-5">
             <p>
@@ -92,24 +112,33 @@ const Program = () => {
               terbatas.
             </p>
           </div>
+
           <form onSubmit={handleUpdate} className="w-full md:w-1/2 p-5">
             <div className="mb-5">
               <label className="block mb-2 text-sm font-medium text-gray-900">
                 Program Studi Pilihan 1
               </label>
-              
+
               <select
                 onChange={(e) => setProgram(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required
               >
-                {
-                  program && 
-                  <option value={program} selected>{program}</option>
-                }
-                {programs.map((program) => (
-                  <option value={program.title}>{program.title}</option>
-                ))}
+                {program ? (
+                  <option value={program} selected>
+                    {program}
+                  </option>
+                ) : (
+                  <option value={0} selected>
+                    Pilih Program Studi
+                  </option>
+                )}
+                {programs.length > 0 &&
+                  programs.map((program) => (
+                    <option key={program.uuid} value={program.title}>
+                      {program.title}
+                    </option>
+                  ))}
               </select>
             </div>
 
@@ -122,13 +151,21 @@ const Program = () => {
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required
               >
-              {
-                programSecond && 
-                <option value={programSecond} selected>{programSecond}</option>
-              }
-                {programs.map((program) => (
-                  <option value={program.title}>{program.title}</option>
-                ))}
+                {programSecond ? (
+                  <option value={programSecond} selected>
+                    {programSecond}
+                  </option>
+                ) : (
+                  <option value={0} selected>
+                    Pilih Program Studi
+                  </option>
+                )}
+                {programs.length > 0 &&
+                  programs.map((program) => (
+                    <option key={program.uuid} value={program.title}>
+                      {program.title}
+                    </option>
+                  ))}
               </select>
             </div>
 
