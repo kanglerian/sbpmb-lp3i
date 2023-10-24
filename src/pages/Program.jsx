@@ -24,7 +24,6 @@ const Program = () => {
         },
       })
       .then((res) => {
-        console.log();
         let applicant = res.data.applicant;
         setStudent(applicant);
         setProgram(applicant.program);
@@ -52,6 +51,7 @@ const Program = () => {
       .get(`https://dashboard.politekniklp3i-tasikmalaya.ac.id/api/programs`)
       .then((res) => {
         let programsData = res.data;
+        console.log(programsData);
         setPrograms(programsData);
       })
       .catch((err) => {
@@ -116,62 +116,59 @@ const Program = () => {
           <form onSubmit={handleUpdate} className="w-full md:w-1/2 p-5">
             <div className="mb-5">
               <label className="block mb-2 text-sm font-medium text-gray-900">
-                Program Studi Pilihan 1
+                Program Studi Pilihan 1: <span className="underline">{program}</span>
               </label>
-
               <select
                 onChange={(e) => setProgram(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required
               >
-                {program ? (
-                  <option value={program} selected>
-                    {program}
-                  </option>
-                ) : (
-                  <option value={0} selected>
-                    Pilih Program Studi
-                  </option>
-                )}
                 {programs.length > 0 &&
                   programs.map((program) => (
-                    <option key={program.uuid} value={program.title}>
-                      {program.title}
-                    </option>
+                    <optgroup
+                      label={`${program.level} ${program.title}`}
+                      key={program.id}
+                    >
+                      {program.interest.length > 0 &&
+                        program.interest.map((inter, index) => (
+                          <option value={`${program.level} ${program.title}`} key={index}>
+                            Peminatan: {inter.name}
+                          </option>
+                        ))}
+                    </optgroup>
                   ))}
               </select>
             </div>
 
             <div className="mb-5">
               <label className="block mb-2 text-sm font-medium text-gray-900">
-                Program Studi Pilihan 2
+                Program Studi Pilihan 2: <span className="underline">{programSecond}</span>
               </label>
               <select
                 onChange={(e) => setProgramSecond(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required
               >
-                {programSecond ? (
-                  <option value={programSecond} selected>
-                    {programSecond}
-                  </option>
-                ) : (
-                  <option value={0} selected>
-                    Pilih Program Studi
-                  </option>
-                )}
                 {programs.length > 0 &&
                   programs.map((program) => (
-                    <option key={program.uuid} value={program.title}>
-                      {program.title}
-                    </option>
+                    <optgroup
+                      label={`${program.level} ${program.title}`}
+                      key={program.id}
+                    >
+                      {program.interest.length > 0 &&
+                        program.interest.map((inter, index) => (
+                          <option value={`${program.level} ${program.title}`} key={index}>
+                            Peminatan: {inter.name}
+                          </option>
+                        ))}
+                    </optgroup>
                   ))}
               </select>
             </div>
 
             <button
               type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
             >
               Perbarui Data
             </button>
