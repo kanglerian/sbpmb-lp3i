@@ -64,6 +64,9 @@ const Organisasi = () => {
         })
         .then((res) => {
           alert(res.data.message);
+          setname('')
+          setposition('')
+          setyear('')
           getUser();
           setmodal(false);
         })

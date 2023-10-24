@@ -65,6 +65,10 @@ const Prestasi = () => {
         .then((res) => {
           alert(res.data.message);
           getUser();
+          setname('')
+          setlevel('')
+          setyear('')
+          setresult('')
           setmodal(false);
         })
         .catch((err) => {
@@ -245,6 +249,8 @@ const Prestasi = () => {
                     required
                   >
                     <option value={0}>Pilih Tingkat</option>
+                    <option value="Internasional">Internasional</option>
+                    <option value="Nasional">Nasional</option>
                     <option value="Provinsi">Provinsi</option>
                     <option value="Kabupaten / Kota">Kabupaten / Kota</option>
                     <option value="Kecamatan">Kecamatan</option>

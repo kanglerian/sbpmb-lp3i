@@ -163,6 +163,7 @@ const Berkas = () => {
                       </td>
                     </tr>
                   ))}
+                  
                 {fileUpload.length > 0 &&
                   fileUpload.map((file) => (
                     <tr key={file.id} className="bg-white border-b">
@@ -170,7 +171,7 @@ const Berkas = () => {
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                       >
-                        {file.name}
+                        {file.name} 
                       </th>
                       <td className="px-6 py-4">
                         <form

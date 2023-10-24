@@ -135,14 +135,14 @@ const Program = () => {
 
                 {programs.length > 0 &&
                   programs.map((program) => (
-                    <optgroup
+                    <optgroup style={{ background: 'red' }}
                       label={`${program.level} ${program.title}`}
                       key={program.id}
                     >
                       {program.interest.length > 0 &&
                         program.interest.map((inter, index) => (
                           <option value={`${program.level} ${program.title}`} key={index}>
-                            Peminatan: {inter.name}
+                            {inter.name}
                           </option>
                         ))}
                     </optgroup>
@@ -152,7 +152,7 @@ const Program = () => {
 
             <div className="mb-5">
               <label className="block mb-2 text-sm font-medium text-gray-900">
-                Program Studi Pilihan 2: <span className="underline">{programSecond}</span>
+                Program Studi Pilihan 2: <span className="underline text-md font-bold">{programSecond}</span>
               </label>
               <select
                 onChange={(e) => setProgramSecond(e.target.value)}
@@ -168,16 +168,17 @@ const Program = () => {
                     Pilih Program Studi
                   </option>
                 )}
+
                 {programs.length > 0 &&
                   programs.map((program) => (
                     <optgroup
-                      label={`${program.level} ${program.title}`}
+                      label={`${program.level} ${program.title} - ${program.campus}`}
                       key={program.id}
                     >
                       {program.interest.length > 0 &&
                         program.interest.map((inter, index) => (
                           <option value={`${program.level} ${program.title}`} key={index}>
-                            Peminatan: {inter.name}
+                            {inter.name}
                           </option>
                         ))}
                     </optgroup>
