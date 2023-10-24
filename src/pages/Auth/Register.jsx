@@ -28,71 +28,26 @@ const Register = () => {
       return alert("Kata sandi tidak sama!");
     }
 
-    try {
-      const response = await axios.post("https://database.politekniklp3i-tasikmalaya.ac.id/api/register", {
-        name: name,
-        nisn: nisn,
-        email: email,
-        phone: phone,
-        school: school,
-        password: password,
-        password_confirmation: passwordConf,
-      });
-      if (response.data.info) {
-        if (response.data.login) {
-          let confirmed = confirm(`${response.data.message}`);
-          if (confirmed) {
-            let message = `Hore! Anda telah berhasil terdaftar. Sekarang saatnya untuk memulai pengisian data Anda! Silakan masuk ke akun Anda menggunakan detail berikut:\n\nEmail: ${response.data.user.email}\nKata Sandi: ${response.data.user.phone}\n\nKunjungi situs web kami di https://sbpmb.politekniklp3i-tasikmalaya.ac.id dan jangan ragu untuk bertanya kepada admin jika belum mengerti!`;
-            let target = `${response.data.user.phone}@c.us`;
-            await axios
-              .post(
-                `https://api.politekniklp3i-tasikmalaya.ac.id/whatsappbot/send`,
-                {
-                  target: target,
-                  message: message,
-                }
-              )
-              .then((res) => {
-                navigate("/login");
-              })
-              .catch((err) => {
-                console.log(err);
-              });
-          }
-        } else {
-          let confirmed = confirm(`${response.data.message}`);
-          if (confirmed) {
-            if (response.data.applicant.name) {
-              setName(response.data.applicant.name);
-            }
-
-            if (response.data.applicant.nisn) {
-              setNisn(response.data.applicant.nisn);
-            }
-
-            if (response.data.applicant.school) {
-              setSelectedSchool({
-                value: response.data.applicant.school_applicant.id,
-                label: response.data.applicant.school_applicant.name,
-              });
-              setSchool(response.data.applicant.school);
-            }
-
-            if (response.data.applicant.email) {
-              setEmail(response.data.applicant.email);
-            }
-
-            if (response.data.applicant.phone) {
-              setPhone(response.data.applicant.phone);
-            }
-          }
-        }
+    await axios.post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/register`,{
+      name: name,
+      nisn: nisn,
+      email: email,
+      phone: phone,
+      school: school,
+      password: password,
+      password_confirmation: passwordConf,
+    })
+    .then((response) => {
+      console.log(response.data);
+      if(!response.data.success){
+        alert(response.data.message);
       } else {
         return navigate("/login");
       }
-    } catch (error) {
-      console.error("Registration failed", error);
-    }
+    })
+    .catch((err) => {
+      console.log(err.message);
+    });
   };
 
   const getSchools = async () => {

@@ -13,7 +13,6 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    console.log("oey");
 
     await axios
       .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/login`, {
@@ -21,6 +20,7 @@ const Login = () => {
         password: password,
       })
       .then((res) => {
+        console.log(res.data);
         const expiry = new Date(new Date().getTime() + 60 * 60 * 1000);
         localStorage.setItem("identity", res.data.user.identity);
         localStorage.setItem("token", res.data.token);
