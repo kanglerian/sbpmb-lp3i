@@ -38,7 +38,6 @@ const Register = () => {
       password_confirmation: passwordConf,
     })
     .then((response) => {
-      console.log(response.data);
       if(!response.data.success){
         alert(response.data.message);
       } else {
