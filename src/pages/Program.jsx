@@ -116,7 +116,8 @@ const Program = () => {
           <form onSubmit={handleUpdate} className="w-full md:w-1/2 p-5">
             <div className="mb-5">
               <label className="block mb-2 text-sm font-medium text-gray-900">
-                Program Studi Pilihan 1: <span className="underline">{program}</span>
+                Program Studi Pilihan 1:{" "}
+                <span className="underline">{program}</span>
               </label>
               <select
                 onChange={(e) => setProgram(e.target.value)}
@@ -134,25 +135,34 @@ const Program = () => {
                 )}
 
                 {programs.length > 0 &&
-                  programs.map((program) => (
-                    <optgroup style={{ background: 'red' }}
-                      label={`${program.level} ${program.title}`}
-                      key={program.id}
-                    >
-                      {program.interest.length > 0 &&
-                        program.interest.map((inter, index) => (
-                          <option value={`${program.level} ${program.title}`} key={index}>
-                            {inter.name}
-                          </option>
-                        ))}
-                    </optgroup>
-                  ))}
+                  programs
+                    .filter((program) => program.title !== "Bisnis Digital")
+                    .map((program) => (
+                      <optgroup
+                        style={{ background: "red" }}
+                        label={`${program.level} ${program.title}`}
+                        key={program.id}
+                      >
+                        {program.interest.length > 0 &&
+                          program.interest.map((inter, index) => (
+                            <option
+                              value={`${program.level} ${program.title}`}
+                              key={index}
+                            >
+                              {inter.name}
+                            </option>
+                          ))}
+                      </optgroup>
+                    ))}
               </select>
             </div>
 
             <div className="mb-5">
               <label className="block mb-2 text-sm font-medium text-gray-900">
-                Program Studi Pilihan 2: <span className="underline text-md font-bold">{programSecond}</span>
+                Program Studi Pilihan 2:{" "}
+                <span className="underline text-md font-bold">
+                  {programSecond}
+                </span>
               </label>
               <select
                 onChange={(e) => setProgramSecond(e.target.value)}
@@ -177,7 +187,10 @@ const Program = () => {
                     >
                       {program.interest.length > 0 &&
                         program.interest.map((inter, index) => (
-                          <option value={`${program.level} ${program.title}`} key={index}>
+                          <option
+                            value={`${program.level} ${program.title}`}
+                            key={index}
+                          >
                             {inter.name}
                           </option>
                         ))}

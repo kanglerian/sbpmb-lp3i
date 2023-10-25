@@ -34,7 +34,10 @@ const Berkas = () => {
           )
           .then(async (res) => {
             await axios
-              .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload`, status)
+              .post(
+                `https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload`,
+                status
+              )
               .then((res) => {
                 alert("Berhasil diupload!");
                 getUser();
@@ -69,7 +72,9 @@ const Berkas = () => {
         )
         .then(async (res) => {
           await axios
-            .delete(`https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`)
+            .delete(
+              `https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`
+            )
             .then((res) => {
               alert(res.data.message);
               getUser();
@@ -163,15 +168,21 @@ const Berkas = () => {
                       </td>
                     </tr>
                   ))}
-                  
                 {fileUpload.length > 0 &&
-                  fileUpload.map((file) => (
-                    <tr key={file.id} className="bg-white border-b">
+                  fileUpload
+                    .filter(
+                      (file) =>
+                        file.namefile !== "bukti-pembayaran" &&
+                        file.namefile !== "surat-keterangan-bekerja" &&
+                        file.namefile !== "surat-keterangan-berwirausaha"
+                    )
+                    .map((file, index) => (
+                      <tr key={file.id} className="bg-white border-b">
                       <th
                         scope="row"
                         className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
                       >
-                        {file.name} 
+                        {file.name}
                       </th>
                       <td className="px-6 py-4">
                         <form
@@ -191,7 +202,7 @@ const Berkas = () => {
                         </form>
                       </td>
                     </tr>
-                  ))}
+                    ))}
               </tbody>
             </table>
           </div>
