@@ -24,8 +24,6 @@ const Program = () => {
         },
       })
       .then((res) => {
-        let applicant = res.data.applicant;
-        setStudent(applicant);
         setProgram(applicant.program);
         setProgramSecond(applicant.program_second);
       })
@@ -51,7 +49,6 @@ const Program = () => {
       .get(`https://dashboard.politekniklp3i-tasikmalaya.ac.id/api/programs`)
       .then((res) => {
         let programsData = res.data;
-        console.log(programsData);
         setPrograms(programsData);
       })
       .catch((err) => {

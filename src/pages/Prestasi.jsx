@@ -29,10 +29,8 @@ const Prestasi = () => {
         },
       })
       .then((res) => {
-        let applicant = res.data.applicant;
         let achievements = res.data.achievements;
         setAchievements(achievements);
-        setStudent(applicant);
       })
       .catch((err) => {
         if (err.message == "Request failed with status code 404") {
