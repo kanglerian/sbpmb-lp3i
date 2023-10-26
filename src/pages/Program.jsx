@@ -119,28 +119,28 @@ const Program = () => {
                 <span className="underline">{program}</span>
               </label>
               <select
+                value={program || 0}
                 onChange={(e) => setProgram(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required
               >
                 {program ? (
-                  <option value={program} selected>
+                  <option value={program}>
                     {program}
                   </option>
                 ) : (
-                  <option value={0} selected>
+                  <option value={0}>
                     Pilih Program Studi
                   </option>
                 )}
 
                 {programs.length > 0 &&
                   programs
-                    .filter((program) => program.title !== "Bisnis Digital")
                     .map((program) => (
                       <optgroup
                         style={{ background: "red" }}
                         label={`${program.level} ${program.title}`}
-                        key={program.id}
+                        key={program.uuid}
                       >
                         {program.interest.length > 0 &&
                           program.interest.map((inter, index) => (
@@ -164,16 +164,17 @@ const Program = () => {
                 </span>
               </label>
               <select
+                value={programSecond || 0}
                 onChange={(e) => setProgramSecond(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 required
               >
                 {programSecond ? (
-                  <option value={programSecond} selected>
+                  <option value={programSecond}>
                     {programSecond}
                   </option>
                 ) : (
-                  <option value={0} selected>
+                  <option value={0}>
                     Pilih Program Studi
                   </option>
                 )}
@@ -182,7 +183,7 @@ const Program = () => {
                   programs.map((program) => (
                     <optgroup
                       label={`${program.level} ${program.title} - ${program.campus}`}
-                      key={program.id}
+                      key={program.uuid}
                     >
                       {program.interest.length > 0 &&
                         program.interest.map((inter, index) => (
