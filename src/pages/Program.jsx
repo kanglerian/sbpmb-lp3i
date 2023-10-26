@@ -24,6 +24,8 @@ const Program = () => {
         },
       })
       .then((res) => {
+        let applicant = res.data.applicant;
+        setStudent(applicant);
         setProgram(applicant.program);
         setProgramSecond(applicant.program_second);
       })
