@@ -53,25 +53,32 @@ const Prestasi = () => {
     e.preventDefault();
     if (name && level != 0 && year && result) {
       await axios
-        .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/achievement`, {
-          name: name,
-          level: level,
-          year: year,
-          result: result,
-          identity_user: identity,
-        })
+        .post(
+          `https://database.politekniklp3i-tasikmalaya.ac.id/api/achievement`,
+          {
+            name: name,
+            level: level,
+            year: year,
+            result: result,
+            identity_user: identity,
+          }
+        )
         .then((res) => {
           alert(res.data.message);
           getUser();
-          setname('')
-          setlevel('')
-          setyear('')
-          setresult('')
+          setname("");
+          setlevel("");
+          setyear("");
+          setresult("");
           setmodal(false);
         })
         .catch((err) => {
           let networkError = err.message == "Network Error";
-          alert(networkError ? "Mohon maaf, ada kesalahan di sisi Server." : err.message);
+          alert(
+            networkError
+              ? "Mohon maaf, ada kesalahan di sisi Server."
+              : err.message
+          );
         });
     }
   };
@@ -80,14 +87,20 @@ const Prestasi = () => {
     let confirmDelete = confirm("Apakah anda yakin ingin menghapus prestasi?");
     if (confirmDelete) {
       await axios
-        .delete(`https://database.politekniklp3i-tasikmalaya.ac.id/api/achievement/${id}`)
+        .delete(
+          `https://database.politekniklp3i-tasikmalaya.ac.id/api/achievement/${id}`
+        )
         .then((res) => {
           alert(res.data.message);
           getUser();
         })
         .catch((err) => {
           let networkError = err.message == "Network Error";
-          alert(networkError ? "Mohon maaf, ada kesalahan di sisi Server." : err.message);
+          alert(
+            networkError
+              ? "Mohon maaf, ada kesalahan di sisi Server."
+              : err.message
+          );
         });
     }
   };
@@ -233,6 +246,9 @@ const Prestasi = () => {
                     placeholder="Tulis nama kegiatan disini.."
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib diisi.
+                  </p>
                 </div>
                 <div className="mb-5">
                   <label
@@ -254,6 +270,9 @@ const Prestasi = () => {
                     <option value="Kecamatan">Kecamatan</option>
                     <option value="Desa / Kelurahan">Desa / Kelurahan</option>
                   </select>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib diisi.
+                  </p>
                 </div>
                 <div className="mb-5">
                   <label
@@ -271,6 +290,9 @@ const Prestasi = () => {
                     placeholder="Tulis tahun disini.."
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib diisi.
+                  </p>
                 </div>
                 <div className="mb-5">
                   <label
@@ -288,6 +310,9 @@ const Prestasi = () => {
                     placeholder="Tulis pencapaian disini.."
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib diisi.
+                  </p>
                 </div>
               </div>
               {/* Modal footer */}

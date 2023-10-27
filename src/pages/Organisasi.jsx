@@ -234,6 +234,7 @@ const Organisasi = () => {
                     placeholder="Tulis nama organisasi disini.."
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
                 </div>
                 <div className="mb-5">
                   <label
@@ -251,6 +252,7 @@ const Organisasi = () => {
                     placeholder="Tulis jabatan disini.."
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
                 </div>
                 <div className="mb-5">
                   <label
@@ -268,6 +270,7 @@ const Organisasi = () => {
                     placeholder="Tulis tahun disini.."
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
                 </div>
               </div>
               {/* Modal footer */}

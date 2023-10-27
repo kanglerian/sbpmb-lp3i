@@ -159,6 +159,7 @@ const Keluarga = () => {
                   placeholder="Nama Lengkap Ayah"
                   required
                 />
+                <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
               </div>
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -185,6 +186,7 @@ const Keluarga = () => {
                     placeholder="Tempat Lahir Ayah"
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
                 </div>
                 <div className="w-full mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -198,6 +200,7 @@ const Keluarga = () => {
                     placeholder="Tanggal Lahir Ayah"
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
                 </div>
               </div>
               <div className="flex gap-5">
@@ -213,6 +216,7 @@ const Keluarga = () => {
                     placeholder="Pendidikan Terakhir"
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
                 </div>
                 <div className="w-full mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -226,6 +230,7 @@ const Keluarga = () => {
                     placeholder="Pekerjaan"
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
                 </div>
               </div>
               <div className="mb-5">
@@ -257,6 +262,7 @@ const Keluarga = () => {
                   placeholder="Nama Lengkap Ibu"
                   required
                 />
+                <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
               </div>
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -283,6 +289,7 @@ const Keluarga = () => {
                     placeholder="Tempat Lahir Ibu"
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
                 </div>
                 <div className="w-full mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -296,6 +303,7 @@ const Keluarga = () => {
                     placeholder="Tanggal Lahir Ibu"
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
                 </div>
               </div>
               <div className="flex gap-5">
@@ -311,6 +319,7 @@ const Keluarga = () => {
                     placeholder="Pendidikan Terakhir"
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
                 </div>
                 <div className="w-full mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -324,6 +333,7 @@ const Keluarga = () => {
                     placeholder="Pekerjaan"
                     required
                   />
+                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
                 </div>
               </div>
               <div className="mb-5">
@@ -366,6 +376,7 @@ const Keluarga = () => {
                 </option>
                 <option value="> 5.000.000">&gt; 5.000.000</option>
               </select>
+              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
             </div>
           </div>
           <div className="px-5">

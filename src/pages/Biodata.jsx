@@ -169,7 +169,6 @@ const Biodata = () => {
                 onChange={(e) => setNisn(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="NISN"
-                required
               />
             </div>
 
@@ -198,6 +197,7 @@ const Biodata = () => {
                 placeholder="Nama lengkap"
                 required
               />
+              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
             </div>
 
             {schoolsAPI.length > 0 && (
@@ -216,6 +216,7 @@ const Biodata = () => {
                   className="text-sm"
                   required
                 />
+                <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
               </div>
             )}
 
@@ -231,6 +232,7 @@ const Biodata = () => {
                 placeholder="Tahun Lulus"
                 required
               />
+              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
             </div>
 
             <div className="mb-5">
@@ -245,6 +247,7 @@ const Biodata = () => {
                 placeholder="Tempat Lahir"
                 required
               />
+              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
             </div>
 
             <div className="mb-5">
@@ -259,6 +262,7 @@ const Biodata = () => {
                 placeholder="Tanggal Lahir"
                 required
               />
+              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
             </div>
 
             <div className="mb-5">
@@ -310,6 +314,7 @@ const Biodata = () => {
                 placeholder="Agama"
                 required
               />
+              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
             </div>
 
             <div className="mb-5">
@@ -326,6 +331,7 @@ const Biodata = () => {
               >
                 {address}
               </textarea>
+              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
             </div>
 
             <div className="mb-5">
@@ -340,6 +346,7 @@ const Biodata = () => {
                 placeholder="Email"
                 required
               />
+              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
             </div>
 
             <div className="mb-5">

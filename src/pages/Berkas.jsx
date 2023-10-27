@@ -199,6 +199,11 @@ const Berkas = () => {
                             className="text-xs"
                             onChange={handleFileChange}
                           />
+                          <p className="mt-2 text-xs text-gray-500">
+                            <span className="font-medium">Keterangan file:</span>
+                            {" "}
+                            <span className="underline">{file.accept}</span>
+                          </p>
                         </form>
                       </td>
                     </tr>

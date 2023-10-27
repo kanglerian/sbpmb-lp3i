@@ -154,6 +154,7 @@ const Program = () => {
                       </optgroup>
                     ))}
               </select>
+              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
             </div>
 
             <div className="mb-5">
@@ -197,6 +198,7 @@ const Program = () => {
                     </optgroup>
                   ))}
               </select>
+              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
             </div>
 
             <button
