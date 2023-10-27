@@ -116,7 +116,9 @@ const Program = () => {
             <div className="mb-5">
               <label className="block mb-2 text-sm font-medium text-gray-900">
                 Program Studi Pilihan 1:{" "}
-                <span className="underline">{program}</span>
+                <span className="underline text-md font-bold">
+                  {program}
+                </span>
               </label>
               <select
                 value={program || 0}
