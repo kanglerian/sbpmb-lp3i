@@ -14,6 +14,7 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [school, setSchool] = useState("");
+  const [year, setYear] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConf, setPasswordConf] = useState("");
 
@@ -28,30 +29,34 @@ const Register = () => {
       return alert("Kata sandi tidak sama!");
     }
 
-    await axios.post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/register`,{
-      name: name,
-      nisn: nisn,
-      email: email,
-      phone: phone,
-      school: school,
-      password: password,
-      password_confirmation: passwordConf,
-    })
-    .then((response) => {
-      if(!response.data.success){
-        alert(response.data.message);
-      } else {
-        return navigate("/login");
-      }
-    })
-    .catch((err) => {
-      console.log(err.message);
-    });
+    await axios
+      .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/register`, {
+        name: name,
+        nisn: nisn,
+        email: email,
+        phone: phone,
+        school: school,
+        year: year,
+        password: password,
+        password_confirmation: passwordConf,
+      })
+      .then((response) => {
+        if (!response.data.success) {
+          alert(response.data.message);
+        } else {
+          return navigate("/login");
+        }
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   };
 
   const getSchools = async () => {
     await axios
-      .get(`https://database.politekniklp3i-tasikmalaya.ac.id/api/school/getall`)
+      .get(
+        `https://database.politekniklp3i-tasikmalaya.ac.id/api/school/getall`
+      )
       .then((res) => {
         let bucket = [];
         let dataSchools = res.data.schools;
@@ -140,24 +145,43 @@ const Register = () => {
             />
           </div>
 
-          <div className="mb-5">
-            <label
-              htmlFor="school"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Asal Sekolah
-            </label>
-            <CreatableSelect
-              options={schoolsAPI}
-              value={selectedSchool}
-              onChange={schoolHandle}
-              placeholder="Isi dengan nama sekolah anda..."
-              className="text-sm"
-              required
-            />
+          <div className="flex flex-col md:flex-row md:gap-5">
+            <div className="w-full md:w-1/2 mb-5">
+              <label
+                htmlFor="school"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Asal Sekolah
+              </label>
+              <CreatableSelect
+                options={schoolsAPI}
+                value={selectedSchool}
+                onChange={schoolHandle}
+                placeholder="Isi dengan nama sekolah anda..."
+                className="text-sm"
+                required
+              />
+            </div>
+            <div className="w-full md:w-1/2 mb-5">
+              <label
+                htmlFor="year"
+                className="block mb-2 text-sm font-medium text-gray-900"
+              >
+                Tahun Lulus
+              </label>
+              <input
+                type="number"
+                id="year"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                placeholder="Isi dengan tahun lulus anda..."
+                required
+              />
+            </div>
           </div>
 
-          <div className="flex gap-5">
+          <div className="flex flex-col md:flex-row md:gap-5">
             <div className="w-full mb-5">
               <label
                 htmlFor="email"
@@ -194,7 +218,8 @@ const Register = () => {
             </div>
           </div>
 
-          <div className="flex gap-5">
+          <div className="flex flex-col md:flex-row md:gap-5">
+
             <div className="w-full mb-5">
               <label
                 htmlFor="password"
@@ -254,6 +279,7 @@ const Register = () => {
                 />
               </div>
             </div>
+
           </div>
           <hr className="my-5" />
           <div className="flex flex-col md:flex-row items-center gap-5">

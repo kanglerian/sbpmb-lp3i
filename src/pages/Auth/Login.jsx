@@ -30,6 +30,7 @@ const Login = () => {
         if (err.response.data.success == false) {
           alert(err.response.data.message);
         }
+        console.log(err);
       });
   };
 
