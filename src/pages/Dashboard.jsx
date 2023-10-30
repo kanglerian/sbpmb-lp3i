@@ -21,7 +21,7 @@ const Dashboard = () => {
             <span>Harap untuk lengkapi data diri anda dan upload berkas.</span>
             {" "}
             <Link to={`/biodata`} className="underline">
-              Mulai klik disini <i className="fa-solid fa-arrow-right-long ml-1"></i>
+              Klik disini <i className="fa-solid fa-arrow-right-long ml-1"></i>
             </Link>
           </p>
         </section>
