@@ -30,7 +30,7 @@ const Register = () => {
     }
 
     await axios
-      .post(`http://127.0.0.1:8000/api/register`, {
+      .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/register`, {
         name: name,
         nisn: nisn,
         email: email,
@@ -55,7 +55,7 @@ const Register = () => {
   const getSchools = async () => {
     await axios
       .get(
-        `http://127.0.0.1:8000/api/school/getall`
+        `https://database.politekniklp3i-tasikmalaya.ac.id/api/school/getall`
       )
       .then((res) => {
         let bucket = [];
