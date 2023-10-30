@@ -51,7 +51,8 @@ const Program = () => {
       .get(`https://dashboard.politekniklp3i-tasikmalaya.ac.id/api/programs`)
       .then((res) => {
         let programsData = res.data;
-        setPrograms(programsData);
+        let results = programsData.filter((program) => program.regular == '1');
+        setPrograms(results);
       })
       .catch((err) => {
         let networkError = err.message == "Network Error";
