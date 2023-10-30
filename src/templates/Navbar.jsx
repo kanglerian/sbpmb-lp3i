@@ -75,21 +75,7 @@ const Navbar = () => {
           aria-expanded="false"
         >
           <span className="sr-only">Open main menu</span>
-          <svg
-            className="w-5 h-5"
-            aria-hidden="true"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 17 14"
-          >
-            <path
-              stroke="currentColor"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M1 1h15M1 7h15M1 13h15"
-            />
-          </svg>
+          <i class="fa-solid fa-bars"></i>
         </button>
         <div
           className={`${open ? "" : "hidden"} w-full md:block md:w-auto`}
@@ -182,19 +168,6 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <span className="flex items-center block py-2 pl-3 space-x-2 pr-4 cursor-pointer text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0">
-                <i className="fa-solid fa-user"></i>
-                {student.name ? (
-                  <span>{student.name}</span>
-                ) : (
-                  <div className="max-w-sm animate-pulse">
-                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-24" />
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                )}
-              </span>
-            </li>
-            <li>
               <button
                 onClick={logoutHandler}
                 className="block py-2 pl-3 space-x-2 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
@@ -206,6 +179,7 @@ const Navbar = () => {
           </ul>
         </div>
       </div>
+      <hr className="mt-2 mb-5" />
     </nav>
   );
 };

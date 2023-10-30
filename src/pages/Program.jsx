@@ -51,7 +51,7 @@ const Program = () => {
       .get(`https://dashboard.politekniklp3i-tasikmalaya.ac.id/api/programs`)
       .then((res) => {
         let programsData = res.data;
-        let results = programsData.filter((program) => program.regular == '1');
+        let results = programsData.filter((program) => program.regular == "1");
         setPrograms(results);
       })
       .catch((err) => {
@@ -102,7 +102,7 @@ const Program = () => {
       <div className="container mx-auto px-5">
         <Navbar />
         <div className="flex flex-col md:flex-row justify-between md:gap-10">
-          <div className="w-full md:w-1/2 p-5">
+          <div className="w-full md:w-1/3 p-3">
             <p>
               Selamat datang di situs resmi Seleksi Beasiswa Penerimaan
               Mahasiswa Baru (SBPMB) Politeknik LP3I Kampus Tasikmalaya, tempat
@@ -113,33 +113,27 @@ const Program = () => {
             </p>
           </div>
 
-          <form onSubmit={handleUpdate} className="w-full md:w-1/2 p-5">
-            <div className="mb-5">
-              <label className="block mb-2 text-sm font-medium text-gray-900">
-                Program Studi Pilihan 1:{" "}
-                <span className="underline text-md font-bold">
-                  {program}
-                </span>
-              </label>
-              <select
-                value={program || 0}
-                onChange={(e) => setProgram(e.target.value)}
-                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                required
-              >
-                {program ? (
-                  <option value={program}>
-                    {program}
-                  </option>
-                ) : (
-                  <option value={0}>
-                    Pilih Program Studi
-                  </option>
-                )}
+          <form onSubmit={handleUpdate} className="w-full md:w-2/3 p-3">
+            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+              <div className="mb-5">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
+                  Program Studi Pilihan 1:{" "}
+                  <span className="underline text-md font-bold">{program}</span>
+                </label>
+                <select
+                  value={program || 0}
+                  onChange={(e) => setProgram(e.target.value)}
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  required
+                >
+                  {program ? (
+                    <option value={program}>{program}</option>
+                  ) : (
+                    <option value={0}>Pilih Program Studi</option>
+                  )}
 
-                {programs.length > 0 &&
-                  programs
-                    .map((program) => (
+                  {programs.length > 0 &&
+                    programs.map((program) => (
                       <optgroup
                         style={{ background: "red" }}
                         label={`${program.level} ${program.title}`}
@@ -156,52 +150,52 @@ const Program = () => {
                           ))}
                       </optgroup>
                     ))}
-              </select>
-              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
-            </div>
-
-            <div className="mb-5">
-              <label className="block mb-2 text-sm font-medium text-gray-900">
-                Program Studi Pilihan 2:{" "}
-                <span className="underline text-md font-bold">
-                  {programSecond}
-                </span>
-              </label>
-              <select
-                value={programSecond || 0}
-                onChange={(e) => setProgramSecond(e.target.value)}
-                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                required
-              >
-                {programSecond ? (
-                  <option value={programSecond}>
+                </select>
+                <p className="mt-2 text-xs text-red-600">
+                  <span className="font-medium">Keterangan:</span> Wajib diisi.
+                </p>
+              </div>
+              <div className="mb-5">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
+                  Program Studi Pilihan 2:{" "}
+                  <span className="underline text-md font-bold">
                     {programSecond}
-                  </option>
-                ) : (
-                  <option value={0}>
-                    Pilih Program Studi
-                  </option>
-                )}
+                  </span>
+                </label>
+                <select
+                  value={programSecond || 0}
+                  onChange={(e) => setProgramSecond(e.target.value)}
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  required
+                >
+                  {programSecond ? (
+                    <option value={programSecond}>{programSecond}</option>
+                  ) : (
+                    <option value={0}>Pilih Program Studi</option>
+                  )}
 
-                {programs.length > 0 &&
-                  programs.map((program) => (
-                    <optgroup
-                      label={`${program.level} ${program.title} - ${program.campus}`}
-                      key={program.uuid}
-                    >
-                      {program.interest.length > 0 &&
-                        program.interest.map((inter, index) => (
-                          <option
-                            value={`${program.level} ${program.title}`}
-                            key={index}
-                          >
-                            {inter.name}
-                          </option>
-                        ))}
-                    </optgroup>
-                  ))}
-              </select>
-              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  {programs.length > 0 &&
+                    programs.map((program) => (
+                      <optgroup
+                        label={`${program.level} ${program.title} - ${program.campus}`}
+                        key={program.uuid}
+                      >
+                        {program.interest.length > 0 &&
+                          program.interest.map((inter, index) => (
+                            <option
+                              value={`${program.level} ${program.title}`}
+                              key={index}
+                            >
+                              {inter.name}
+                            </option>
+                          ))}
+                      </optgroup>
+                    ))}
+                </select>
+                <p className="mt-2 text-xs text-red-600">
+                  <span className="font-medium">Keterangan:</span> Wajib diisi.
+                </p>
+              </div>
             </div>
 
             <button

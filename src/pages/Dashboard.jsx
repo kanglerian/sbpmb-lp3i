@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
 
 const Dashboard = () => {
@@ -14,12 +14,18 @@ const Dashboard = () => {
 
   return (
     <section className="bg-white">
-      <Navbar/>
-      <section className="container mx-auto h-screen">
-        <div>
-          <h1>Dashboard</h1>
-        </div>
-      </section>
+      <div className="container mx-auto px-5">
+        <Navbar />
+        <section>
+          <p className="text-sm text-center text-gray-700">
+            <span>Harap untuk lengkapi data diri anda dan upload berkas.</span>
+            {" "}
+            <Link to={`/biodata`} className="underline">
+              Mulai klik disini <i className="fa-solid fa-arrow-right-long ml-1"></i>
+            </Link>
+          </p>
+        </section>
+      </div>
     </section>
   );
 };

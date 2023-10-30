@@ -94,7 +94,7 @@ const Keluarga = () => {
           motherEducation: motherEducation,
           motherJob: motherJob,
           motherAddress: motherAddress,
-          incomeParent: incomeParent == 0 ? '' : incomeParent,
+          incomeParent: incomeParent == 0 ? "" : incomeParent,
         }
       )
       .then((res) => {
@@ -103,7 +103,11 @@ const Keluarga = () => {
       })
       .catch((err) => {
         let networkError = err.message == "Network Error";
-        alert(networkError ? "Mohon maaf, ada kesalahan di sisi Server." : err.message);
+        alert(
+          networkError
+            ? "Mohon maaf, ada kesalahan di sisi Server."
+            : err.message
+        );
       });
   };
 
@@ -143,38 +147,45 @@ const Keluarga = () => {
     <section className="bg-white">
       <div className="container mx-auto px-5">
         <Navbar />
-        <form onSubmit={handleUpdate} className="w-full p-5">
+        <form onSubmit={handleUpdate} className="w-full">
           <div className="flex flex-col md:flex-row justify-between">
-            <div className="w-full md:w-1/2 p-5">
+            <div className="w-full md:w-1/2 p-3">
               <h2 className="mb-5 font-bold text-2xl">Biodata Ayah</h2>
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Nama Lengkap
-                </label>
-                <input
-                  type="text"
-                  value={fatherName}
-                  onChange={(e) => setfatherName(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Nama Lengkap Ayah"
-                  required
-                />
-                <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                <div className="mb-5">
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Nama Lengkap
+                  </label>
+                  <input
+                    type="text"
+                    value={fatherName}
+                    onChange={(e) => setfatherName(e.target.value)}
+                    className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Nama Lengkap Ayah"
+                    required
+                  />
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
+                </div>
+                <div className="mb-5">
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    No. HP Ayah
+                  </label>
+                  <input
+                    type="number"
+                    value={fatherPhone}
+                    onChange={handleFatherPhoneChange}
+                    className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="No. HP Ayah"
+                  />
+                </div>
               </div>
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  No. HP Ayah
-                </label>
-                <input
-                  type="number"
-                  value={fatherPhone}
-                  onChange={handleFatherPhoneChange}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="No. HP Ayah"
-                />
-              </div>
-              <div className="flex gap-5">
-                <div className="w-full mb-5">
+
+              <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Tempat Lahir
                   </label>
@@ -186,9 +197,12 @@ const Keluarga = () => {
                     placeholder="Tempat Lahir Ayah"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
                 </div>
-                <div className="w-full mb-5">
+                <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Tanggal Lahir
                   </label>
@@ -200,11 +214,15 @@ const Keluarga = () => {
                     placeholder="Tanggal Lahir Ayah"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
                 </div>
               </div>
-              <div className="flex gap-5">
-                <div className="w-full mb-5">
+
+              <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Pendidikan Terakhir
                   </label>
@@ -216,9 +234,12 @@ const Keluarga = () => {
                     placeholder="Pendidikan Terakhir"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
                 </div>
-                <div className="w-full mb-5">
+                <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Pekerjaan
                   </label>
@@ -230,54 +251,100 @@ const Keluarga = () => {
                     placeholder="Pekerjaan"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
                 </div>
               </div>
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Alamat
-                </label>
-                <textarea
-                  type="text"
-                  value={fatherAddress}
-                  onChange={(e) => setfatherAddress(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Alamat"
-                >
-                  {fatherAddress}
-                </textarea>
+
+              <div className="grid grid-cols-1 md:gap-4">
+                <div className="mb-5">
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Alamat
+                  </label>
+                  <textarea
+                    type="text"
+                    value={fatherAddress}
+                    onChange={(e) => setfatherAddress(e.target.value)}
+                    className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Alamat"
+                  >
+                    {fatherAddress}
+                  </textarea>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:gap-4">
+                <div className="mb-5">
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Penghasilan Orang Tua
+                  </label>
+                  <select
+                    onChange={(e) => setIncomeParent(e.target.value)}
+                    className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    required
+                  >
+                    {incomeParent ? (
+                      <option value={incomeParent} selected>
+                        {incomeParent}
+                      </option>
+                    ) : (
+                      <option value={0}>Pilih Penghasilan</option>
+                    )}
+                    <option value="< 1.000.000"> &lt; 1.000.000</option>
+                    <option value="1.000.000 - 2.000.000">
+                      1.000.000 - 2.000.000
+                    </option>
+                    <option value="2.000.000 - 4.000.000">
+                      2.000.000 - 4.000.000
+                    </option>
+                    <option value="> 5.000.000">&gt; 5.000.000</option>
+                  </select>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="w-full md:w-1/2 p-5">
+
+            <div className="w-full md:w-1/2 p-3">
               <h2 className="mb-5 font-bold text-2xl">Biodata Ibu</h2>
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Nama Lengkap
-                </label>
-                <input
-                  type="text"
-                  value={motherName}
-                  onChange={(e) => setmotherName(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Nama Lengkap Ibu"
-                  required
-                />
-                <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                <div className="mb-5">
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Nama Lengkap
+                  </label>
+                  <input
+                    type="text"
+                    value={motherName}
+                    onChange={(e) => setmotherName(e.target.value)}
+                    className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Nama Lengkap Ibu"
+                    required
+                  />
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
+                </div>
+                <div className="mb-5">
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    No. HP Ibu
+                  </label>
+                  <input
+                    type="number"
+                    value={motherPhone}
+                    onChange={handleMotherPhoneChange}
+                    className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="No. HP Ibu"
+                  />
+                </div>
               </div>
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  No. HP Ibu
-                </label>
-                <input
-                  type="number"
-                  value={motherPhone}
-                  onChange={handleMotherPhoneChange}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="No. HP Ibu"
-                />
-              </div>
-              <div className="flex gap-5">
-                <div className="w-full mb-5">
+
+              <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Tempat Lahir
                   </label>
@@ -289,9 +356,12 @@ const Keluarga = () => {
                     placeholder="Tempat Lahir Ibu"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
                 </div>
-                <div className="w-full mb-5">
+                <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Tanggal Lahir
                   </label>
@@ -303,11 +373,15 @@ const Keluarga = () => {
                     placeholder="Tanggal Lahir Ibu"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
                 </div>
               </div>
-              <div className="flex gap-5">
-                <div className="w-full mb-5">
+
+              <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Pendidikan Terakhir
                   </label>
@@ -319,9 +393,12 @@ const Keluarga = () => {
                     placeholder="Pendidikan Terakhir"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
                 </div>
-                <div className="w-full mb-5">
+                <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
                     Pekerjaan
                   </label>
@@ -333,59 +410,38 @@ const Keluarga = () => {
                     placeholder="Pekerjaan"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
                 </div>
               </div>
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Alamat
-                </label>
-                <textarea
-                  type="text"
-                  value={motherAddress}
-                  onChange={(e) => setmotherAddress(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Alamat"
+
+              <div className="grid grid-cols-1 md:gap-4">
+                <div className="mb-5">
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Alamat
+                  </label>
+                  <textarea
+                    type="text"
+                    value={motherAddress}
+                    onChange={(e) => setmotherAddress(e.target.value)}
+                    className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="Alamat"
+                  >
+                    {motherAddress}
+                  </textarea>
+                </div>
+              </div>
+              <div className="grid grid-cols-1 md:gap-4">
+                <button
+                  type="submit"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  {motherAddress}
-                </textarea>
+                  Perbarui Data
+                </button>
               </div>
             </div>
-          </div>
-          <div className="w-full md:w-1/2 p-5">
-            <div className="mb-5">
-              <label className="block mb-2 text-sm font-medium text-gray-900">
-                Penghasilan Orang Tua
-              </label>
-              <select
-                onChange={(e) => setIncomeParent(e.target.value)}
-                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                required
-              >
-                {incomeParent ? (
-                  <option value={incomeParent} selected>{incomeParent}</option>
-                ) : (
-                  <option value={0}>Pilih Penghasilan</option>
-                )}
-                <option value="< 1.000.000"> &lt; 1.000.000</option>
-                <option value="1.000.000 - 2.000.000">
-                  1.000.000 - 2.000.000
-                </option>
-                <option value="2.000.000 - 4.000.000">
-                  2.000.000 - 4.000.000
-                </option>
-                <option value="> 5.000.000">&gt; 5.000.000</option>
-              </select>
-              <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
-            </div>
-          </div>
-          <div className="px-5">
-            <button
-              type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Perbarui Data
-            </button>
           </div>
         </form>
       </div>

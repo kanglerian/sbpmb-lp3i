@@ -1190,6 +1190,10 @@ input:checked + .toggle-bg {
   z-index: auto;
 }
 
+.m-2 {
+  margin: 0.5rem;
+}
+
 .-mx-1 {
   margin-left: -0.25rem;
   margin-right: -0.25rem;
@@ -1238,6 +1242,11 @@ input:checked + .toggle-bg {
 .my-6 {
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
+}
+
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 
 .-mb-px {
@@ -1766,6 +1775,14 @@ input:checked + .toggle-bg {
 
 .grid-cols-7 {
   grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
 }
 
 .flex-row {
@@ -2795,6 +2812,10 @@ input:checked + .toggle-bg {
 
 .p-6 {
   padding: 1.5rem;
+}
+
+.p-3 {
+  padding: 0.75rem;
 }
 
 .px-0 {
@@ -5790,8 +5811,16 @@ input:checked + .toggle-bg {
     width: 100%;
   }
 
+  .md\:w-2\/3 {
+    width: 66.666667%;
+  }
+
   .md\:max-w-xl {
     max-width: 36rem;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .md\:flex-row {
@@ -5812,6 +5841,10 @@ input:checked + .toggle-bg {
 
   .md\:gap-5 {
     gap: 1.25rem;
+  }
+
+  .md\:gap-4 {
+    gap: 1rem;
   }
 
   .md\:space-x-6 > :not([hidden]) ~ :not([hidden]) {
