@@ -22,7 +22,7 @@ const Prestasi = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("http://127.0.0.1:8000/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -54,7 +54,7 @@ const Prestasi = () => {
     if (name && level != 0 && year && result) {
       await axios
         .post(
-          `https://database.politekniklp3i-tasikmalaya.ac.id/api/achievement`,
+          `http://127.0.0.1:8000/api/achievement`,
           {
             name: name,
             level: level,
@@ -88,7 +88,7 @@ const Prestasi = () => {
     if (confirmDelete) {
       await axios
         .delete(
-          `https://database.politekniklp3i-tasikmalaya.ac.id/api/achievement/${id}`
+          `http://127.0.0.1:8000/api/achievement/${id}`
         )
         .then((res) => {
           alert(res.data.message);

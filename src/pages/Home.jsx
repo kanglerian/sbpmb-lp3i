@@ -4,7 +4,10 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-import LearningIllustration from "../assets/illustration/learning.svg";
+import DroneBackground from "../assets/image/drone-background.jpeg";
+import Tagline from '../assets/logo/tagline-putih.svg';
+import LP3IPutih from '../assets/logo/logo-lp3i-putih.svg';
+import KampusMandiriPutih from '../assets/logo/kampusmandiri-putih.png';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -13,7 +16,7 @@ const Home = () => {
   const identity = localStorage.getItem("identity");
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("http://127.0.0.1:8000/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -40,53 +43,68 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-slate-100 md:h-screen">
-      <Navbar />
-
-      <section className="container mx-auto px-5 mt-10 md:mt-0">
-        
-        <div className="flex flex-col md:flex-row items-center justify-between">
-          <div className="w-full md:w-1/2">
-            {student.identity && <p className="mb-5">Selamat datang, {student.name}</p>}
-            <div className="space-y-2">
-              <h1 className="font-bold text-4xl">SBPMB - LP3I 2024</h1>
-              <h2 className="font-bold text-2xl">
-                Program Beasiswa Yayasan Global Mandiri Utama
-              </h2>
-              <p>
-                Mari berkarir di usia mudia hanya di Politeknik LP3I Kampus
-                Tasikmalaya.
-              </p>
-            </div>
+    <section
+      className="bg-center bg-no-repeat h-screen bg-cover bg-gray-700 bg-blend-multiply"
+      style={{ backgroundImage: `url(${DroneBackground})` }}
+    >
+      <div className="flex flex-col items-center justify-between h-screen py-5">
+        <header className="flex items-center gap-5">
+          <img src={LP3IPutih} alt="" width={150} />
+          <img src={Tagline} alt="" width={150} />
+          <img src={KampusMandiriPutih} alt="" width={150} />
+        </header>
+        <div className="px-4 mx-auto max-w-screen-xl text-center">
+          <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">
+            Program Beasiswa
+            <br />
+            Yayasan Global Mandiri Utama
+          </h1>
+          <p className="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">
+            Temukan langkah terbaik untuk meraih impianmu! Bergabunglah dengan
+            Politeknik LP3I Kampus Tasikmalaya dan jadilah bagian dari perubahan
+            yang lebih baik.
+          </p>
+          <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
             {student.identity ? (
-              <div className="flex items-center gap-2 mt-5">
-                <Link to={`/dashboard`}>
-                  <button className="cursor-pointer text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">
-                    Dashboard
-                  </button>
-                </Link>
-              </div>
+              <Link to={`/dashboard`}>
+                <button
+                  type="button"
+                  className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+                >
+                  Dashboard
+                  <i className="fa-solid fa-arrow-right-long ml-2"></i>
+                </button>
+              </Link>
             ) : (
-              <div className="flex items-center gap-2 mt-5">
+              <>
                 <Link to={`/register`}>
-                  <button className="cursor-pointer text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5">
-                    Daftar
+                  <button
+                    type="button"
+                    className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+                  >
+                    Daftar Sekarang
+                    <i className="fa-solid fa-arrow-right-long ml-2"></i>
                   </button>
                 </Link>
                 <Link to={`/login`}>
-                  <button className="cursor-pointer py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none rounded-lg border border-gray-300 hover:border-gray-400 hover:text-gray-700 focus:z-10 focus:ring-4 focus:ring-gray-200">
+                  <button
+                    type="button"
+                    className="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"
+                  >
                     Masuk
                   </button>
                 </Link>
-              </div>
+              </>
             )}
           </div>
-          <div className="w-full md:w-1/2">
-            <img src={LearningIllustration} alt="" />
-          </div>
         </div>
-      </section>
-    </div>
+        <footer>
+          <p className="text-white text-xs">
+            Copyright © 2023 Politeknik LP3I Kampus Tasikmalaya
+          </p>
+        </footer>
+      </div>
+    </section>
   );
 };
 

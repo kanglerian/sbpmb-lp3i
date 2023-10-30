@@ -23,7 +23,7 @@ const Organisasi = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
+      .get("http://127.0.0.1:8000/api/user/get", {
         params: {
           identity: identity,
           token: token,
@@ -56,7 +56,7 @@ const Organisasi = () => {
     e.preventDefault();
     if (name && position && year) {
       await axios
-        .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/organization`, {
+        .post(`http://127.0.0.1:8000/api/organization`, {
           name: name,
           position: position,
           year: year,
@@ -83,7 +83,7 @@ const Organisasi = () => {
     );
     if (confirmDelete) {
       await axios
-        .delete(`https://database.politekniklp3i-tasikmalaya.ac.id/api/organization/${id}`)
+        .delete(`http://127.0.0.1:8000/api/organization/${id}`)
         .then((res) => {
           alert(res.data.message);
           getUser();
