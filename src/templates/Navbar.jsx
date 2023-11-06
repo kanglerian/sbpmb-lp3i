@@ -2,57 +2,36 @@ import React, { useState, useEffect } from "react";
 import logoLP3I from "../assets/logo/lp3i.svg";
 import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import checkExpiry from "../config/checkExpiry.js";
 
 const Navbar = () => {
   let location = useLocation();
   const navigate = useNavigate();
-  const [student, setStudent] = useState([]);
 
   const token = localStorage.getItem("token");
-  const identity = localStorage.getItem("identity");
-  const getUser = async () => {
+
+  const logoutHandler = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
-        params: {
-          identity: identity,
-          token: token,
+      .post("https://database.politekniklp3i-tasikmalaya.ac.id/api/logout", null, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
-        setStudent(res.data.applicant);
-      })
-      .catch((err) => {
-        if (err.message == "Request failed with status code 404") {
-          localStorage.removeItem("identity");
-          localStorage.removeItem("token");
-          localStorage.removeItem("expiry");
-          navigate("/");
-        }
-      });
-  };
-
-  const logoutHandler = async () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-    await axios
-      .post("https://database.politekniklp3i-tasikmalaya.ac.id/api/logout")
-      .then(() => {
-        localStorage.removeItem("identity");
+        localStorage.removeItem("id");
         localStorage.removeItem("token");
-        localStorage.removeItem("expiry");
         navigate("/");
       })
       .catch((err) => {
         console.log(err.message);
       });
   };
+  
+  
 
   useEffect(() => {
     if (!token) {
       return navigate("/");
     }
-    getUser();
-    checkExpiry();
   }, []);
 
   const [open, setOpen] = useState(false);
@@ -75,7 +54,7 @@ const Navbar = () => {
           aria-expanded="false"
         >
           <span className="sr-only">Open main menu</span>
-          <i class="fa-solid fa-bars"></i>
+          <i className="fa-solid fa-bars"></i>
         </button>
         <div
           className={`${open ? "" : "hidden"} w-full md:block md:w-auto`}

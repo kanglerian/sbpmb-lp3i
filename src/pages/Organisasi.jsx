@@ -3,51 +3,37 @@ import $ from "jquery";
 import "datatables.net-dt";
 import axios from "axios";
 import moment from "moment-timezone";
-import checkExpiry from "../config/checkExpiry.js";
 
 import "../assets/css/datatables-custom.css";
 import Navbar from "../templates/Navbar.jsx";
 
 const Organisasi = () => {
+  const [student, setStudent] = useState({});
   const [organizations, setOrganizations] = useState([]);
-  const [modal, setmodal] = useState(false);
+  const [modal, setModal] = useState(false);
 
   const tableRef = useRef(null);
-
   const token = localStorage.getItem("token");
-  const identity = localStorage.getItem("identity");
-
-  const [name, setname] = useState("");
-  const [position, setposition] = useState("");
-  const [year, setyear] = useState("");
+  const [name, setName] = useState("");
+  const [position, setPosition] = useState("");
+  const [year, setYear] = useState("");
 
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
-        params: {
-          identity: identity,
-          token: token,
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       })
-      .then((res) => {
-        let applicant = res.data.applicant;
-        let organizations = res.data.organizations;
-        setOrganizations(organizations);
-        setStudent(applicant);
+      .then((response) => {
+        setStudent(response.data.applicant);
+        setOrganizations(response.data.organizations);
       })
-      .catch((err) => {
-        if (err.message == "Request failed with status code 404") {
-          localStorage.removeItem("identity");
-          localStorage.removeItem("token");
-          localStorage.removeItem("expiry");
-          navigate("/");
-        }
-        let networkError = err.message == "Network Error";
-        if (networkError) {
-          alert("Mohon maaf, ada kesalahan di sisi Server.");
-          navigate("/");
+      .catch((error) => {
+        if (error.response.status == 401) {
+          navigate('/');
         } else {
-          console.log(err.message);
+          console.log(error);
         }
       });
   };
@@ -56,23 +42,35 @@ const Organisasi = () => {
     e.preventDefault();
     if (name && position && year) {
       await axios
-        .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/organization`, {
-          name: name,
-          position: position,
-          year: year,
-          identity_user: identity,
-        })
+        .post(
+          `https://database.politekniklp3i-tasikmalaya.ac.id/api/organization`,
+          {
+            name: name,
+            position: position,
+            year: year,
+            identity_user: student.identity,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        )
         .then((res) => {
           alert(res.data.message);
-          setname('')
-          setposition('')
-          setyear('')
+          setName("");
+          setPosition("");
+          setYear("");
           getUser();
-          setmodal(false);
+          setModal(false);
         })
         .catch((err) => {
           let networkError = err.message == "Network Error";
-          alert(networkError ? "Mohon maaf, ada kesalahan di sisi Server." : err.message);
+          alert(
+            networkError
+              ? "Mohon maaf, ada kesalahan di sisi Server."
+              : err.message
+          );
         });
     }
   };
@@ -83,14 +81,22 @@ const Organisasi = () => {
     );
     if (confirmDelete) {
       await axios
-        .delete(`https://database.politekniklp3i-tasikmalaya.ac.id/api/organization/${id}`)
+        .delete(`https://database.politekniklp3i-tasikmalaya.ac.id/api/organization/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((res) => {
           alert(res.data.message);
           getUser();
         })
         .catch((err) => {
           let networkError = err.message == "Network Error";
-          alert(networkError ? "Mohon maaf, ada kesalahan di sisi Server." : err.message);
+          alert(
+            networkError
+              ? "Mohon maaf, ada kesalahan di sisi Server."
+              : err.message
+          );
         });
     }
   };
@@ -100,7 +106,6 @@ const Organisasi = () => {
       return navigate("/");
     }
     getUser();
-    checkExpiry();
   }, []);
 
   useEffect(() => {
@@ -117,7 +122,7 @@ const Organisasi = () => {
         <div className="block max-w-7xl px-6 py-4 bg-white border border-gray-200 rounded-2xl mx-auto mt-5">
           <button
             type="button"
-            onClick={() => setmodal(!modal)}
+            onClick={() => setModal(!modal)}
             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
           >
             Tambah Data
@@ -209,7 +214,7 @@ const Organisasi = () => {
               <button
                 type="button"
                 className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center"
-                onClick={() => setmodal(!modal)}
+                onClick={() => setModal(!modal)}
               >
                 <i className="fa-solid fa-xmark"></i>
                 <span className="sr-only">Tutup modal</span>
@@ -229,12 +234,15 @@ const Organisasi = () => {
                     type="text"
                     id="name"
                     value={name}
-                    onChange={(e) => setname(e.target.value)}
+                    onChange={(e) => setName(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Tulis nama organisasi disini.."
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
                 </div>
                 <div className="mb-5">
                   <label
@@ -247,12 +255,15 @@ const Organisasi = () => {
                     type="text"
                     id="position"
                     value={position}
-                    onChange={(e) => setposition(e.target.value)}
+                    onChange={(e) => setPosition(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Tulis jabatan disini.."
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
                 </div>
                 <div className="mb-5">
                   <label
@@ -265,12 +276,15 @@ const Organisasi = () => {
                     type="date"
                     id="year"
                     value={year}
-                    onChange={(e) => setyear(e.target.value)}
+                    onChange={(e) => setYear(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Tulis tahun disini.."
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600"><span className="font-medium">Keterangan:</span> Wajib diisi.</p>
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib
+                    diisi.
+                  </p>
                 </div>
               </div>
               {/* Modal footer */}
@@ -282,7 +296,7 @@ const Organisasi = () => {
                   Tambahkan
                 </button>
                 <button
-                  onClick={() => setmodal(!modal)}
+                  onClick={() => setModal(!modal)}
                   type="button"
                   className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
                 >

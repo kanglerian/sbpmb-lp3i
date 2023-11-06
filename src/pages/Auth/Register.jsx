@@ -41,14 +41,16 @@ const Register = () => {
         password_confirmation: passwordConf,
       })
       .then((response) => {
-        if (!response.data.success) {
-          alert(response.data.message);
-        } else {
-          return navigate("/login");
-        }
+        localStorage.setItem("token", response.data.token);
+        alert('Berhasil mendaftar!');
+        navigate('/dashboard');
       })
-      .catch((err) => {
-        console.log(err.message);
+      .catch((error) => {
+        if(error.response.status == 401){
+          alert(error.response.data.message);
+        } else {
+          console.log(error);
+        }
       });
   };
 
@@ -93,8 +95,8 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if (localStorage.getItem("token")) {
-      navigate("/dashboard");
+    if (localStorage.getItem('token')) {
+      navigate('/dashboard');
     }
     getSchools();
   }, []);

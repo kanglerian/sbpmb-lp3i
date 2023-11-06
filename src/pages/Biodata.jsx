@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import checkExpiry from "../config/checkExpiry.js";
 import Navbar from "../templates/Navbar.jsx";
 
 const Biodata = () => {
   const navigate = useNavigate();
 
-  const [student, setStudent] = useState([]);
+  const [student, setStudent] = useState({});
   const [nisn, setNisn] = useState("");
   const [kip, setKip] = useState("");
   const [name, setName] = useState("");
@@ -26,61 +25,46 @@ const Biodata = () => {
   const [schoolsAPI, setSchoolsAPI] = useState([]);
 
   const token = localStorage.getItem("token");
-  const identity = localStorage.getItem("identity");
-
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
-        params: {
-          identity: identity,
-          token: token,
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       })
-      .then((res) => {
-        let applicant = res.data.applicant;
-        setStudent(applicant);
-        setNisn(applicant.nisn);
-        setKip(applicant.kip);
-        setName(applicant.name);
-        setSchool(applicant.school);
-        setYear(applicant.year);
-        setPlaceOfBirth(applicant.place_of_birth);
-        setDateOfBirth(applicant.date_of_birth);
-        setGender(applicant.gender);
-        setReligion(applicant.religion);
-        setAddress(applicant.address);
-        setEmail(applicant.email);
-        setPhone(applicant.phone);
-
-        if (applicant.school) {
+      .then((response) => {
+        setStudent(response.data.applicant);
+        setNisn(response.data.applicant.nisn);
+        setKip(response.data.applicant.kip);
+        setName(response.data.applicant.name);
+        setSchool(response.data.applicant.school);
+        setYear(response.data.applicant.year);
+        setPlaceOfBirth(response.data.applicant.place_of_birth);
+        setDateOfBirth(response.data.applicant.date_of_birth);
+        setGender(response.data.applicant.gender);
+        setReligion(response.data.applicant.religion);
+        setAddress(response.data.applicant.address);
+        setEmail(response.data.applicant.email);
+        setPhone(response.data.applicant.phone);
+        if (response.data.applicant.school) {
           setSelectedSchool({
-            value: applicant.school,
-            label: applicant.school_applicant.name,
+            value: response.data.applicant.school,
+            label: response.data.applicant.school_applicant.name,
           });
         }
       })
-      .catch((err) => {
-        if (err.message == "Request failed with status code 404") {
-          localStorage.removeItem("identity");
-          localStorage.removeItem("token");
-          localStorage.removeItem("expiry");
-          navigate("/");
-        }
-        let networkError = err.message == "Network Error";
-        if (networkError) {
-          alert("Mohon maaf, ada kesalahan di sisi Server.");
-          navigate("/");
+      .catch((error) => {
+        if(error.response.status == 401){
+          navigate('/');
         } else {
-          console.log(err.message);
+          console.log(error);
         }
       });
   };
 
   const getSchools = async () => {
     await axios
-      .get(
-        `https://database.politekniklp3i-tasikmalaya.ac.id/api/school/getall`
-      )
+      .get(`https://database.politekniklp3i-tasikmalaya.ac.id/api/school/getall`)
       .then((res) => {
         let bucket = [];
         let dataSchools = res.data.schools;
@@ -112,23 +96,24 @@ const Biodata = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     await axios
-      .patch(
-        `https://database.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`,
-        {
-          nisn: nisn,
-          kip: kip,
-          name: name,
-          school: school,
-          year: year,
-          placeOfBirth: placeOfBirth,
-          dateOfBirth: dateOfBirth,
-          gender: gender,
-          religion: religion,
-          address: address,
-          email: email,
-          phone: phone,
+      .patch(`https://database.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`, {
+        nisn: nisn,
+        kip: kip,
+        name: name,
+        school: school,
+        year: year,
+        placeOfBirth: placeOfBirth,
+        dateOfBirth: dateOfBirth,
+        gender: gender,
+        religion: religion,
+        address: address,
+        email: email,
+        phone: phone,
+      },{
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      )
+      })
       .then((res) => {
         alert("Data sudah diperbarui!");
         getUser();
@@ -149,7 +134,6 @@ const Biodata = () => {
     }
     getUser();
     getSchools();
-    checkExpiry();
   }, []);
 
   return (

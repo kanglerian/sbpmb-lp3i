@@ -1,75 +1,60 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import checkExpiry from "../config/checkExpiry.js";
 import Navbar from "../templates/Navbar.jsx";
 
 const Keluarga = () => {
-  const [student, setStudent] = useState([]);
+  const [student, setStudent] = useState({});
 
-  const [fatherName, setfatherName] = useState("");
-  const [fatherPhone, setfatherPhone] = useState("");
-  const [fatherPlaceOfBirth, setfatherPlaceOfBirth] = useState("");
-  const [fatherDateOfBirth, setfatherDateOfBirth] = useState("");
-  const [fatherEducation, setfatherEducation] = useState("");
-  const [fatherJob, setfatherJob] = useState("");
-  const [fatherAddress, setfatherAddress] = useState("");
+  const [fatherName, setFatherName] = useState("");
+  const [fatherPhone, setFatherPhone] = useState("");
+  const [fatherPlaceOfBirth, setFatherPlaceOfBirth] = useState("");
+  const [fatherDateOfBirth, setFatherDateOfBirth] = useState("");
+  const [fatherEducation, setFatherEducation] = useState("");
+  const [fatherJob, setFatherJob] = useState("");
+  const [fatherAddress, setFatherAddress] = useState("");
 
-  const [motherName, setmotherName] = useState("");
-  const [motherPhone, setmotherPhone] = useState("");
-  const [motherPlaceOfBirth, setmotherPlaceOfBirth] = useState("");
-  const [motherDateOfBirth, setmotherDateOfBirth] = useState("");
-  const [motherEducation, setmotherEducation] = useState("");
-  const [motherJob, setmotherJob] = useState("");
-  const [motherAddress, setmotherAddress] = useState("");
+  const [motherName, setMotherName] = useState("");
+  const [motherPhone, setMotherPhone] = useState("");
+  const [motherPlaceOfBirth, setMotherPlaceOfBirth] = useState("");
+  const [motherDateOfBirth, setMotherDateOfBirth] = useState("");
+  const [motherEducation, setMotherEducation] = useState("");
+  const [motherJob, setMotherJob] = useState("");
+  const [motherAddress, setMotherAddress] = useState("");
 
   const [incomeParent, setIncomeParent] = useState("");
 
   const token = localStorage.getItem("token");
-  const identity = localStorage.getItem("identity");
 
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
-        params: {
-          identity: identity,
-          token: token,
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       })
-      .then((res) => {
-        let applicant = res.data.applicant;
-        setStudent(applicant);
-
-        setfatherName(applicant.father.name);
-        setfatherPhone(applicant.father.phone);
-        setfatherPlaceOfBirth(applicant.father.place_of_birth);
-        setfatherDateOfBirth(applicant.father.date_of_birth);
-        setfatherEducation(applicant.father.education);
-        setfatherJob(applicant.father.job);
-        setfatherAddress(applicant.father.address);
-
-        setmotherName(applicant.mother.name);
-        setmotherPhone(applicant.mother.phone);
-        setmotherPlaceOfBirth(applicant.mother.place_of_birth);
-        setmotherDateOfBirth(applicant.mother.date_of_birth);
-        setmotherEducation(applicant.mother.education);
-        setmotherJob(applicant.mother.job);
-        setmotherAddress(applicant.mother.address);
-
-        setIncomeParent(applicant.income_parent);
+      .then((response) => {
+        setStudent(response.data.applicant);
+        setFatherName(response.data.applicant.father.name);
+        setFatherPhone(response.data.applicant.father.phone);
+        setFatherPlaceOfBirth(response.data.applicant.father.place_of_birth);
+        setFatherDateOfBirth(response.data.applicant.father.date_of_birth);
+        setFatherEducation(response.data.applicant.father.education);
+        setFatherJob(response.data.applicant.father.job);
+        setFatherAddress(response.data.applicant.father.address);
+        setMotherName(response.data.applicant.mother.name);
+        setMotherPhone(response.data.applicant.mother.phone);
+        setMotherPlaceOfBirth(response.data.applicant.mother.place_of_birth);
+        setMotherDateOfBirth(response.data.applicant.mother.date_of_birth);
+        setMotherEducation(response.data.applicant.mother.education);
+        setMotherJob(response.data.applicant.mother.job);
+        setMotherAddress(response.data.applicant.mother.address);
+        setIncomeParent(response.data.applicant.income_parent);
       })
-      .catch((err) => {
-        if (err.message == "Request failed with status code 404") {
-          localStorage.removeItem("identity");
-          localStorage.removeItem("token");
-          localStorage.removeItem("expiry");
-          navigate("/");
-        }
-        let networkError = err.message == "Network Error";
-        if (networkError) {
-          alert("Mohon maaf, ada kesalahan di sisi Server.");
-          navigate("/");
+      .catch((error) => {
+        if (error.response.status == 401) {
+          navigate('/');
         } else {
-          console.log(err.message);
+          console.log(error);
         }
       });
   };
@@ -95,6 +80,10 @@ const Keluarga = () => {
           motherJob: motherJob,
           motherAddress: motherAddress,
           incomeParent: incomeParent == 0 ? "" : incomeParent,
+        },{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       )
       .then((res) => {
@@ -115,11 +104,11 @@ const Keluarga = () => {
     let input = e.target.value;
 
     if (input.startsWith("62")) {
-      setmotherPhone(input);
+      setMotherPhone(input);
     } else if (input.startsWith("0")) {
-      setmotherPhone("62" + input.substring(1));
+      setMotherPhone("62" + input.substring(1));
     } else {
-      setmotherPhone("62");
+      setMotherPhone("62");
     }
   };
 
@@ -127,11 +116,11 @@ const Keluarga = () => {
     let input = e.target.value;
 
     if (input.startsWith("62")) {
-      setfatherPhone(input);
+      setFatherPhone(input);
     } else if (input.startsWith("0")) {
-      setfatherPhone("62" + input.substring(1));
+      setFatherPhone("62" + input.substring(1));
     } else {
-      setfatherPhone("62");
+      setFatherPhone("62");
     }
   };
 
@@ -140,7 +129,6 @@ const Keluarga = () => {
       return navigate("/");
     }
     getUser();
-    checkExpiry();
   }, []);
 
   return (
@@ -160,7 +148,7 @@ const Keluarga = () => {
                   <input
                     type="text"
                     value={fatherName}
-                    onChange={(e) => setfatherName(e.target.value)}
+                    onChange={(e) => setFatherName(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Nama Lengkap Ayah"
                     required
@@ -192,7 +180,7 @@ const Keluarga = () => {
                   <input
                     type="text"
                     value={fatherPlaceOfBirth}
-                    onChange={(e) => setfatherPlaceOfBirth(e.target.value)}
+                    onChange={(e) => setFatherPlaceOfBirth(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Tempat Lahir Ayah"
                     required
@@ -209,7 +197,7 @@ const Keluarga = () => {
                   <input
                     type="date"
                     value={fatherDateOfBirth}
-                    onChange={(e) => setfatherDateOfBirth(e.target.value)}
+                    onChange={(e) => setFatherDateOfBirth(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Tanggal Lahir Ayah"
                     required
@@ -229,7 +217,7 @@ const Keluarga = () => {
                   <input
                     type="text"
                     value={fatherEducation}
-                    onChange={(e) => setfatherEducation(e.target.value)}
+                    onChange={(e) => setFatherEducation(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Pendidikan Terakhir"
                     required
@@ -246,7 +234,7 @@ const Keluarga = () => {
                   <input
                     type="text"
                     value={fatherJob}
-                    onChange={(e) => setfatherJob(e.target.value)}
+                    onChange={(e) => setFatherJob(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Pekerjaan"
                     required
@@ -266,7 +254,7 @@ const Keluarga = () => {
                   <textarea
                     type="text"
                     value={fatherAddress}
-                    onChange={(e) => setfatherAddress(e.target.value)}
+                    onChange={(e) => setFatherAddress(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Alamat"
                   >
@@ -319,7 +307,7 @@ const Keluarga = () => {
                   <input
                     type="text"
                     value={motherName}
-                    onChange={(e) => setmotherName(e.target.value)}
+                    onChange={(e) => setMotherName(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Nama Lengkap Ibu"
                     required
@@ -351,7 +339,7 @@ const Keluarga = () => {
                   <input
                     type="text"
                     value={motherPlaceOfBirth}
-                    onChange={(e) => setmotherPlaceOfBirth(e.target.value)}
+                    onChange={(e) => setMotherPlaceOfBirth(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Tempat Lahir Ibu"
                     required
@@ -368,7 +356,7 @@ const Keluarga = () => {
                   <input
                     type="date"
                     value={motherDateOfBirth}
-                    onChange={(e) => setmotherDateOfBirth(e.target.value)}
+                    onChange={(e) => setMotherDateOfBirth(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Tanggal Lahir Ibu"
                     required
@@ -388,7 +376,7 @@ const Keluarga = () => {
                   <input
                     type="text"
                     value={motherEducation}
-                    onChange={(e) => setmotherEducation(e.target.value)}
+                    onChange={(e) => setMotherEducation(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Pendidikan Terakhir"
                     required
@@ -405,7 +393,7 @@ const Keluarga = () => {
                   <input
                     type="text"
                     value={motherJob}
-                    onChange={(e) => setmotherJob(e.target.value)}
+                    onChange={(e) => setMotherJob(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Pekerjaan"
                     required
@@ -425,7 +413,7 @@ const Keluarga = () => {
                   <textarea
                     type="text"
                     value={motherAddress}
-                    onChange={(e) => setmotherAddress(e.target.value)}
+                    onChange={(e) => setMotherAddress(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Alamat"
                   >

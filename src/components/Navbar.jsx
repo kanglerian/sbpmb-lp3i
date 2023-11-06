@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import logoLP3I from "../assets/logo/lp3i.svg";
 import logoGlobal from "../assets/logo/kampusglobalmandiri.png";
 import tagline from "../assets/logo/tagline-warna.svg";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 const Navbar = () => {
 

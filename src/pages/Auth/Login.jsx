@@ -20,17 +20,15 @@ const Login = () => {
         password: password,
       })
       .then((res) => {
-        const expiry = new Date(new Date().getTime() + 60 * 60 * 1000);
-        localStorage.setItem("identity", res.data.user.identity);
         localStorage.setItem("token", res.data.token);
-        localStorage.setItem("expiry", expiry);
-        return navigate("/dashboard");
+        navigate("/dashboard");
       })
-      .catch((err) => {
-        if (err.response.data.success == false) {
-          alert(err.response.data.message);
+      .catch((error) => {
+        if(error.response.status == 401){
+          alert(error.response.data.message);
+        } else {
+          console.log(error);
         }
-        console.log(err);
       });
   };
 

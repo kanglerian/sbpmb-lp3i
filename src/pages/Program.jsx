@@ -1,47 +1,31 @@
 import React, { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import axios from "axios";
-import checkExpiry from "../config/checkExpiry.js";
 import Navbar from "../templates/Navbar.jsx";
 
 const Program = () => {
-  const [student, setStudent] = useState([]);
-
+  const [student, setStudent] = useState({});
   const [program, setProgram] = useState("");
   const [programSecond, setProgramSecond] = useState("");
-
   const [programs, setPrograms] = useState([]);
-
   const token = localStorage.getItem("token");
-  const identity = localStorage.getItem("identity");
-
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
-        params: {
-          identity: identity,
-          token: token,
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       })
-      .then((res) => {
-        let applicant = res.data.applicant;
-        setStudent(applicant);
-        setProgram(applicant.program);
-        setProgramSecond(applicant.program_second);
+      .then((response) => {
+        setStudent(response.data.applicant);
+        setProgram(response.data.applicant.program);
+        setProgramSecond(response.data.applicant.program_second);
       })
-      .catch((err) => {
-        if (err.message == "Request failed with status code 404") {
-          localStorage.removeItem("identity");
-          localStorage.removeItem("token");
-          localStorage.removeItem("expiry");
-          navigate("/");
-        }
-        let networkError = err.message == "Network Error";
-        if (networkError) {
-          alert("Mohon maaf, ada kesalahan di sisi Server.");
-          navigate("/");
+      .catch((error) => {
+        if(error.response.status == 401){
+          navigate('/');
         } else {
-          console.log(err.message);
+          console.log(error);
         }
       });
   };
@@ -72,6 +56,10 @@ const Program = () => {
         {
           program: program == 0 ? "" : program,
           program_second: programSecond == 0 ? "" : programSecond,
+        },{
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
       )
       .then((res) => {
@@ -94,7 +82,6 @@ const Program = () => {
     }
     getUser();
     getPrograms();
-    checkExpiry();
   }, []);
 
   return (

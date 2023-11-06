@@ -1,13 +1,18 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import checkExpiry from "../config/checkExpiry.js";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
 
 const Berkas = () => {
-  const [fileUpload, setfileUpload] = useState([]);
-  const [userUpload, setuserUpload] = useState([]);
+
+  const navigate = useNavigate();
+
+  const [student, setStudent] = useState({});
+
+  const [fileUpload, setFileUpload] = useState([]);
+  const [userUpload, setUserUpload] = useState([]);
+
   const token = localStorage.getItem("token");
-  const identity = localStorage.getItem("identity");
 
   const handleFileChange = (e) => {
     const targetFile = e.target.files[0];
@@ -17,13 +22,13 @@ const Berkas = () => {
       const reader = new FileReader();
       reader.onload = async (event) => {
         let data = {
-          identity: identity,
+          identity: student.identity,
           image: event.target.result.split(";base64,").pop(),
           namefile: targetNamefile,
           typefile: targetFile.name.split(".").pop(),
         };
         let status = {
-          identity_user: identity,
+          identity_user: student.identity,
           fileupload_id: targetId,
           typefile: targetFile.name.split(".").pop(),
         };
@@ -36,7 +41,11 @@ const Berkas = () => {
             await axios
               .post(
                 `https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload`,
-                status
+                status,{
+                  headers: {
+                    Authorization: `Bearer ${token}`
+                  }
+                }
               )
               .then((res) => {
                 alert("Berhasil diupload!");
@@ -73,7 +82,11 @@ const Berkas = () => {
         .then(async (res) => {
           await axios
             .delete(
-              `https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`
+              `https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`,{
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              }
             )
             .then((res) => {
               alert(res.data.message);
@@ -91,26 +104,21 @@ const Berkas = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
-        params: {
-          identity: identity,
-          token: token,
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
       })
-      .then((res) => {
-        let applicant = res.data.applicant;
-        let fileuploadData = res.data.fileupload;
-        let useruploadData = res.data.userupload;
-        setfileUpload(fileuploadData);
-        setuserUpload(useruploadData);
-        setStudent(applicant);
+      .then((response) => {
+        setFileUpload(response.data.fileupload);
+        setUserUpload(response.data.userupload);
+        setStudent(response.data.applicant);
       })
-      .catch((err) => {
-        if (err.message == "Request failed with status code 404") {
-          localStorage.removeItem("identity");
-          localStorage.removeItem("token");
-          localStorage.removeItem("expiry");
-          navigate("/");
+      .catch((error) => {
+        if (error.response.status == 401) {
+          navigate('/');
+        } else {
+          console.log(error);
         }
       });
   };
@@ -125,7 +133,6 @@ const Berkas = () => {
       return navigate("/");
     }
     getUser();
-    checkExpiry();
   }, []);
 
   return (

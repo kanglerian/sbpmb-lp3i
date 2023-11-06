@@ -5,41 +5,17 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import DroneBackground from "../assets/image/drone-background.jpeg";
-import Tagline from '../assets/logo/tagline-putih.svg';
-import LP3IPutih from '../assets/logo/logo-lp3i-putih.svg';
-import KampusMandiriPutih from '../assets/logo/kampusmandiri-putih.png';
+import Tagline from "../assets/logo/tagline-putih.svg";
+import LP3IPutih from "../assets/logo/logo-lp3i-putih.svg";
+import KampusMandiriPutih from "../assets/logo/kampusmandiri-putih.png";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [student, setStudent] = useState({});
   const token = localStorage.getItem("token");
-  const identity = localStorage.getItem("identity");
-  const getUser = async () => {
-    await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user/get", {
-        params: {
-          identity: identity,
-          token: token,
-        },
-      })
-      .then((res) => {
-        setStudent(res.data.applicant);
-      })
-      .catch((err) => {
-        if (err.message == "Request failed with status code 404") {
-          localStorage.removeItem("identity");
-          localStorage.removeItem("token");
-          localStorage.removeItem("expiry");
-          navigate("/");
-        }
-      });
-  };
-
   useEffect(() => {
-    if (!token) {
-      return navigate("/");
+    if (token) {
+      navigate('/dashboard');
     }
-    getUser();
   }, []);
 
   return (
@@ -65,37 +41,23 @@ const Home = () => {
             yang lebih baik.
           </p>
           <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
-            {student.identity ? (
-              <Link to={`/dashboard`}>
-                <button
-                  type="button"
-                  className="w-1/2 md:w-full md:inline-flex justify-center items-center py-3 px-5 text-sm md:text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
-                >
-                  Dashboard
-                  <i className="fa-solid fa-arrow-right-long ml-2"></i>
-                </button>
-              </Link>
-            ) : (
-              <>
-                <Link to={`/register`}>
-                  <button
-                    type="button"
-                    className="w-1/2 md:w-full md:inline-flex justify-center items-center py-3 px-5 text-sm md:text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
-                  >
-                    Daftar Sekarang
-                    <i className="fa-solid fa-arrow-right-long ml-2"></i>
-                  </button>
-                </Link>
-                <Link to={`/login`}>
-                  <button
-                    type="button"
-                    className="w-1/2 md:w-full md:inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 text-sm md:text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"
-                  >
-                    Masuk
-                  </button>
-                </Link>
-              </>
-            )}
+            <Link to={`/register`}>
+              <button
+                type="button"
+                className="w-1/2 md:w-full md:inline-flex justify-center items-center py-3 px-5 text-sm md:text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+              >
+                Daftar Sekarang
+                <i className="fa-solid fa-arrow-right-long ml-2"></i>
+              </button>
+            </Link>
+            <Link to={`/login`}>
+              <button
+                type="button"
+                className="w-1/2 md:w-full md:inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 text-sm md:text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"
+              >
+                Masuk
+              </button>
+            </Link>
           </div>
         </div>
         <footer>
