@@ -24,7 +24,7 @@ const Home = () => {
       style={{ backgroundImage: `url(${DroneBackground})` }}
     >
       <div className="flex flex-col items-center justify-between h-screen py-5">
-        <header className="flex items-center gap-5">
+        <header className="flex flex-wrap justify-center items-center gap-5">
           <img src={LP3IPutih} alt="" width={150} />
           <img src={Tagline} alt="" width={150} />
           <img src={KampusMandiriPutih} alt="" width={150} />

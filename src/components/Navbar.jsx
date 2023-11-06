@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <nav className="container mx-auto py-5 px-5">
       <div className="flex flex-row items-center">
-        <div className="flex items-center gap-5">
+        <div className="flex flex-wrap items-center gap-5">
           <Link to={`/`}>
             <img src={logoLP3I} className="w-48" />
           </Link>
