@@ -19,6 +19,7 @@ import Berkas from './pages/Berkas'
 
 import 'flowbite'
 import 'flowbite-react'
+import TestSchoolarship from './pages/Schoolarship/TestSchoolarship'
 
 const router = createBrowserRouter([
   {
@@ -51,6 +52,9 @@ const router = createBrowserRouter([
   },{
     path: "/berkas",
     element: <Berkas/>,
+  },{
+    path: "/seleksi-beasiswa",
+    element: <TestSchoolarship/>,
   },
 ]);
 

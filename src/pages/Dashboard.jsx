@@ -24,6 +24,13 @@ const Dashboard = () => {
               Klik disini <i className="fa-solid fa-arrow-right-long ml-1"></i>
             </Link>
           </p>
+          <p className="text-sm text-center text-gray-700">
+            <span>Tes Seleksi Beasiswa</span>
+            {" "}
+            <Link to={`/seleksi-beasiswa`} className="underline">
+              Klik disini <i className="fa-solid fa-arrow-right-long ml-1"></i>
+            </Link>
+          </p>
         </section>
       </div>
     </section>
