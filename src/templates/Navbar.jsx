@@ -8,6 +8,8 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
+  const id = localStorage.getItem("id");
+  const timeLeft = localStorage.getItem("timeLeft");
 
   const logoutHandler = async () => {
     await axios
@@ -31,6 +33,9 @@ const Navbar = () => {
   useEffect(() => {
     if (!token) {
       return navigate("/");
+    }
+    if (id && timeLeft) {
+      return navigate("/seleksi-beasiswa");
     }
   }, []);
 

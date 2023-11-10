@@ -11,6 +11,7 @@ import KampusMandiriPutih from "../assets/logo/kampusmandiri-putih.png";
 
 const Home = () => {
   const navigate = useNavigate();
+  
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (token) {

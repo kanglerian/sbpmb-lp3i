@@ -4,7 +4,6 @@ import axios from "axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
-  let location = useLocation();
   const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
