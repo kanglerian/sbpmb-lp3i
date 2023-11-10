@@ -52,10 +52,10 @@ const TestSchoolarship = () => {
     const stateId = localStorage.getItem("id");
     if (stateId) {
       const recordResponse = await axios.get(
-        `http://103.163.111.39:3333/records?identity_user=${identity}&category=${stateId}`
+        `https://api.politekniklp3i-tasikmalaya.ac.id/records?identity_user=${identity}&category=${stateId}`
       );
       const questionResponse = await axios.get(
-        `http://103.163.111.39:3333/questions?category=${stateId}`
+        `https://api.politekniklp3i-tasikmalaya.ac.id/questions?category=${stateId}`
       );
       console.log(recordResponse.data);
       if (recordResponse.data && questionResponse.data) {
@@ -68,7 +68,7 @@ const TestSchoolarship = () => {
         if (filterResponse.length > 0) {
           let id = filterResponse[0].id;
           const answerResponse = await axios.get(
-            `http://103.163.111.39:3333/answers/question/${id}`
+            `https://api.politekniklp3i-tasikmalaya.ac.id/answers/question/${id}`
           );
           setActive({
             category: filterResponse[0].category.name,
@@ -101,7 +101,7 @@ const TestSchoolarship = () => {
     setIdUpdate(null);
     setIsUpdate(false);
     await axios
-      .get(`http://103.163.111.39:3333/answers/question/${question.id}`)
+      .get(`https://api.politekniklp3i-tasikmalaya.ac.id/answers/question/${question.id}`)
       .then((response) => {
         setAnswers(response.data);
       })
@@ -118,7 +118,7 @@ const TestSchoolarship = () => {
     setIdUpdate(record.id);
     setIsUpdate(true);
     await axios
-      .get(`http://103.163.111.39:3333/answers/question/${record.question_id}`)
+      .get(`https://api.politekniklp3i-tasikmalaya.ac.id/answers/question/${record.question_id}`)
       .then((response) => {
         setAnswers(response.data);
         setSelected(record.answer.answer);
@@ -149,7 +149,7 @@ const TestSchoolarship = () => {
     if (recordStudent) {
       if (isUpdate) {
         await axios
-          .patch(`http://103.163.111.39:3333/records/${idUpdate}`, recordStudent)
+          .patch(`https://api.politekniklp3i-tasikmalaya.ac.id/records/${idUpdate}`, recordStudent)
           .then((response) => {
             setSelected(null);
             setIsUpdate(false);
@@ -162,7 +162,7 @@ const TestSchoolarship = () => {
       } else {
         if (questions.length > 0) {
           await axios
-            .post(`http://103.163.111.39:3333/records`, recordStudent)
+            .post(`https://api.politekniklp3i-tasikmalaya.ac.id/records`, recordStudent)
             .then((response) => {
               getQuestions(identity);
             })

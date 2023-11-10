@@ -35,10 +35,10 @@ const Dashboard = () => {
 
   const getHistories = async (identity) => {
     const categoriesResponse = await axios.get(
-      `http://103.163.111.39:3333/categories`
+      `https://api.politekniklp3i-tasikmalaya.ac.id/categories`
     );
     const historiesResponse = await axios.get(
-      `http://103.163.111.39:3333/histories?identity_user=${identity}`
+      `https://api.politekniklp3i-tasikmalaya.ac.id/histories?identity_user=${identity}`
     );
     if (categoriesResponse.data && historiesResponse.data) {
       const filterResponse = categoriesResponse.data.filter(
@@ -60,7 +60,7 @@ const Dashboard = () => {
 
   const handleSelect = async (id) => {
     await axios
-      .post(`http://103.163.111.39:3333/histories`, {
+      .post(`https://api.politekniklp3i-tasikmalaya.ac.id/histories`, {
         identity_user: identity,
         category_id: id,
       })
