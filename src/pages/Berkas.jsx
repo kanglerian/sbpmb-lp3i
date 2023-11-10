@@ -34,7 +34,7 @@ const Berkas = () => {
         };
         await axios
           .post(
-            `https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/upload`,
+            `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/pmbonline/upload`,
             data
           )
           .then(async (res) => {
@@ -74,7 +74,7 @@ const Berkas = () => {
       };
       await axios
         .delete(
-          `https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/delete`,
+          `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/pmbonline/delete`,
           {
             params: data,
           }

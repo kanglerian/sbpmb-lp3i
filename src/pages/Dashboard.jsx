@@ -35,10 +35,10 @@ const Dashboard = () => {
 
   const getHistories = async (identity) => {
     const categoriesResponse = await axios.get(
-      `https://api.politekniklp3i-tasikmalaya.ac.id/categories`
+      `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/categories`
     );
     const historiesResponse = await axios.get(
-      `https://api.politekniklp3i-tasikmalaya.ac.id/histories?identity_user=${identity}`
+      `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories?identity_user=${identity}`
     );
     if (categoriesResponse.data && historiesResponse.data) {
       const filterResponse = categoriesResponse.data.filter(
@@ -60,7 +60,7 @@ const Dashboard = () => {
 
   const handleSelect = async (id) => {
     await axios
-      .post(`https://api.politekniklp3i-tasikmalaya.ac.id/histories`, {
+      .post(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories`, {
         identity_user: identity,
         category_id: id,
       })
