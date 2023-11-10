@@ -188,7 +188,7 @@ const TestSchoolarship = () => {
     }
   }, [state, navigate]);
 
-  const initialTime = parseInt(localStorage.getItem("timeLeft")) || 200;
+  const initialTime = parseInt(localStorage.getItem("timeLeft")) || 3600;
   const [timeLeft, setTimeLeft] = useState(initialTime);
   let interval;
 
