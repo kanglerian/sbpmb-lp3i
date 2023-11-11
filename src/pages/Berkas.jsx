@@ -34,7 +34,7 @@ const Berkas = () => {
         };
         await axios
           .post(
-            `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/pmbonline/upload`,
+            `https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/upload`,
             data
           )
           .then(async (res) => {
@@ -66,6 +66,7 @@ const Berkas = () => {
   };
 
   const handleDelete = async (user) => {
+    console.log(user);
     if (confirm(`Apakah kamu yakin akan menghapus data?`)) {
       let data = {
         identity: user.identity_user,
@@ -74,7 +75,7 @@ const Berkas = () => {
       };
       await axios
         .delete(
-          `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/pmbonline/delete`,
+          `https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/delete`,
           {
             params: data,
           }
