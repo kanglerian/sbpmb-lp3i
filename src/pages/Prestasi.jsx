@@ -264,9 +264,11 @@ const Prestasi = () => {
                     <option value="Internasional">Internasional</option>
                     <option value="Nasional">Nasional</option>
                     <option value="Provinsi">Provinsi</option>
-                    <option value="Kabupaten / Kota">Kabupaten / Kota</option>
+                    <option value="Kota / Kabupaten">Kota / Kabupaten</option>
                     <option value="Kecamatan">Kecamatan</option>
                     <option value="Desa / Kelurahan">Desa / Kelurahan</option>
+                    <option value="Sekolah">Sekolah</option>
+                    <option value="Jurusan">Jurusan</option>
                   </select>
                   <p className="mt-2 text-xs text-red-600">
                     <span className="font-medium">Keterangan:</span> Wajib
