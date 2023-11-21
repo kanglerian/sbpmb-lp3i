@@ -3,6 +3,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar.jsx";
 import axios from "axios";
 
+import CointSound from '../../assets/sounds/coin.mp3';
+import GameOverSound from '../../assets/sounds/gameover.mp3';
+
 const TestSchoolarship = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -25,6 +28,16 @@ const TestSchoolarship = () => {
   const [isUpdate, setIsUpdate] = useState(false);
 
   const token = localStorage.getItem("token");
+
+  const coinPlay = () => {
+    let audio = new Audio(CointSound);
+    audio.play();
+  }
+
+  const gameOverPlay = () => {
+    let audio = new Audio(GameOverSound);
+    audio.play();
+  }
 
   const getUser = async () => {
     await axios
@@ -234,7 +247,7 @@ const TestSchoolarship = () => {
                 {!isUpdate ? (
                   questions.length > 0 ? (
                     <button
-                      type="submit"
+                      type="submit" onClick={coinPlay}
                       className="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded-lg text-white flex items-center gap-2"
                     >
                       <span className="text-sm">Lanjutkan</span>
@@ -309,7 +322,7 @@ const TestSchoolarship = () => {
                   <span className="text-sm">Detik</span>
                 </div>
               </div>
-              <button onClick={checkMiddleware} className="bg-red-500 hover:bg-red-600 text-white py-2 text-sm rounded-lg mt-2">
+              <button onClick={() => { checkMiddleware(); gameOverPlay(); }}  className="bg-red-500 hover:bg-red-600 text-white py-2 text-sm rounded-lg mt-2">
                 <i className="fa-solid fa-hand mr-2"></i>
                 <span>Menyerah</span>
               </button>
