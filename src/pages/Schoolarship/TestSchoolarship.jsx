@@ -57,7 +57,6 @@ const TestSchoolarship = () => {
       const questionResponse = await axios.get(
         `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/questions?category=${stateId}`
       );
-      console.log(recordResponse.data);
       if (recordResponse.data && questionResponse.data) {
         const filterResponse = questionResponse.data.filter(
           (question) =>
@@ -263,7 +262,7 @@ const TestSchoolarship = () => {
               </div>
             </header>
             <hr className="my-4 border-gray-300" />
-            <p className="text-base leading-7">{active.question ?? ""}</p>
+            <p className="text-base leading-7" dangerouslySetInnerHTML={{ __html: active.question }}></p>
             <div className="mt-5 space-y-4">
               {selected && (
                 <p className="text-sm">
