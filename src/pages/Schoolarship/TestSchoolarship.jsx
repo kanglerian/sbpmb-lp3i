@@ -174,6 +174,8 @@ const TestSchoolarship = () => {
             setIsUpdate(false);
             setIdUpdate(null);
             getQuestions(identity);
+            setRecordStudent(null);
+            coinPlay();
           })
           .catch((error) => {
             console.log(error);
@@ -184,6 +186,8 @@ const TestSchoolarship = () => {
             .post(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/records`, recordStudent)
             .then((response) => {
               getQuestions(identity);
+              setRecordStudent(null);
+              coinPlay();
             })
             .catch((error) => {
               console.log(error);
@@ -254,7 +258,7 @@ const TestSchoolarship = () => {
                 {!isUpdate ? (
                   questions.length > 0 ? (
                     <button
-                      type="submit" onClick={coinPlay}
+                      type="submit"
                       className="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded-lg text-white flex items-center gap-2"
                     >
                       <span className="text-sm">Lanjutkan</span>
