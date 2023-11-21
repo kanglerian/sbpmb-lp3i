@@ -217,7 +217,7 @@ const TestSchoolarship = () => {
 
   useEffect(() => {
     const stateId = localStorage.getItem("id");
-    if(stateId){
+    if (stateId) {
       localStorage.setItem("timeLeft", timeLeft.toString());
     }
   }, [timeLeft]);
@@ -333,7 +333,7 @@ const TestSchoolarship = () => {
                   <span className="text-sm">Detik</span>
                 </div>
               </div>
-              <button onClick={() => { checkMiddleware(); gameOverPlay(); }}  className="bg-red-500 hover:bg-red-600 text-white py-2 text-sm rounded-lg mt-2">
+              <button onClick={() => { checkMiddleware(); gameOverPlay(); }} className="bg-red-500 hover:bg-red-600 text-white py-2 text-sm rounded-lg mt-2">
                 <i className="fa-solid fa-hand mr-2"></i>
                 <span>Menyerah</span>
               </button>
@@ -341,24 +341,14 @@ const TestSchoolarship = () => {
             <hr />
             <div>
               <header className="text-center space-y-1 mb-3">
-                <h1 className="font-bold text-gray-900">Urutan Soal</h1>
-                <p className="text-sm text-gray-800">
-                  Berikut ini adalah urutan soal.
+                <h1 className="font-bold text-gray-900">Soal Belum Terjawab</h1>
+                <p className="text-xs text-gray-800">
+                  Silahkan untuk klik soal dibawah ini untuk menjawab.
                 </p>
               </header>
-              <div className="grid grid-cols-6 md:grid-cols-5 gap-2">
-                {records.length > 0 &&
-                  records.map((record) => (
-                    <button
-                      key={record.id}
-                      onClick={() => updateQuestion(record)}
-                      className="bg-emerald-500 hover:bg-emerald-600 text-white text-base px-4 py-2 rounded-lg"
-                    >
-                      <i className="fa-solid fa-circle-check"></i>
-                    </button>
-                  ))}
-                {questions.length > 0 &&
-                  questions.map((question) => (
+              {questions.length > 0 ? (
+                <div className="grid grid-cols-6 md:grid-cols-5 gap-2">
+                  {questions.map((question) => (
                     <button
                       key={question.id}
                       onClick={() => changeQuestion(question)}
@@ -367,7 +357,34 @@ const TestSchoolarship = () => {
                       <i className="fa-solid fa-xmark"></i>
                     </button>
                   ))}
-              </div>
+                </div>
+              ) : (
+                <p className="bg-emerald-500 hover:bg-emerald-600 text-xs py-2 px-4 rounded-lg text-white text-center">Soal sudah terjawab.</p>
+              )}
+            </div>
+            <hr />
+            <div>
+              <header className="text-center space-y-1 mb-3">
+                <h1 className="font-bold text-gray-900">Soal Terjawab</h1>
+                <p className="text-xs text-gray-800">
+                  Silahkan untuk klik soal dibawah ini untuk mengubah jawaban.
+                </p>
+              </header>
+              {records.length > 0 ? (
+                <div className="grid grid-cols-6 md:grid-cols-5 gap-2">
+                  {records.map((record) => (
+                    <button
+                      key={record.id}
+                      onClick={() => updateQuestion(record)}
+                      className="bg-emerald-500 hover:bg-emerald-600 text-white text-base px-4 py-2 rounded-lg"
+                    >
+                      <i className="fa-solid fa-circle-check"></i>
+                    </button>
+                  ))}
+                </div>
+              ) : (
+                <p className="bg-red-500 hover:bg-red-600 text-xs py-2 px-4 rounded-lg text-white text-center">Belum ada yang terjawab.</p>
+              )}
             </div>
           </div>
         </div>
