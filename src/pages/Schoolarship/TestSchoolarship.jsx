@@ -5,6 +5,7 @@ import axios from "axios";
 
 import CointSound from '../../assets/sounds/coin.mp3';
 import GameOverSound from '../../assets/sounds/gameover.mp3';
+import WinSound from '../../assets/sounds/win.mp3';
 
 const TestSchoolarship = () => {
   const navigate = useNavigate();
@@ -38,6 +39,12 @@ const TestSchoolarship = () => {
     let audio = new Audio(GameOverSound);
     audio.play();
   }
+
+  const winPlay = () => {
+    let audio = new Audio(WinSound);
+    audio.play();
+  }
+
 
   const getUser = async () => {
     await axios
@@ -255,7 +262,7 @@ const TestSchoolarship = () => {
                     </button>
                   ) : (
                     <button
-                      onClick={checkMiddleware}
+                      onClick={() => { checkMiddleware(); winPlay(); }}
                       type="button"
                       className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white flex items-center gap-2"
                     >

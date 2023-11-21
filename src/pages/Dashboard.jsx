@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
 import axios from "axios";
 
+import DattebayoSound from '../assets/sounds/dattebayo.mp3'
+
 const Dashboard = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -10,6 +12,11 @@ const Dashboard = () => {
   const [identity, setIdentity] = useState(null);
   const [categories, setCategories] = useState([]);
   const [histories, setHistories] = useState([]);
+
+  const dattebayoPlay = () => {
+    let audio = new Audio(DattebayoSound);
+    audio.play();
+  }
 
   const getUser = async () => {
     await axios
@@ -66,6 +73,7 @@ const Dashboard = () => {
       })
       .then((response) => {
         navigate("/seleksi-beasiswa", { state: { id: id } });
+        dattebayoPlay();
       })
       .catch((error) => {
         console.log(error);
