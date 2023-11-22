@@ -243,7 +243,7 @@ const TestSchoolarship = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar timeleft={timeLeft} />
       <section className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row">
           <form
@@ -308,7 +308,7 @@ const TestSchoolarship = () => {
                       className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
                     />
                     <label
-                      htmlFor="default-radio-1"
+                      htmlFor={`answer-${answer.id}`}
                       className="ml-2 text-sm font-medium text-gray-900"
                     >
                       {answer.answer}
@@ -317,23 +317,15 @@ const TestSchoolarship = () => {
                 ))}
             </div>
           </form>
-          <div className="order-1 md:order-none w-full md:w-3/12 space-y-6 p-6">
+          <div className="order-1 md:order-none w-full md:w-3/12 space-y-4 px-6 pb-6">
+            <header className="text-center space-y-1">
+              <h1 className="font-bold text-gray-900">Berhenti Ujian.</h1>
+              <p className="text-xs text-gray-800">
+              Pertimbangan sebelum memutuskan menyerah.
+              </p>
+            </header>
             <div className="flex flex-col gap-2">
-              <header className="text-center space-y-1 mb-3">
-                <h1 className="font-bold text-gray-900">Waktu Tersisa</h1>
-                <p className="text-sm text-gray-800">
-                  Manfaatkan waktu anda sebaik mungkin.
-                </p>
-              </header>
-              <div className="flex justify-center gap-5">
-                <div className="flex flex-col items-center gap-2">
-                  <span className="bg-gray-100 px-4 py-2 rounded-lg">
-                    {timeLeft}
-                  </span>
-                  <span className="text-sm">Detik</span>
-                </div>
-              </div>
-              <button onClick={() => { checkMiddleware(); gameOverPlay(); }} className="bg-red-500 hover:bg-red-600 text-white py-2 text-sm rounded-lg mt-2">
+              <button onClick={() => { checkMiddleware(); gameOverPlay(); }} className="bg-red-500 hover:bg-red-600 text-white py-2 text-sm rounded-lg">
                 <i className="fa-solid fa-hand mr-2"></i>
                 <span>Menyerah</span>
               </button>
