@@ -7,9 +7,37 @@ const Navbar = () => {
   let location = useLocation();
   const navigate = useNavigate();
 
+  let start = true;
+  const [scholarship, setScholarship] = useState(false);
+
   const token = localStorage.getItem("token");
   const id = localStorage.getItem("id");
   const timeLeft = localStorage.getItem("timeLeft");
+
+  const getUser = async () => {
+    await axios
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        let applicant = response.data.applicant;
+        let fileuploaded = response.data.fileuploaded;
+        let files = fileuploaded.filter((file) => { return file.namefile == "foto" && file.namefile == "akta-kelahiran" && file.namefile == "kartu-keluarga" })
+        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && files) {
+          setScholarship(true);
+        }
+      })
+      .catch((error) => {
+        if (error.response.status == 401) {
+          localStorage.removeItem("token");
+          navigate("/");
+        } else {
+          console.log(error);
+        }
+      });
+  };
 
   const logoutHandler = async () => {
     await axios
@@ -27,8 +55,6 @@ const Navbar = () => {
         console.log(err.message);
       });
   };
-  
-  
 
   useEffect(() => {
     if (!token) {
@@ -37,6 +63,7 @@ const Navbar = () => {
     if (id && timeLeft) {
       return navigate("/seleksi-beasiswa");
     }
+    getUser();
   }, []);
 
   const [open, setOpen] = useState(false);
@@ -69,11 +96,10 @@ const Navbar = () => {
             <li>
               <Link
                 to={`/dashboard`}
-                className={`${
-                  location.pathname == "/dashboard"
-                    ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
-                    : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
-                } block py-2 pl-3 pr-4 rounded md:p-0`}
+                className={`${location.pathname == "/dashboard"
+                  ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
+                  : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
+                  } block py-2 pl-3 pr-4 rounded md:p-0`}
                 aria-current="page"
               >
                 Dashboard
@@ -82,11 +108,10 @@ const Navbar = () => {
             <li>
               <Link
                 to={`/biodata`}
-                className={`${
-                  location.pathname == "/biodata"
-                    ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
-                    : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
-                } block py-2 pl-3 pr-4 rounded md:p-0`}
+                className={`${location.pathname == "/biodata"
+                  ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
+                  : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
+                  } block py-2 pl-3 pr-4 rounded md:p-0`}
               >
                 Biodata
               </Link>
@@ -94,11 +119,10 @@ const Navbar = () => {
             <li>
               <Link
                 to={`/programstudi`}
-                className={`${
-                  location.pathname == "/programstudi"
-                    ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
-                    : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
-                } block py-2 pl-3 pr-4 rounded md:p-0`}
+                className={`${location.pathname == "/programstudi"
+                  ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
+                  : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
+                  } block py-2 pl-3 pr-4 rounded md:p-0`}
               >
                 Program Studi
               </Link>
@@ -106,11 +130,10 @@ const Navbar = () => {
             <li>
               <Link
                 to={`/keluarga`}
-                className={`${
-                  location.pathname == "/keluarga"
-                    ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
-                    : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
-                } block py-2 pl-3 pr-4 rounded md:p-0`}
+                className={`${location.pathname == "/keluarga"
+                  ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
+                  : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
+                  } block py-2 pl-3 pr-4 rounded md:p-0`}
               >
                 Keluarga
               </Link>
@@ -118,11 +141,10 @@ const Navbar = () => {
             <li>
               <Link
                 to={`/prestasi`}
-                className={`${
-                  location.pathname == "/prestasi"
-                    ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
-                    : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
-                } block py-2 pl-3 pr-4 rounded md:p-0`}
+                className={`${location.pathname == "/prestasi"
+                  ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
+                  : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
+                  } block py-2 pl-3 pr-4 rounded md:p-0`}
               >
                 Prestasi
               </Link>
@@ -130,11 +152,10 @@ const Navbar = () => {
             <li>
               <Link
                 to={`/organisasi`}
-                className={`${
-                  location.pathname == "/organisasi"
-                    ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
-                    : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
-                } block py-2 pl-3 pr-4 rounded md:p-0`}
+                className={`${location.pathname == "/organisasi"
+                  ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
+                  : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
+                  } block py-2 pl-3 pr-4 rounded md:p-0`}
               >
                 Organisasi
               </Link>
@@ -142,15 +163,28 @@ const Navbar = () => {
             <li>
               <Link
                 to={`/berkas`}
-                className={`${
-                  location.pathname == "/berkas"
-                    ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
-                    : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
-                } block py-2 pl-3 pr-4 rounded md:p-0`}
+                className={`${location.pathname == "/berkas"
+                  ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
+                  : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
+                  } block py-2 pl-3 pr-4 rounded md:p-0`}
               >
                 Upload Berkas
               </Link>
             </li>
+            {
+              scholarship &&
+              <li>
+                <Link
+                  to={`/scholarship`}
+                  className={`${location.pathname == "/scholarship"
+                    ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
+                    : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
+                    } block py-2 pl-3 pr-4 rounded md:p-0`}
+                >
+                  E-Assesment
+                </Link>
+              </li>
+            }
             <li>
               <button
                 onClick={logoutHandler}

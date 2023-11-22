@@ -98,36 +98,6 @@ const Dashboard = () => {
               Klik disini <i className="fa-solid fa-arrow-right-long ml-1"></i>
             </Link>
           </p>
-          {/* <section className="max-w-7xl mx-auto mt-10">
-            <header className="text-center mb-2 space-y-1">
-              <h2 className="text-gray-900 text-xl font-bold">Tes Seleksi Beasiswa</h2>
-              <p className="text-sm text-gray-600">Berikut ini adalah {histories.length + categories.length} kategori soal yang harus dikerjakan.</p>
-            </header>
-            <div className="grid grid-cols-2 md:grid-cols-3">
-              {histories.length > 0 &&
-                histories.map((history) => (
-                  <button key={history.id} className="p-2">
-                    <div className="bg-emerald-500 hover:bg-emerald-600 text-white p-6 rounded-lg text-sm">
-                      <span className="mr-2">{history.category.name}</span>
-                      <i className="fa-solid fa-circle-check text-white"></i>
-                    </div>
-                  </button>
-                ))}
-              {categories.length > 0 &&
-                categories.map((category) => (
-                  <button
-                    onClick={() => handleSelect(category.id)}
-                    key={category.id}
-                    className="p-2"
-                  >
-                    <div className="bg-red-500 hover:bg-red-600 text-white p-6 rounded-lg text-sm">
-                      <span className="mr-2">{category.name}</span>
-                      <i className="fa-solid fa-circle-xmark text-white"></i>
-                    </div>
-                  </button>
-                ))}
-            </div>
-          </section> */}
         </section>
       </div>
     </section>
