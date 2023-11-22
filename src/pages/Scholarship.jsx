@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Scholarship = () => {
   const navigate = useNavigate();
 
-  let start = true;
+  let start = false;
 
   const [identity, setIdentity] = useState(null);
   const [categories, setCategories] = useState([]);

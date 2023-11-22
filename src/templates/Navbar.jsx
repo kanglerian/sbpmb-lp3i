@@ -7,7 +7,7 @@ const Navbar = () => {
   let location = useLocation();
   const navigate = useNavigate();
 
-  let start = true;
+  let start = false;
   const [scholarship, setScholarship] = useState(false);
 
   const token = localStorage.getItem("token");
