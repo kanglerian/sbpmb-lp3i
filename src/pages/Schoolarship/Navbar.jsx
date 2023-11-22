@@ -1,31 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import logoLP3I from "../../assets/logo/logo-child.svg";
-import axios from "axios";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = (props) => {
   const navigate = useNavigate();
-
   const token = localStorage.getItem("token");
-
-  const logoutHandler = async () => {
-    await axios
-      .post("https://database.politekniklp3i-tasikmalaya.ac.id/api/logout", null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        localStorage.removeItem("id");
-        localStorage.removeItem("token");
-        navigate("/");
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
-
-
 
   useEffect(() => {
     if (!token) {
@@ -33,7 +12,6 @@ const Navbar = (props) => {
     }
   }, []);
 
-  const [open, setOpen] = useState(false);
   return (
     <nav className="bg-white border-gray-200 dark:bg-gray-900">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pt-4 pb-2 px-2">

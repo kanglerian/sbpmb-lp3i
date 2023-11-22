@@ -98,7 +98,7 @@ const Dashboard = () => {
               Klik disini <i className="fa-solid fa-arrow-right-long ml-1"></i>
             </Link>
           </p>
-          <section className="max-w-7xl mx-auto mt-10">
+          {/* <section className="max-w-7xl mx-auto mt-10">
             <header className="text-center mb-2 space-y-1">
               <h2 className="text-gray-900 text-xl font-bold">Tes Seleksi Beasiswa</h2>
               <p className="text-sm text-gray-600">Berikut ini adalah {histories.length + categories.length} kategori soal yang harus dikerjakan.</p>
@@ -127,7 +127,7 @@ const Dashboard = () => {
                   </button>
                 ))}
             </div>
-          </section>
+          </section> */}
         </section>
       </div>
     </section>
