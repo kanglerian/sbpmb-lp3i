@@ -12,6 +12,9 @@ const TestSchoolarship = () => {
   const { state } = useLocation();
   const localStorageId = localStorage.getItem("id");
 
+  const [buttonActive, setButtonActive] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   if (!localStorageId) {
     if (state && state.id) {
       localStorage.setItem("id", state.id);
@@ -148,6 +151,7 @@ const TestSchoolarship = () => {
   };
 
   const handleChange = (e) => {
+    setButtonActive(true);
     if (!isUpdate) {
       setSelected(null);
       setIdUpdate(null);
@@ -165,6 +169,10 @@ const TestSchoolarship = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isSubmitting) {
+      return;
+    }
+    setIsSubmitting(true);
     if (recordStudent) {
       if (isUpdate) {
         await axios
@@ -175,6 +183,7 @@ const TestSchoolarship = () => {
             setIdUpdate(null);
             getQuestions(identity);
             setRecordStudent(null);
+            setButtonActive(false);
             coinPlay();
           })
           .catch((error) => {
@@ -187,6 +196,7 @@ const TestSchoolarship = () => {
             .then((response) => {
               getQuestions(identity);
               setRecordStudent(null);
+              setButtonActive(false);
               coinPlay();
             })
             .catch((error) => {
@@ -197,6 +207,7 @@ const TestSchoolarship = () => {
     } else {
       getQuestions(identity);
     }
+    setIsSubmitting(false);
   };
 
   const checkMiddleware = () => {
@@ -257,6 +268,7 @@ const TestSchoolarship = () => {
               <div className="flex gap-3">
                 {!isUpdate ? (
                   questions.length > 0 ? (
+                    buttonActive &&
                     <button
                       type="submit"
                       className="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded-lg text-white flex items-center gap-2"
@@ -275,6 +287,7 @@ const TestSchoolarship = () => {
                     </button>
                   )
                 ) : (
+                  buttonActive &&
                   <button
                     type="submit"
                     className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded-lg text-white flex items-center gap-2"
@@ -321,7 +334,7 @@ const TestSchoolarship = () => {
             <header className="text-center space-y-1">
               <h1 className="font-bold text-gray-900">Berhenti Ujian.</h1>
               <p className="text-xs text-gray-800">
-              Pertimbangan sebelum memutuskan menyerah.
+                Pertimbangan sebelum memutuskan menyerah.
               </p>
             </header>
             <div className="flex flex-col gap-2">

@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "../templates/Navbar.jsx";
 import { useNavigate } from "react-router-dom";
 
+import DattebayoSound from '../assets/sounds/dattebayo.mp3'
 const Scholarship = () => {
   const navigate = useNavigate();
 
@@ -13,6 +14,11 @@ const Scholarship = () => {
   const [histories, setHistories] = useState([]);
 
   const token = localStorage.getItem("token");
+
+  const dattebayoPlay = () => {
+    let audio = new Audio(DattebayoSound);
+    audio.play();
+  }
 
   const getUser = async () => {
     await axios

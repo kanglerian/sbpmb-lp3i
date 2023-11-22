@@ -3,8 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
 import axios from "axios";
 
-import DattebayoSound from '../assets/sounds/dattebayo.mp3'
-
 const Dashboard = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
