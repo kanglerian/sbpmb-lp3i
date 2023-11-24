@@ -89,12 +89,12 @@ const Dashboard = () => {
     <section className="bg-white">
       <div className="container mx-auto px-5">
         <Navbar />
-        <section>
+        <section className="space-y-2">
           <p className="text-sm text-center text-gray-700">
-            <span>Harap untuk lengkapi data diri anda dan upload berkas.</span>{" "}
-            <Link to={`/biodata`} className="underline">
-              Klik disini <i className="fa-solid fa-arrow-right-long ml-1"></i>
-            </Link>
+            <span>Harap untuk <span className="underline">lengkapi data diri anda dan upload berkas</span> untuk mengikuti Seleksi Beasiswa.</span>{" "}
+          </p>
+          <p className="text-sm text-center text-gray-700">
+            Setelah melengkapi data, akan ada menu <span className="font-bold">E-Assessment.</span>{" "}
           </p>
         </section>
       </div>
