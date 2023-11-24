@@ -7,7 +7,7 @@ import DattebayoSound from '../assets/sounds/dattebayo.mp3'
 const Scholarship = () => {
   const navigate = useNavigate();
 
-  let start = false;
+  let start = true;
 
   const [identity, setIdentity] = useState(null);
   const [categories, setCategories] = useState([]);
