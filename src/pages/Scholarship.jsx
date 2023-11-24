@@ -38,7 +38,7 @@ const Scholarship = () => {
         if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && files) {
           console.log('lengkap');
         } else {
-          // navigate('/dashboard');
+          navigate('/dashboard');
         }
       })
       .catch((error) => {
