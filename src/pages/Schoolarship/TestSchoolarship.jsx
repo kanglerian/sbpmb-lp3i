@@ -213,7 +213,7 @@ const TestSchoolarship = () => {
   const checkMiddleware = () => {
     localStorage.removeItem("id");
     localStorage.removeItem("timeLeft");
-    navigate("/dashboard");
+    navigate("/scholarship");
   };
 
   useEffect(() => {
