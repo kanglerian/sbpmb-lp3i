@@ -13,6 +13,8 @@ const Scholarship = () => {
   const [categories, setCategories] = useState([]);
   const [histories, setHistories] = useState([]);
 
+  const [message, setMessage] = useState('Memuat kategori soal...');
+
   const token = localStorage.getItem("token");
 
   const dattebayoPlay = () => {
@@ -28,7 +30,6 @@ const Scholarship = () => {
         },
       })
       .then((response) => {
-        console.log(response.data);
         let identityVal = response.data.user.identity;
         setIdentity(identityVal);
         getHistories(identityVal);
@@ -53,27 +54,33 @@ const Scholarship = () => {
   };
 
   const getHistories = async (identity) => {
-    const categoriesResponse = await axios.get(
-      `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/categories`
-    );
-    const historiesResponse = await axios.get(
-      `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories?identity_user=${identity}`
-    );
-    if (categoriesResponse.data && historiesResponse.data) {
-      const filterResponse = categoriesResponse.data.filter(
-        (question) =>
-          !historiesResponse.data.some(
-            (record) => record.category_id === question.id
-          )
+    try {
+      const categoriesResponse = await axios.get(
+        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/categories`
       );
-      if (filterResponse.length > 0) {
-        setCategories(filterResponse);
+      const historiesResponse = await axios.get(
+        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories?identity_user=${identity}`
+      );
+      if (categoriesResponse.data && historiesResponse.data) {
+        const filterResponse = categoriesResponse.data.filter(
+          (question) =>
+            !historiesResponse.data.some(
+              (record) => record.category_id === question.id
+            )
+        );
+        if (filterResponse.length > 0) {
+          setCategories(filterResponse);
+        } else {
+          setCategories([]);
+        }
+        setHistories(historiesResponse.data);
+        setMessage('Berikut ini adalah kategori soal yang harus dikerjakan.')
       } else {
-        setCategories([]);
+        setMessage('Tidak ada kategori soal yang harus dikerjakan.')
       }
-      setHistories(historiesResponse.data);
-    } else {
-      console.log("tidak ada");
+    } catch (error) {
+      setMessage('Server tes beasiswa sedang tidak tersedia. Silahkan periksa kembali secara berkala.')
+      console.log(error.message);
     }
   };
 
@@ -104,35 +111,35 @@ const Scholarship = () => {
       <div className="container mx-auto px-5">
         <Navbar />
         <section className="max-w-7xl mx-auto mt-10">
-            <header className="text-center mb-2 space-y-1">
-              <h2 className="text-gray-900 text-xl font-bold">Tes Seleksi Beasiswa</h2>
-              <p className="text-sm text-gray-600">Berikut ini adalah {histories.length + categories.length} kategori soal yang harus dikerjakan.</p>
-            </header>
-            <div className="grid grid-cols-2 md:grid-cols-3">
-              {histories.length > 0 &&
-                histories.map((history) => (
-                  <button key={history.id} className="p-2">
-                    <div className="bg-emerald-500 hover:bg-emerald-600 text-white p-6 rounded-lg text-sm">
-                      <span className="mr-2">{history.category.name}</span>
-                      <i className="fa-solid fa-circle-check text-white"></i>
-                    </div>
-                  </button>
-                ))}
-              {categories.length > 0 &&
-                categories.map((category) => (
-                  <button
-                    onClick={() => handleSelect(category.id)}
-                    key={category.id}
-                    className="p-2"
-                  >
-                    <div className="bg-red-500 hover:bg-red-600 text-white p-6 rounded-lg text-sm">
-                      <span className="mr-2">{category.name}</span>
-                      <i className="fa-solid fa-circle-xmark text-white"></i>
-                    </div>
-                  </button>
-                ))}
-            </div>
-          </section>
+          <header className="text-center mb-2 space-y-1">
+            <h2 className="text-gray-900 text-xl font-bold">Tes Seleksi Beasiswa</h2>
+            <p className="text-sm text-gray-600">{message}</p>
+          </header>
+          <div className="grid grid-cols-2 md:grid-cols-3">
+            {histories.length > 0 &&
+              histories.map((history) => (
+                <button key={history.id} className="p-2">
+                  <div className="bg-emerald-500 hover:bg-emerald-600 text-white p-6 rounded-lg text-sm">
+                    <span className="mr-2">{history.category.name}</span>
+                    <i className="fa-solid fa-circle-check text-white"></i>
+                  </div>
+                </button>
+              ))}
+            {categories.length > 0 &&
+              categories.map((category) => (
+                <button
+                  onClick={() => handleSelect(category.id)}
+                  key={category.id}
+                  className="p-2"
+                >
+                  <div className="bg-red-500 hover:bg-red-600 text-white p-6 rounded-lg text-sm">
+                    <span className="mr-2">{category.name}</span>
+                    <i className="fa-solid fa-circle-xmark text-white"></i>
+                  </div>
+                </button>
+              ))}
+          </div>
+        </section>
       </div>
     </section>
   );
