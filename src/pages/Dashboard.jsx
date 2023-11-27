@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
 import axios from "axios";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-
-  const [identity, setIdentity] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [histories, setHistories] = useState([]);
-
-  const dattebayoPlay = () => {
-    let audio = new Audio(DattebayoSound);
-    audio.play();
-  }
 
   const getUser = async () => {
     await axios
@@ -61,21 +52,6 @@ const Dashboard = () => {
     } else {
       console.log("tidak ada");
     }
-  };
-
-  const handleSelect = async (id) => {
-    await axios
-      .post(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories`, {
-        identity_user: identity,
-        category_id: id,
-      })
-      .then((response) => {
-        navigate("/seleksi-beasiswa", { state: { id: id } });
-        dattebayoPlay();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   useEffect(() => {

@@ -23,6 +23,24 @@ const Keluarga = () => {
 
   const [incomeParent, setIncomeParent] = useState("");
 
+  const [errors, setErrors] = useState({
+    fatherName: [],
+    fatherPhone: [],
+    fatherPlaceOfBirth: [],
+    fatherDateOfBirth: [],
+    fatherEducation: [],
+    fatherJob: [],
+    fatherAddress: [],
+    motherName: [],
+    motherPhone: [],
+    motherPlaceOfBirth: [],
+    motherDateOfBirth: [],
+    motherEducation: [],
+    motherJob: [],
+    motherAddress: [],
+    incomeParent: [],
+  });
+
   const token = localStorage.getItem("token");
 
   const getUser = async () => {
@@ -81,23 +99,55 @@ const Keluarga = () => {
           motherJob: motherJob,
           motherAddress: motherAddress,
           incomeParent: incomeParent == 0 ? "" : incomeParent,
-        },{
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+        }, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
+      }
       )
       .then((res) => {
         alert(res.data.message);
         getUser();
       })
-      .catch((err) => {
-        let networkError = err.message == "Network Error";
-        alert(
-          networkError
-            ? "Mohon maaf, ada kesalahan di sisi Server."
-            : err.message
-        );
+      .catch((error) => {
+        if (error.code !== 'ERR_NETWORK') {
+          const fatherNameError = error.response.data.message.fatherName || [];
+          const fatherPhoneError = error.response.data.message.fatherPhone || [];
+          const fatherPlaceOfBirthError = error.response.data.message.fatherPlaceOfBirth || [];
+          const fatherDateOfBirthError = error.response.data.message.fatherDateOfBirth || [];
+          const fatherEducationError = error.response.data.message.fatherEducation || [];
+          const fatherJobError = error.response.data.message.fatherJob || [];
+          const fatherAddressError = error.response.data.message.fatherAddress || [];
+          const motherNameError = error.response.data.message.motherName || [];
+          const motherPhoneError = error.response.data.message.motherPhone || [];
+          const motherPlaceOfBirthError = error.response.data.message.motherPlaceOfBirth || [];
+          const motherDateOfBirthError = error.response.data.message.motherDateOfBirth || [];
+          const motherEducationError = error.response.data.message.motherEducation || [];
+          const motherJobError = error.response.data.message.motherJob || [];
+          const motherAddressError = error.response.data.message.motherAddress || [];
+          const incomeParentError = error.response.data.message.incomeParent || [];
+          const newAllErrors = {
+            fatherName: fatherNameError,
+            fatherPhone: fatherPhoneError,
+            fatherPlaceOfBirth: fatherPlaceOfBirthError,
+            fatherDateOfBirth: fatherDateOfBirthError,
+            fatherEducation: fatherEducationError,
+            fatherJob: fatherJobError,
+            fatherAddress: fatherAddressError,
+            motherName: motherNameError,
+            motherPhone: motherPhoneError,
+            motherPlaceOfBirth: motherPlaceOfBirthError,
+            motherDateOfBirth: motherDateOfBirthError,
+            motherEducation: motherEducationError,
+            motherJob: motherJobError,
+            motherAddress: motherAddressError,
+            incomeParent: incomeParentError,
+          };
+          setErrors(newAllErrors);
+          alert("Data gagal diperbarui!");
+        } else {
+          alert('Server sedang bermasalah.')
+        }
       });
   };
 
@@ -154,10 +204,19 @@ const Keluarga = () => {
                     placeholder="Nama Lengkap Ayah"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.fatherName.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.fatherName.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
                 <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -186,10 +245,19 @@ const Keluarga = () => {
                     placeholder="Tempat Lahir Ayah"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.fatherPlaceOfBirth.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.fatherPlaceOfBirth.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
                 <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -203,10 +271,19 @@ const Keluarga = () => {
                     placeholder="Tanggal Lahir Ayah"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.fatherDateOfBirth.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.fatherDateOfBirth.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
               </div>
 
@@ -223,10 +300,19 @@ const Keluarga = () => {
                     placeholder="Pendidikan Terakhir"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.fatherEducation.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.fatherEducation.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
                 <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -240,10 +326,19 @@ const Keluarga = () => {
                     placeholder="Pekerjaan"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.fatherJob.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.fatherJob.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
               </div>
 
@@ -258,9 +353,23 @@ const Keluarga = () => {
                     onChange={(e) => setFatherAddress(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Alamat"
+                    required
                   >
                     {fatherAddress}
                   </textarea>
+                  {
+                    errors.fatherAddress.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.fatherAddress.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
               </div>
               <div className="grid grid-cols-1 md:gap-4">
@@ -289,10 +398,19 @@ const Keluarga = () => {
                     </option>
                     <option value="> 5.000.000">&gt; 5.000.000</option>
                   </select>
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.incomeParent.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.incomeParent.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
               </div>
             </div>
@@ -313,10 +431,19 @@ const Keluarga = () => {
                     placeholder="Nama Lengkap Ibu"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.motherName.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.motherName.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
                 <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -345,10 +472,19 @@ const Keluarga = () => {
                     placeholder="Tempat Lahir Ibu"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.motherPlaceOfBirth.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.motherPlaceOfBirth.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
                 <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -362,10 +498,19 @@ const Keluarga = () => {
                     placeholder="Tanggal Lahir Ibu"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.motherDateOfBirth.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.motherDateOfBirth.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
               </div>
 
@@ -382,10 +527,19 @@ const Keluarga = () => {
                     placeholder="Pendidikan Terakhir"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.motherEducation.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.motherEducation.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
                 <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -399,10 +553,19 @@ const Keluarga = () => {
                     placeholder="Pekerjaan"
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.motherJob.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.motherJob.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
               </div>
 
@@ -417,9 +580,23 @@ const Keluarga = () => {
                     onChange={(e) => setMotherAddress(e.target.value)}
                     className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Alamat"
+                    required
                   >
                     {motherAddress}
                   </textarea>
+                  {
+                    errors.motherAddress.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.motherAddress.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
               </div>
               <div className="grid grid-cols-1 md:gap-4">

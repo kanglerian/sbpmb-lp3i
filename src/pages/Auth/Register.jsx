@@ -22,6 +22,16 @@ const Register = () => {
 
   const [schoolsAPI, setSchoolsAPI] = useState([]);
 
+  const [errors, setErrors] = useState({
+    name: [],
+    nisn: [],
+    school: [],
+    email: [],
+    phone: [],
+    year: [],
+    password: [],
+  });
+
   const handleRegister = async (e) => {
     e.preventDefault();
 
@@ -46,10 +56,27 @@ const Register = () => {
         navigate('/dashboard');
       })
       .catch((error) => {
-        if(error.response.status == 401){
-          alert(error.response.data.message);
+        if (error.code !== 'ERR_NETWORK') {
+          const nameError = error.response.data.message.name || [];
+          const nisnError = error.response.data.message.nisn || [];
+          const schoolError = error.response.data.message.school || [];
+          const emailError = error.response.data.message.email || [];
+          const phoneError = error.response.data.message.phone || [];
+          const passwordError = error.response.data.message.password || [];
+          const yearError = error.response.data.message.year || [];
+          const newAllErrors = {
+            name: nameError,
+            nisn: nisnError,
+            school: schoolError,
+            email: emailError,
+            phone: phoneError,
+            password: passwordError,
+            year: yearError,
+          };
+          setErrors(newAllErrors);
+          alert("Gagal membuat akun!");
         } else {
-          console.log(error);
+          alert('Server sedang bermasalah.')
         }
       });
   };
@@ -127,6 +154,19 @@ const Register = () => {
               placeholder="Isi dengan nama lengkap anda..."
               required
             />
+            {
+              errors.name.length > 0 ? (
+                <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                  {errors.name.map((error, index) => (
+                    <li className="font-regular" key={index}>{error}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-2 text-xs text-red-600">
+                  <span className="font-medium">Keterangan:</span> Wajib diisi.
+                </p>
+              )
+            }
           </div>
 
           <div className="mb-5">
@@ -145,6 +185,19 @@ const Register = () => {
               placeholder="Isi dengan NISN anda..."
               required
             />
+            {
+              errors.nisn.length > 0 ? (
+                <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                  {errors.nisn.map((error, index) => (
+                    <li className="font-regular" key={index}>{error}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-2 text-xs text-red-600">
+                  <span className="font-medium">Keterangan:</span> Wajib diisi.
+                </p>
+              )
+            }
           </div>
 
           <div className="flex flex-col md:flex-row md:gap-5">
@@ -163,6 +216,19 @@ const Register = () => {
                 className="text-sm"
                 required
               />
+              {
+                errors.school.length > 0 ? (
+                  <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                    {errors.school.map((error, index) => (
+                      <li className="font-regular" key={index}>{error}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib diisi.
+                  </p>
+                )
+              }
             </div>
             <div className="w-full md:w-1/2 mb-5">
               <label
@@ -180,6 +246,19 @@ const Register = () => {
                 placeholder="Isi dengan tahun lulus anda..."
                 required
               />
+              {
+                errors.year.length > 0 ? (
+                  <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                    {errors.year.map((error, index) => (
+                      <li className="font-regular" key={index}>{error}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib diisi.
+                  </p>
+                )
+              }
             </div>
           </div>
 
@@ -200,6 +279,19 @@ const Register = () => {
                 placeholder="Isi dengan Email anda..."
                 required
               />
+              {
+                errors.email.length > 0 ? (
+                  <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                    {errors.email.map((error, index) => (
+                      <li className="font-regular" key={index}>{error}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib diisi.
+                  </p>
+                )
+              }
             </div>
             <div className="w-full mb-5">
               <label
@@ -217,6 +309,19 @@ const Register = () => {
                 placeholder="Isi dengan No. Whatsapp anda..."
                 required
               />
+              {
+                errors.phone.length > 0 ? (
+                  <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                    {errors.phone.map((error, index) => (
+                      <li className="font-regular" key={index}>{error}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib diisi.
+                  </p>
+                )
+              }
             </div>
           </div>
 
@@ -250,6 +355,19 @@ const Register = () => {
                   required
                 />
               </div>
+              {
+                errors.password.length > 0 ? (
+                  <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                    {errors.password.map((error, index) => (
+                      <li className="font-regular" key={index}>{error}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib diisi.
+                  </p>
+                )
+              }
             </div>
 
             <div className="w-full">
@@ -280,6 +398,19 @@ const Register = () => {
                   required
                 />
               </div>
+              {
+                errors.password.length > 0 ? (
+                  <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                    {errors.password.map((error, index) => (
+                      <li className="font-regular" key={index}>{error}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib diisi.
+                  </p>
+                )
+              }
             </div>
 
           </div>

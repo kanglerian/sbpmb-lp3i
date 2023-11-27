@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from "react";
-import CreatableSelect from "react-select/creatable";
 import axios from "axios";
 import Navbar from "../templates/Navbar.jsx";
 
 const Program = () => {
   const [student, setStudent] = useState({});
   const [program, setProgram] = useState("");
-  const [programSecond, setProgramSecond] = useState("");
   const [programs, setPrograms] = useState([]);
+  const [programSecond, setProgramSecond] = useState("");
+
+  const [errors, setErrors] = useState({
+    program: [],
+    programSecond: [],
+  });
+
   const token = localStorage.getItem("token");
   const getUser = async () => {
     await axios
@@ -67,13 +72,19 @@ const Program = () => {
         alert("Data program studi sudah diperbarui!");
         getUser();
       })
-      .catch((err) => {
-        let networkError = err.message == "Network Error";
-        alert(
-          networkError
-            ? "Mohon maaf, ada kesalahan di sisi Server."
-            : err.message
-        );
+      .catch((error) => {
+        if (error.code !== 'ERR_NETWORK') {
+          const programError = error.response.data.message.program || [];
+          const programSecondError = error.response.data.message.program_second || [];
+          const newAllErrors = {
+            program: programError,
+            programSecond: programSecondError,
+          };
+          setErrors(newAllErrors);
+          alert("Data gagal diperbarui!");
+        } else {
+          alert('Server sedang bermasalah.')
+        }
       });
   };
 
@@ -139,9 +150,19 @@ const Program = () => {
                       </optgroup>
                     ))}
                 </select>
-                <p className="mt-2 text-xs text-red-600">
-                  <span className="font-medium">Keterangan:</span> Wajib diisi.
-                </p>
+                {
+                  errors.program.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.program.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
               </div>
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -180,9 +201,19 @@ const Program = () => {
                       </optgroup>
                     ))}
                 </select>
-                <p className="mt-2 text-xs text-red-600">
-                  <span className="font-medium">Keterangan:</span> Wajib diisi.
-                </p>
+                {
+                  errors.programSecond.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.programSecond.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
               </div>
             </div>
 

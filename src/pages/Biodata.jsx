@@ -24,6 +24,19 @@ const Biodata = () => {
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [schoolsAPI, setSchoolsAPI] = useState([]);
 
+  const [errors, setErrors] = useState({
+    phone: [],
+    email: [],
+    nisn: [],
+    name: [],
+    religion: [],
+    school: [],
+    year: [],
+    placeOfBirth: [],
+    dateOfBirth: [],
+    address: [],
+  });
+
   const token = localStorage.getItem("token");
   const getUser = async () => {
     await axios
@@ -54,7 +67,7 @@ const Biodata = () => {
         }
       })
       .catch((error) => {
-        if(error.response.status == 401){
+        if (error.response.status == 401) {
           localStorage.removeItem('token');
           navigate('/');
         } else {
@@ -110,7 +123,7 @@ const Biodata = () => {
         address: address,
         email: email,
         phone: phone,
-      },{
+      }, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -119,13 +132,35 @@ const Biodata = () => {
         alert("Data sudah diperbarui!");
         getUser();
       })
-      .catch((err) => {
-        let networkError = err.message == "Network Error";
-        alert(
-          networkError
-            ? "Mohon maaf, ada kesalahan di sisi Server."
-            : err.message
-        );
+      .catch((error) => {
+        if (error.code !== 'ERR_NETWORK') {
+          const phoneError = error.response.data.message.phone || [];
+          const emailError = error.response.data.message.email || [];
+          const nisnError = error.response.data.message.nisn || [];
+          const nameError = error.response.data.message.name || [];
+          const religionError = error.response.data.message.religion || [];
+          const schoolError = error.response.data.message.school || [];
+          const yearError = error.response.data.message.year || [];
+          const placeOfBirthError = error.response.data.message.placeOfBirth || [];
+          const dateOfBirthError = error.response.data.message.dateOfBirth || [];
+          const addressError = error.response.data.message.address || [];
+          const newAllErrors = {
+            phone: phoneError,
+            email: emailError,
+            nisn: nisnError,
+            name: nameError,
+            religion: religionError,
+            school: schoolError,
+            year: yearError,
+            placeOfBirth: placeOfBirthError,
+            dateOfBirth: dateOfBirthError,
+            address: addressError,
+          };
+          setErrors(newAllErrors);
+          alert("Data gagal diperbarui!");
+        } else {
+          alert('Server sedang bermasalah.')
+        }
       });
   };
 
@@ -165,6 +200,19 @@ const Biodata = () => {
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="NISN"
                 />
+                {
+                  errors.nisn.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.nisn.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
               </div>
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -193,9 +241,19 @@ const Biodata = () => {
                   placeholder="Nama lengkap"
                   required
                 />
-                <p className="mt-2 text-xs text-red-600">
-                  <span className="font-medium">Keterangan:</span> Wajib diisi.
-                </p>
+                {
+                  errors.name.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.name.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
               </div>
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -205,7 +263,7 @@ const Biodata = () => {
                 <select
                   onChange={(e) => setReligion(e.target.value)}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  required
+                required
                 >
                   {religion ? (
                     <option value={religion} selected>
@@ -221,9 +279,19 @@ const Biodata = () => {
                   <option value="Buddha">Buddha</option>
                   <option value="Khonghucu">Khonghucu</option>
                 </select>
-                <p className="mt-2 text-xs text-red-600">
-                  <span className="font-medium">Keterangan:</span> Wajib diisi.
-                </p>
+                {
+                  errors.religion.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.religion.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
               </div>
             </div>
 
@@ -242,12 +310,21 @@ const Biodata = () => {
                     onChange={schoolHandle}
                     placeholder="Isi dengan nama sekolah anda..."
                     className="text-sm"
-                    required
+                  required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.school.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.school.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
               )}
               <div className="mb-5">
@@ -260,11 +337,21 @@ const Biodata = () => {
                   onChange={(e) => setYear(e.target.value)}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
                   placeholder="Tahun Lulus"
-                  required
+                required
                 />
-                <p className="mt-2 text-xs text-red-600">
-                  <span className="font-medium">Keterangan:</span> Wajib diisi.
-                </p>
+                {
+                  errors.year.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.year.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
               </div>
             </div>
 
@@ -279,11 +366,21 @@ const Biodata = () => {
                   onChange={(e) => setPlaceOfBirth(e.target.value)}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Tempat Lahir"
-                  required
+                required
                 />
-                <p className="mt-2 text-xs text-red-600">
-                  <span className="font-medium">Keterangan:</span> Wajib diisi.
-                </p>
+                {
+                  errors.placeOfBirth.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.placeOfBirth.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
               </div>
 
               <div className="mb-5">
@@ -296,11 +393,21 @@ const Biodata = () => {
                   onChange={(e) => setDateOfBirth(e.target.value)}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Tanggal Lahir"
-                  required
+                required
                 />
-                <p className="mt-2 text-xs text-red-600">
-                  <span className="font-medium">Keterangan:</span> Wajib diisi.
-                </p>
+                {
+                  errors.dateOfBirth.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.dateOfBirth.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
               </div>
             </div>
 
@@ -351,13 +458,23 @@ const Biodata = () => {
                 onChange={(e) => setAddress(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Alamat"
-                required
+              required
               >
                 {address}
               </textarea>
-              <p className="mt-2 text-xs text-red-600">
-                <span className="font-medium">Keterangan:</span> Wajib diisi.
-              </p>
+            {
+              errors.address.length > 0 ? (
+                <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                  {errors.address.map((error, index) => (
+                    <li className="font-regular" key={index}>{error}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p className="mt-2 text-xs text-red-600">
+                  <span className="font-medium">Keterangan:</span> Wajib diisi.
+                </p>
+              )
+            }
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
@@ -371,11 +488,21 @@ const Biodata = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Email"
-                  required
+                required
                 />
-                <p className="mt-2 text-xs text-red-600">
-                  <span className="font-medium">Keterangan:</span> Wajib diisi.
-                </p>
+                {
+                  errors.email.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.email.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
               </div>
 
               <div className="mb-5">
@@ -390,6 +517,19 @@ const Biodata = () => {
                   placeholder="No. Telpon (Whatsapp)"
                   readOnly
                 />
+                {
+                  errors.phone.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.phone.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
               </div>
             </div>
 
