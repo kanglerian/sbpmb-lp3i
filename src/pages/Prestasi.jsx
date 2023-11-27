@@ -19,6 +19,13 @@ const Prestasi = () => {
   const [year, setYear] = useState("");
   const [result, setResult] = useState("");
 
+  const [errors, setErrors] = useState({
+    name: [],
+    level: [],
+    year: [],
+    result: [],
+  });
+
   const getUser = async () => {
     await axios
       .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
@@ -68,13 +75,23 @@ const Prestasi = () => {
           setResult("");
           setModal(false);
         })
-        .catch((err) => {
-          let networkError = err.message == "Network Error";
-          alert(
-            networkError
-              ? "Mohon maaf, ada kesalahan di sisi Server."
-              : err.message
-          );
+        .catch((error) => {
+          if (error.code !== 'ERR_NETWORK') {
+            const nameError = error.response.data.message.name || [];
+            const levelError = error.response.data.message.level || [];
+            const yearError = error.response.data.message.year || [];
+            const resultError = error.response.data.message.result || [];
+            const newAllErrors = {
+              name: nameError,
+              level: levelError,
+              year: yearError,
+              result: resultError,
+            };
+            setErrors(newAllErrors);
+            alert("Data gagal diperbarui!");
+          } else {
+            alert('Server sedang bermasalah.')
+          }
         });
     }
   };
@@ -243,10 +260,19 @@ const Prestasi = () => {
                     placeholder="Tulis nama kegiatan disini.."
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.name.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.name.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
                 <div className="mb-5">
                   <label
@@ -270,10 +296,19 @@ const Prestasi = () => {
                     <option value="Sekolah">Sekolah</option>
                     <option value="Jurusan">Jurusan</option>
                   </select>
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.level.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.level.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
                 <div className="mb-5">
                   <label
@@ -291,10 +326,19 @@ const Prestasi = () => {
                     placeholder="Tulis tahun disini.."
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.year.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.year.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
                 <div className="mb-5">
                   <label
@@ -312,10 +356,19 @@ const Prestasi = () => {
                     placeholder="Tulis pencapaian disini.."
                     required
                   />
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib
-                    diisi.
-                  </p>
+                  {
+                    errors.result.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.result.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    )
+                  }
                 </div>
               </div>
               {/* Modal footer */}
