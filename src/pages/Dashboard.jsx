@@ -15,11 +15,10 @@ const Dashboard = () => {
         },
       })
       .then((response) => {
-        let identityVal = response.data.user.identity;
-        setIdentity(identityVal);
-        getHistories(identityVal);
+        console.log(response.data.applicant);
       })
       .catch((error) => {
+        console.log(error)
         if (error.response.status == 401) {
           localStorage.removeItem("token");
           navigate("/");
@@ -27,31 +26,6 @@ const Dashboard = () => {
           console.log(error);
         }
       });
-  };
-
-  const getHistories = async (identity) => {
-    const categoriesResponse = await axios.get(
-      `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/categories`
-    );
-    const historiesResponse = await axios.get(
-      `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories?identity_user=${identity}`
-    );
-    if (categoriesResponse.data && historiesResponse.data) {
-      const filterResponse = categoriesResponse.data.filter(
-        (question) =>
-          !historiesResponse.data.some(
-            (record) => record.category_id === question.id
-          )
-      );
-      if (filterResponse.length > 0) {
-        setCategories(filterResponse);
-      } else {
-        setCategories([]);
-      }
-      setHistories(historiesResponse.data);
-    } else {
-      console.log("tidak ada");
-    }
   };
 
   useEffect(() => {

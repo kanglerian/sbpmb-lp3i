@@ -178,14 +178,124 @@ const Biodata = () => {
         <Navbar />
         <div className="flex flex-col md:flex-row justify-between md:gap-10">
           <div className="w-full md:w-1/3 p-3">
-            <p>
-              Selamat datang di situs resmi Seleksi Beasiswa Penerimaan
-              Mahasiswa Baru (SBPMB) Politeknik LP3I Kampus Tasikmalaya, tempat
-              di mana langkah pertama menuju perjalanan pendidikan yang gemilang
-              dimulai. Kami dengan tulus menyambut Anda untuk bergabung dalam
-              perjalanan pendidikan yang penuh inspirasi dan peluang tak
-              terbatas.
-            </p>
+            <header className="space-y-1 mb-5">
+              <h2 className="font-bold text-gray-900">Selamat Datang Calon Mahasiswa Baru!</h2>
+              <p className="text-sm text-gray-700">Berikut ini adalah halaman informasi biodata kamu. Silahkan untuk diisi selengkap mungkin untuk syarat mengikuti E-Assessment.</p>
+            </header>
+            <div className="bg-white border border-gray-200 p-6 rounded-xl space-y-2">
+              <header>
+                <h2 className="font-bold text-gray-900">Informasi Persyaratan: </h2>
+                <p className="text-sm text-gray-700">Silahkan lengkapi untuk persyaratan beasiswa.</p>
+              </header>
+              <hr />
+              <div className="space-y-2 py-2">
+                <h5 className="text-sm text-gray-900 font-bold">Data Diri</h5>
+                <ul className="space-y-2 text-sm list-disc ml-5">
+                  <li className="space-x-2">
+                    <span className="text-gray-900">NISN</span>
+                    {student.nisn ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Nama lengkap</span>
+                    {student.name ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Agama</span>
+                    {student.religion ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Sekolah</span>
+                    {student.school ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Tahun Lulus</span>
+                    {student.year ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Tempat Lahir</span>
+                    {student.place_of_birth ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Tanggal Lahir</span>
+                    {student.date_of_birth ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Alamat</span>
+                    {student.address ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Email</span>
+                    {student.email ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                  <li className="space-x-2">
+                    <span className="text-gray-900">No. Whatsapp</span>
+                    {student.phone ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                </ul>
+              </div>
+              <hr />
+              <div className="space-y-2 py-2">
+                <h5 className="text-sm text-gray-900 font-bold">Program Studi</h5>
+                <ul className="space-y-2 text-sm list-disc ml-5">
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Program studi 1</span>
+                    {student.program ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Program studi 2</span>
+                    {student.program_second ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
           <form onSubmit={handleUpdate} className="w-full md:w-2/3 p-3">
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
@@ -263,7 +373,7 @@ const Biodata = () => {
                 <select
                   onChange={(e) => setReligion(e.target.value)}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                required
+                  required
                 >
                   {religion ? (
                     <option value={religion} selected>
@@ -310,7 +420,7 @@ const Biodata = () => {
                     onChange={schoolHandle}
                     placeholder="Isi dengan nama sekolah anda..."
                     className="text-sm"
-                  required
+                    required
                   />
                   {
                     errors.school.length > 0 ? (
@@ -337,7 +447,7 @@ const Biodata = () => {
                   onChange={(e) => setYear(e.target.value)}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
                   placeholder="Tahun Lulus"
-                required
+                  required
                 />
                 {
                   errors.year.length > 0 ? (
@@ -366,7 +476,7 @@ const Biodata = () => {
                   onChange={(e) => setPlaceOfBirth(e.target.value)}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Tempat Lahir"
-                required
+                  required
                 />
                 {
                   errors.placeOfBirth.length > 0 ? (
@@ -393,7 +503,7 @@ const Biodata = () => {
                   onChange={(e) => setDateOfBirth(e.target.value)}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Tanggal Lahir"
-                required
+                  required
                 />
                 {
                   errors.dateOfBirth.length > 0 ? (
@@ -458,23 +568,23 @@ const Biodata = () => {
                 onChange={(e) => setAddress(e.target.value)}
                 className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                 placeholder="Alamat"
-              required
+                required
               >
                 {address}
               </textarea>
-            {
-              errors.address.length > 0 ? (
-                <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                  {errors.address.map((error, index) => (
-                    <li className="font-regular" key={index}>{error}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-2 text-xs text-red-600">
-                  <span className="font-medium">Keterangan:</span> Wajib diisi.
-                </p>
-              )
-            }
+              {
+                errors.address.length > 0 ? (
+                  <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                    {errors.address.map((error, index) => (
+                      <li className="font-regular" key={index}>{error}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="mt-2 text-xs text-red-600">
+                    <span className="font-medium">Keterangan:</span> Wajib diisi.
+                  </p>
+                )
+              }
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
@@ -488,7 +598,7 @@ const Biodata = () => {
                   onChange={(e) => setEmail(e.target.value)}
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Email"
-                required
+                  required
                 />
                 {
                   errors.email.length > 0 ? (
