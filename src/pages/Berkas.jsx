@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
 
 const Berkas = () => {
 
   const navigate = useNavigate();
+
+  let start = true;
+  const [scholarship, setScholarship] = useState(false);
 
   const [student, setStudent] = useState({});
 
@@ -114,6 +117,13 @@ const Berkas = () => {
         setFileUpload(response.data.fileupload);
         setUserUpload(response.data.userupload);
         setStudent(response.data.applicant);
+
+        let applicant = response.data.applicant;
+        let fileuploaded = response.data.fileuploaded;
+        let files = fileuploaded.filter((file) => { return file.namefile == "foto" && file.namefile == "akta-kelahiran" && file.namefile == "kartu-keluarga" })
+        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && files) {
+          setScholarship(true);
+        }
       })
       .catch((error) => {
         if (error.response.status == 401) {
@@ -194,6 +204,20 @@ const Berkas = () => {
                   }
                 </ul>
               </div>
+
+              {
+                scholarship ? (
+                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-lg text-sm">
+                    <i className="fa-solid fa-pen"></i>
+                    <span>Kerjakan E-Assessment</span>
+                  </Link>
+                ) : (
+                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-lg text-sm">
+                    <i className="fa-solid fa-circle-xmark"></i>
+                    <span>Persyaratan Belum Lengkap</span>
+                  </button>
+                )
+              }
             </div>
           </div>
           <div className="w-full md:w-1/2 p-6 bg-white border border-gray-200 rounded-2xl mx-auto mt-5">

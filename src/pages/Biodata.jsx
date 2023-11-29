@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
 import CreatableSelect from "react-select/creatable";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
 
 const Biodata = () => {
   const navigate = useNavigate();
+
+  let start = true;
+  const [scholarship, setScholarship] = useState(false);
 
   const [student, setStudent] = useState({});
   const [nisn, setNisn] = useState("");
@@ -65,6 +68,14 @@ const Biodata = () => {
             label: response.data.applicant.school_applicant.name,
           });
         }
+
+        let applicant = response.data.applicant;
+        let fileuploaded = response.data.fileuploaded;
+        let files = fileuploaded.filter((file) => { return file.namefile == "foto" && file.namefile == "akta-kelahiran" && file.namefile == "kartu-keluarga" })
+        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && files) {
+          setScholarship(true);
+        }
+
       })
       .catch((error) => {
         if (error.response.status == 401) {
@@ -176,9 +187,9 @@ const Biodata = () => {
     <section className="bg-white">
       <div className="container mx-auto px-5">
         <Navbar />
-        <div className="flex flex-col md:flex-row justify-between md:gap-10">
-          <div className="w-full md:w-1/3 p-3">
-          <header className="space-y-1 mb-5">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <section>
+            <header className="space-y-1 mb-5">
               <h2 className="font-bold text-gray-900">Selamat Datang Calon Mahasiswa Baru!</h2>
               <p className="text-sm text-gray-700">Berikut ini adalah halaman informasi biodata kamu. Silahkan untuk diisi selengkap mungkin untuk syarat mengikuti E-Assessment.</p>
             </header>
@@ -273,9 +284,22 @@ const Biodata = () => {
                   </li>
                 </ul>
               </div>
+              { 
+                scholarship ? (
+                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-lg text-sm">
+                    <i className="fa-solid fa-pen"></i>
+                    <span>Kerjakan E-Assessment</span>
+                  </Link>
+                ):(
+                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-lg text-sm">
+                    <i className="fa-solid fa-circle-xmark"></i>
+                    <span>Persyaratan Belum Lengkap</span>
+                  </button>
+                )
+              }
             </div>
-          </div>
-          <form onSubmit={handleUpdate} className="w-full md:w-2/3 p-3">
+          </section>
+          <form onSubmit={handleUpdate}>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">

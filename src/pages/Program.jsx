@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../templates/Navbar.jsx";
+import { Link } from "react-router-dom";
 
 const Program = () => {
   const [student, setStudent] = useState({});
   const [program, setProgram] = useState("");
   const [programs, setPrograms] = useState([]);
   const [programSecond, setProgramSecond] = useState("");
+
+  let start = true;
+  const [scholarship, setScholarship] = useState(false);
 
   const [errors, setErrors] = useState({
     program: [],
@@ -25,6 +29,13 @@ const Program = () => {
         setStudent(response.data.applicant);
         setProgram(response.data.applicant.program);
         setProgramSecond(response.data.applicant.program_second);
+
+        let applicant = response.data.applicant;
+        let fileuploaded = response.data.fileuploaded;
+        let files = fileuploaded.filter((file) => { return file.namefile == "foto" && file.namefile == "akta-kelahiran" && file.namefile == "kartu-keluarga" })
+        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && files) {
+          setScholarship(true);
+        }
       })
       .catch((error) => {
         if (error.response.status == 401) {
@@ -100,8 +111,8 @@ const Program = () => {
     <section className="bg-white">
       <div className="container mx-auto px-5">
         <Navbar />
-        <div className="flex flex-col md:flex-row justify-between md:gap-10">
-          <div className="w-full md:w-1/3 p-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+          <section>
             <header className="space-y-1 mb-5">
               <h2 className="font-bold text-gray-900">Selamat Datang Calon Mahasiswa Baru!</h2>
               <p className="text-sm text-gray-700">Berikut ini adalah halaman informasi biodata kamu. Silahkan untuk diisi selengkap mungkin untuk syarat mengikuti E-Assessment.</p>
@@ -133,14 +144,29 @@ const Program = () => {
                   </li>
                 </ul>
               </div>
-            </div>
-          </div>
 
-          <form onSubmit={handleUpdate} className="w-full md:w-2/3 p-3">
+              {
+                scholarship ? (
+                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-lg text-sm">
+                    <i className="fa-solid fa-pen"></i>
+                    <span>Kerjakan E-Assessment</span>
+                  </Link>
+                ) : (
+                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-lg text-sm">
+                    <i className="fa-solid fa-circle-xmark"></i>
+                    <span>Persyaratan Belum Lengkap</span>
+                  </button>
+                )
+              }
+
+            </div>
+          </section>
+
+          <form onSubmit={handleUpdate}>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Program Studi Pilihan 1:{" "}
+                  Program Studi Pilihan 1: <br />
                   <span className="underline text-md font-bold">{program}</span>
                 </label>
                 <select
@@ -190,7 +216,7 @@ const Program = () => {
               </div>
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Program Studi Pilihan 2:{" "}
+                  Program Studi Pilihan 2:<br />
                   <span className="underline text-md font-bold">
                     {programSecond}
                   </span>
