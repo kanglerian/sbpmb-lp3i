@@ -27,7 +27,7 @@ const Program = () => {
         setProgramSecond(response.data.applicant.program_second);
       })
       .catch((error) => {
-        if(error.response.status == 401){
+        if (error.response.status == 401) {
           localStorage.removeItem('token');
           navigate('/');
         } else {
@@ -62,11 +62,11 @@ const Program = () => {
         {
           program: program == 0 ? "" : program,
           program_second: programSecond == 0 ? "" : programSecond,
-        },{
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+        }, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
+      }
       )
       .then((res) => {
         alert("Data program studi sudah diperbarui!");
@@ -102,14 +102,38 @@ const Program = () => {
         <Navbar />
         <div className="flex flex-col md:flex-row justify-between md:gap-10">
           <div className="w-full md:w-1/3 p-3">
-            <p>
-              Selamat datang di situs resmi Seleksi Beasiswa Penerimaan
-              Mahasiswa Baru (SBPMB) Politeknik LP3I Kampus Tasikmalaya, tempat
-              di mana langkah pertama menuju perjalanan pendidikan yang gemilang
-              dimulai. Kami dengan tulus menyambut Anda untuk bergabung dalam
-              perjalanan pendidikan yang penuh inspirasi dan peluang tak
-              terbatas.
-            </p>
+            <header className="space-y-1 mb-5">
+              <h2 className="font-bold text-gray-900">Selamat Datang Calon Mahasiswa Baru!</h2>
+              <p className="text-sm text-gray-700">Berikut ini adalah halaman informasi biodata kamu. Silahkan untuk diisi selengkap mungkin untuk syarat mengikuti E-Assessment.</p>
+            </header>
+            <div className="bg-white border border-gray-200 p-6 rounded-xl space-y-2">
+              <header>
+                <h2 className="font-bold text-gray-900">Informasi Persyaratan: </h2>
+                <p className="text-sm text-gray-700">Silahkan lengkapi untuk persyaratan beasiswa.</p>
+              </header>
+              <hr />
+              <div className="space-y-2 py-2">
+                <h5 className="text-sm text-gray-900 font-bold">Program Studi</h5>
+                <ul className="space-y-2 text-sm list-disc ml-5">
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Program 1</span>
+                    {student.program ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                  <li className="space-x-2">
+                    <span className="text-gray-900">Program 2</span>
+                    {student.program_second ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
 
           <form onSubmit={handleUpdate} className="w-full md:w-2/3 p-3">

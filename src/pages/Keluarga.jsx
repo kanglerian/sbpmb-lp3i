@@ -188,9 +188,170 @@ const Keluarga = () => {
         <Navbar />
         <form onSubmit={handleUpdate} className="w-full">
           <div className="flex flex-col md:flex-row justify-between">
-            <div className="w-full md:w-1/2 p-3">
-              <h2 className="mb-5 font-bold text-2xl">Biodata Ayah</h2>
+            <div className="w-full md:w-1/3 p-3">
+              <header className="space-y-1 mb-5">
+                <h2 className="font-bold text-gray-900">Selamat Datang Calon Mahasiswa Baru!</h2>
+                <p className="text-sm text-gray-700">Berikut ini adalah halaman informasi biodata kamu. Silahkan untuk diisi selengkap mungkin untuk syarat mengikuti E-Assessment.</p>
+              </header>
+              <div className="bg-white border border-gray-200 p-6 rounded-xl space-y-2">
+                <header>
+                  <h2 className="font-bold text-gray-900">Informasi Persyaratan: </h2>
+                  <p className="text-sm text-gray-700">Silahkan lengkapi untuk persyaratan beasiswa.</p>
+                </header>
+                <hr />
+                <div className="space-y-2 py-2">
+                  <h5 className="text-sm text-gray-900 font-bold">Biodata Ayah</h5>
+                  <ul className="space-y-2 text-sm list-disc ml-5">
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Nama Lengkap</span>
+                        {student.father && student.father.name ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Tempat Lahir</span>
+                        {student.father && student.father.place_of_birth ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Tanggal Lahir</span>
+                        {student.father && student.father.date_of_birth ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Pendidikan Terakhir</span>
+                        {student.father && student.father.education ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Pekerjaan</span>
+                        {student.father && student.father.job ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Alamat</span>
+                        {student.father && student.father.address ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                  </ul>
+                </div>
 
+                <hr />
+                <div className="space-y-2 py-2">
+                  <h5 className="text-sm text-gray-900 font-bold">Biodata Ibu</h5>
+                  <ul className="space-y-2 text-sm list-disc ml-5">
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Nama Lengkap</span>
+                        {student.mother && student.mother.name ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Tempat Lahir</span>
+                        {student.mother && student.mother.place_of_birth ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Tanggal Lahir</span>
+                        {student.mother && student.mother.date_of_birth ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Pendidikan Terakhir</span>
+                        {student.mother && student.mother.education ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Pekerjaan</span>
+                        {student.mother && student.mother.job ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Alamat</span>
+                        {student.mother && student.mother.address ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                  </ul>
+                </div>
+
+                <hr />
+                <div className="space-y-2 py-2">
+                  <h5 className="text-sm text-gray-900 font-bold">Penghasilan</h5>
+                  <ul className="space-y-2 text-sm list-disc ml-5">
+                    {student &&
+                      <li className="space-x-2">
+                        <span className="text-gray-900">Penghasilan Orang Tua</span>
+                        {student.income_parent ? (
+                         <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                        ) : (
+                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                        )}
+                      </li>
+                    }
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="w-full md:w-1/3 p-3">
+              <h2 className="mb-5 font-bold text-2xl">Biodata Ayah</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
                 <div className="mb-5">
                   <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -415,7 +576,7 @@ const Keluarga = () => {
               </div>
             </div>
 
-            <div className="w-full md:w-1/2 p-3">
+            <div className="w-full md:w-1/3 p-3">
               <h2 className="mb-5 font-bold text-2xl">Biodata Ibu</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">

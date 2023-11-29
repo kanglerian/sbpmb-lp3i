@@ -178,7 +178,7 @@ const Biodata = () => {
         <Navbar />
         <div className="flex flex-col md:flex-row justify-between md:gap-10">
           <div className="w-full md:w-1/3 p-3">
-            <header className="space-y-1 mb-5">
+          <header className="space-y-1 mb-5">
               <h2 className="font-bold text-gray-900">Selamat Datang Calon Mahasiswa Baru!</h2>
               <p className="text-sm text-gray-700">Berikut ini adalah halaman informasi biodata kamu. Silahkan untuk diisi selengkap mungkin untuk syarat mengikuti E-Assessment.</p>
             </header>
@@ -266,28 +266,6 @@ const Biodata = () => {
                   <li className="space-x-2">
                     <span className="text-gray-900">No. Whatsapp</span>
                     {student.phone ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
-                  </li>
-                </ul>
-              </div>
-              <hr />
-              <div className="space-y-2 py-2">
-                <h5 className="text-sm text-gray-900 font-bold">Program Studi</h5>
-                <ul className="space-y-2 text-sm list-disc ml-5">
-                  <li className="space-x-2">
-                    <span className="text-gray-900">Program studi 1</span>
-                    {student.program ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
-                  </li>
-                  <li className="space-x-2">
-                    <span className="text-gray-900">Program studi 2</span>
-                    {student.program_second ? (
                       <i className="text-emerald-500 fa-solid fa-circle-check"></i>
                     ) : (
                       <i className="text-red-500 fa-solid fa-circle-xmark"></i>
