@@ -183,7 +183,6 @@ const TestSchoolarship = () => {
             setIdUpdate(null);
             getQuestions(identity);
             setRecordStudent(null);
-            setButtonActive(false);
             coinPlay();
           })
           .catch((error) => {
@@ -196,7 +195,6 @@ const TestSchoolarship = () => {
             .then((response) => {
               getQuestions(identity);
               setRecordStudent(null);
-              setButtonActive(false);
               coinPlay();
             })
             .catch((error) => {
@@ -204,6 +202,7 @@ const TestSchoolarship = () => {
             });
         }
       }
+      setButtonActive(false);
     } else {
       getQuestions(identity);
     }
