@@ -132,7 +132,7 @@ const Register = () => {
 
   return (
     <div className="bg-gray-50">
-      <section className="flex flex-col container justify-center items-center mx-auto md:h-screen gap-5 p-5">
+      <section className="flex flex-col container justify-center items-center mx-auto gap-5 p-5">
         <Link to={`/`}>
           <img src={logoLP3I} className="w-52" />
         </Link>
