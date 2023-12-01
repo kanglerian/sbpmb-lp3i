@@ -162,11 +162,11 @@ const Program = () => {
             </div>
           </section>
 
-          <form onSubmit={handleUpdate}>
+          <form onSubmit={handleUpdate} className="pb-5">
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
               <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Program Studi Pilihan 1: <br />
+                <label className="flex flex-col gap-1 block mb-3 text-sm font-medium text-gray-900">
+                  <span>Program Studi Pilihan 2:</span>
                   <span className="underline text-md font-bold">{program}</span>
                 </label>
                 <select
@@ -215,8 +215,8 @@ const Program = () => {
                 }
               </div>
               <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Program Studi Pilihan 2:<br />
+                <label className="flex flex-col gap-1 block mb-3 text-sm font-medium text-gray-900">
+                  <span>Program Studi Pilihan 2:</span>
                   <span className="underline text-md font-bold">
                     {programSecond}
                   </span>

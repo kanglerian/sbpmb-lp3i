@@ -220,7 +220,7 @@ const Berkas = () => {
               }
             </div>
           </div>
-          <div className="w-full md:w-1/2 p-6 bg-white border border-gray-200 rounded-2xl mx-auto mt-5">
+          <div className="w-full md:w-1/2 p-6 bg-white border border-gray-200 rounded-2xl mx-auto my-5">
             <div className="relative overflow-x-auto">
               <table className="w-full text-sm text-left text-gray-500">
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50">

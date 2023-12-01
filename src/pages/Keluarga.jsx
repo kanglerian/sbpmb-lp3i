@@ -197,7 +197,7 @@ const Keluarga = () => {
       <div className="container mx-auto px-5">
         <Navbar />
 
-        <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-3 gap-10">
+        <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-5">
           <section>
             <header className="space-y-1 mb-5">
               <h2 className="font-bold text-gray-900">Selamat Datang Calon Mahasiswa Baru!</h2>

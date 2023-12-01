@@ -115,7 +115,7 @@ const Scholarship = () => {
             <h2 className="text-gray-900 text-xl font-bold">Tes Seleksi Beasiswa</h2>
             <p className="text-sm text-gray-600">{message}</p>
           </header>
-          <div className="grid grid-cols-2 md:grid-cols-3">
+          <div className="grid grid-cols-1 md:grid-cols-3">
             {histories.length > 0 &&
               histories.map((history) => (
                 <button key={history.id} className="p-2">

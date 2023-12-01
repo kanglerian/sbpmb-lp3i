@@ -258,7 +258,7 @@ const TestSchoolarship = () => {
         <div className="flex flex-col md:flex-row">
           <form
             onSubmit={handleSubmit}
-            className="order-2 md:order-none w-full md:w-9/12 md:rounded-xl bg-gray-100 p-6"
+            className="order-1 md:order-none w-full md:w-9/12 md:rounded-xl bg-gray-100 p-6"
           >
             <header className="flex items-center justify-between">
               <h2 className="font-medium text-gray-900">
@@ -329,7 +329,7 @@ const TestSchoolarship = () => {
                 ))}
             </div>
           </form>
-          <div className="order-1 md:order-none w-full md:w-3/12 space-y-4 px-6 pb-6">
+          <div className="order-2 md:order-none w-full md:w-3/12 space-y-4 p-6">
             <header className="text-center space-y-1">
               <h1 className="font-bold text-gray-900">Berhenti Ujian.</h1>
               <p className="text-xs text-gray-800">

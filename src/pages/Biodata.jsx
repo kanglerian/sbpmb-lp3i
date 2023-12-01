@@ -299,7 +299,7 @@ const Biodata = () => {
               }
             </div>
           </section>
-          <form onSubmit={handleUpdate}>
+          <form onSubmit={handleUpdate} className="pb-5">
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
