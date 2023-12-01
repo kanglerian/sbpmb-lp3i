@@ -38,47 +38,46 @@ const Register = () => {
     if (password != passwordConf) {
       return alert("Kata sandi tidak sama!");
     }
-
-    // await axios
-    //   .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/register`, {
-    //     name: name,
-    //     nisn: nisn,
-    //     email: email,
-    //     phone: phone,
-    //     school: school,
-    //     year: year,
-    //     password: password,
-    //     password_confirmation: passwordConf,
-    //   })
-    //   .then((response) => {
-    //     localStorage.setItem("token", response.data.token);
-    //     alert('Berhasil mendaftar!');
-    //     navigate('/dashboard');
-    //   })
-    //   .catch((error) => {
-    //     if (error.code !== 'ERR_NETWORK') {
-    //       const nameError = error.response.data.message.name || [];
-    //       const nisnError = error.response.data.message.nisn || [];
-    //       const schoolError = error.response.data.message.school || [];
-    //       const emailError = error.response.data.message.email || [];
-    //       const phoneError = error.response.data.message.phone || [];
-    //       const passwordError = error.response.data.message.password || [];
-    //       const yearError = error.response.data.message.year || [];
-    //       const newAllErrors = {
-    //         name: nameError,
-    //         nisn: nisnError,
-    //         school: schoolError,
-    //         email: emailError,
-    //         phone: phoneError,
-    //         password: passwordError,
-    //         year: yearError,
-    //       };
-    //       setErrors(newAllErrors);
-    //       alert(error.response.data.message);
-    //     } else {
-    //       alert('Server sedang bermasalah.')
-    //     }
-    //   });
+    await axios
+      .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/register`, {
+        name: name,
+        nisn: nisn,
+        email: email,
+        phone: phone,
+        school: school,
+        year: year,
+        password: password,
+        password_confirmation: passwordConf,
+      })
+      .then((response) => {
+        localStorage.setItem("token", response.data.token);
+        alert('Berhasil mendaftar!');
+        navigate('/dashboard');
+      })
+      .catch((error) => {
+        if (error.code !== 'ERR_NETWORK') {
+          const nameError = error.response.data.message.name || [];
+          const nisnError = error.response.data.message.nisn || [];
+          const schoolError = error.response.data.message.school || [];
+          const emailError = error.response.data.message.email || [];
+          const phoneError = error.response.data.message.phone || [];
+          const passwordError = error.response.data.message.password || [];
+          const yearError = error.response.data.message.year || [];
+          const newAllErrors = {
+            name: nameError,
+            nisn: nisnError,
+            school: schoolError,
+            email: emailError,
+            phone: phoneError,
+            password: passwordError,
+            year: yearError,
+          };
+          setErrors(newAllErrors);
+          alert(error.response.data.message);
+        } else {
+          alert('Server sedang bermasalah.')
+        }
+      });
   };
 
   const getSchools = async () => {
@@ -112,7 +111,7 @@ const Register = () => {
   const handlePhoneChange = (e) => {
     let input = e.target.value;
     if (input.startsWith("62")) {
-      if (input.length === 3 && input[2] === "0") {
+      if (input.length === 3 && (input[2] === "0"  || input[2] !== "8" )) {
         setPhone("62");
       } else {
         setPhone(input);
