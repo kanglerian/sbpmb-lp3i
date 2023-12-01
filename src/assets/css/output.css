@@ -2806,10 +2806,6 @@ input:checked + .toggle-bg {
   padding: 0.625rem;
 }
 
-.p-3 {
-  padding: 0.75rem;
-}
-
 .p-4 {
   padding: 1rem;
 }
@@ -5801,10 +5797,6 @@ input:checked + .toggle-bg {
     width: 33.333333%;
   }
 
-  .md\:w-2\/3 {
-    width: 66.666667%;
-  }
-
   .md\:w-3\/12 {
     width: 25%;
   }
@@ -5851,10 +5843,6 @@ input:checked + .toggle-bg {
 
   .md\:justify-between {
     justify-content: space-between;
-  }
-
-  .md\:gap-10 {
-    gap: 2.5rem;
   }
 
   .md\:gap-4 {

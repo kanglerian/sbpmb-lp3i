@@ -74,7 +74,7 @@ const Register = () => {
             year: yearError,
           };
           setErrors(newAllErrors);
-          alert("Gagal membuat akun!");
+          alert(error.response.data.message);
         } else {
           alert('Server sedang bermasalah.')
         }
