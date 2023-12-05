@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import logoLP3I from "../../assets/logo/lp3i.svg";
 import axios from "axios";
+import Loading from "../../components/Loading";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,6 +14,7 @@ const Login = () => {
   const [icon, setIcon] = useState(false);
 
   const handleLogin = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     await axios
@@ -20,8 +23,8 @@ const Login = () => {
         password: password,
       })
       .then((res) => {
-        console.log(res);
         localStorage.setItem("token", res.data.token);
+        setLoading(false);
         navigate("/dashboard");
       })
       .catch((error) => {
@@ -30,6 +33,7 @@ const Login = () => {
         } else {
           console.log(error);
         }
+        setLoading(false);
       });
   };
 
@@ -99,8 +103,9 @@ const Login = () => {
           <div className="flex flex-col md:flex-row items-center gap-3">
             <button
               type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+              className="flex items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
             >
+              {loading && <Loading width={5} height={5} fill="fill-blue-500" color="text-white" />}
               Masuk
             </button>
             <Link to={`/register`}>

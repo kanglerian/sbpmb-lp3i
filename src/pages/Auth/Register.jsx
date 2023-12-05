@@ -3,9 +3,11 @@ import { useNavigate, Link } from "react-router-dom";
 import CreatableSelect from "react-select/creatable";
 import logoLP3I from "../../assets/logo/lp3i.svg";
 import axios from "axios";
+import Loading from "../../components/Loading";
 
 const Register = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [icon, setIcon] = useState(false);
 
@@ -33,15 +35,19 @@ const Register = () => {
   });
 
   const handleRegister = async (e) => {
+    setLoading(true);
     e.preventDefault();
 
     if (password != passwordConf) {
+      setLoading(false);
       return alert("Kata sandi tidak sama!");
     }
     if (phone.length < 11) {
+      setLoading(false);
       return alert("No. Whatsapp / Telpon tidak valid!");
     }
     if (nisn.length < 10) {
+      setLoading(false);
       return alert("No. NISN tidak valid. Cek kembali!");
     }
     await axios
@@ -58,6 +64,7 @@ const Register = () => {
       .then((response) => {
         localStorage.setItem("token", response.data.token);
         alert('Berhasil mendaftar!');
+        setLoading(false);
         navigate('/dashboard');
       })
       .catch((error) => {
@@ -79,10 +86,15 @@ const Register = () => {
             year: yearError,
           };
           setErrors(newAllErrors);
-          alert(error.response.data.message);
+          if(error.response.data.message){
+            if(typeof(error.response.data.message) == 'string'){
+              alert(error.response.data.message);
+            }
+          }
         } else {
           alert('Server sedang bermasalah.')
         }
+        setLoading(false);
       });
   };
 
@@ -426,8 +438,9 @@ const Register = () => {
           <div className="flex flex-col md:flex-row items-center gap-5">
             <button
               type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+              className="flex items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
             >
+              { loading && <Loading width={5} height={5} fill="fill-blue-500" color="text-white" /> }
               Daftar
             </button>
             <Link to={`/login`}>

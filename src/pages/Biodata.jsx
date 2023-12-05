@@ -13,6 +13,7 @@ const Biodata = () => {
   const [scholarship, setScholarship] = useState(false);
 
   const [student, setStudent] = useState({});
+  const [nik, setNik] = useState("");
   const [nisn, setNisn] = useState("");
   const [kip, setKip] = useState("");
   const [name, setName] = useState("");
@@ -32,6 +33,7 @@ const Biodata = () => {
   const [errors, setErrors] = useState({
     phone: [],
     email: [],
+    nik: [],
     nisn: [],
     name: [],
     religion: [],
@@ -52,6 +54,7 @@ const Biodata = () => {
       })
       .then((response) => {
         setStudent(response.data.applicant);
+        setNik(response.data.applicant.nik);
         setNisn(response.data.applicant.nisn);
         setKip(response.data.applicant.kip);
         setName(response.data.applicant.name);
@@ -127,6 +130,7 @@ const Biodata = () => {
     e.preventDefault();
     await axios
       .patch(`https://database.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`, {
+        nik: nik,
         nisn: nisn,
         kip: kip,
         name: name,
@@ -153,6 +157,7 @@ const Biodata = () => {
         if (error.code !== 'ERR_NETWORK') {
           const phoneError = error.response.data.message.phone || [];
           const emailError = error.response.data.message.email || [];
+          const nikError = error.response.data.message.nik || [];
           const nisnError = error.response.data.message.nisn || [];
           const nameError = error.response.data.message.name || [];
           const religionError = error.response.data.message.religion || [];
@@ -164,6 +169,7 @@ const Biodata = () => {
           const newAllErrors = {
             phone: phoneError,
             email: emailError,
+            nik: nikError,
             nisn: nisnError,
             name: nameError,
             religion: religionError,
@@ -210,6 +216,14 @@ const Biodata = () => {
               <div className="space-y-2 py-2">
                 <h5 className="text-sm text-gray-900 font-bold">Data Diri</h5>
                 <ul className="space-y-2 text-sm list-disc ml-5">
+                  <li className="space-x-2">
+                    <span className="text-gray-900">NIK</span>
+                    {student.nik ? (
+                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
+                    ) : (
+                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
+                    )}
+                  </li>
                   <li className="space-x-2">
                     <span className="text-gray-900">NISN</span>
                     {student.nisn ? (
@@ -308,6 +322,33 @@ const Biodata = () => {
             </div>
           </section>
           <form onSubmit={handleUpdate} className="pb-5">
+          <div className="grid grid-cols-1 md:gap-4">
+              <div className="mb-5">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
+                  Nomor Induk Kependudukan (NIK)
+                </label>
+                <input
+                  type="number"
+                  value={nik}
+                  onChange={(e) => setNik(e.target.value)}
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  placeholder="Nomor Induk Kependudukan"
+                />
+                {
+                  errors.nik.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.nik.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
+              </div>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
