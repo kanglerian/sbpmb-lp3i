@@ -6,8 +6,10 @@ import moment from "moment-timezone";
 
 import "../assets/css/datatables-custom.css";
 import Navbar from "../templates/Navbar.jsx";
+import Loading from "../components/Loading.jsx";
 
 const Organisasi = () => {
+  const [loading, setLoading] = useState(false);
   const [student, setStudent] = useState({});
   const [organizations, setOrganizations] = useState([]);
   const [modal, setModal] = useState(false);
@@ -46,6 +48,7 @@ const Organisasi = () => {
   };
 
   const addOrganization = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (name && position && year) {
       await axios
@@ -70,6 +73,7 @@ const Organisasi = () => {
           setYear("");
           getUser();
           setModal(false);
+          setLoading(false);
         })
         .catch((error) => {
           if (error.code !== 'ERR_NETWORK') {
@@ -83,14 +87,17 @@ const Organisasi = () => {
             };
             setErrors(newAllErrors);
             alert("Data gagal diperbarui!");
+            setLoading(false);
           } else {
             alert('Server sedang bermasalah.')
+            setLoading(false);
           }
         });
     }
   };
 
   const deleteOrganization = async (id) => {
+    setLoading(true);
     let confirmDelete = confirm(
       "Apakah anda yakin ingin menghapus organisasi?"
     );
@@ -104,6 +111,7 @@ const Organisasi = () => {
         .then((res) => {
           alert(res.data.message);
           getUser();
+          setLoading(false);
         })
         .catch((err) => {
           let networkError = err.message == "Network Error";
@@ -112,6 +120,7 @@ const Organisasi = () => {
               ? "Mohon maaf, ada kesalahan di sisi Server."
               : err.message
           );
+          setLoading(false);
         });
     }
   };
@@ -213,9 +222,8 @@ const Organisasi = () => {
         data-modal-backdrop="static"
         tabIndex={-1}
         aria-hidden="true"
-        className={`${
-          modal ? "" : "hidden"
-        } flex justify-center items-center fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}
+        className={`${modal ? "" : "hidden"
+          } flex justify-center items-center fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}
       >
         <div className="fixed top-0 left-0 right-0 bottom-0 bg-black opacity-50"></div>
         <div className="relative w-full max-w-2xl max-h-full">
@@ -333,8 +341,9 @@ const Organisasi = () => {
               <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
                 <button
                   type="submit"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  className="flex items-center gap-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
+                  {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}
                   Tambahkan
                 </button>
                 <button

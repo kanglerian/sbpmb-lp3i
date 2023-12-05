@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
+import Loading from "../components/Loading.jsx";
 
 const Berkas = () => {
 
@@ -15,9 +16,12 @@ const Berkas = () => {
   const [fileUpload, setFileUpload] = useState([]);
   const [userUpload, setUserUpload] = useState([]);
 
+  const [loading, setLoading] = useState(false);
+
   const token = localStorage.getItem("token");
 
   const handleFileChange = (e) => {
+    setLoading(true);
     const targetFile = e.target.files[0];
     const targetId = e.target.dataset.id;
     const targetNamefile = e.target.dataset.namefile;
@@ -52,15 +56,18 @@ const Berkas = () => {
               )
               .then((res) => {
                 alert("Berhasil diupload!");
+                setLoading(false);
                 getUser();
               })
               .catch((err) => {
                 alert("Mohon maaf, ada kesalahan di sisi Server.");
+                setLoading(false);
                 console.log(err.message);
               });
           })
           .catch((err) => {
             alert("Mohon maaf, ada kesalahan di sisi Server.");
+            setLoading(false);
           });
       };
 
@@ -69,7 +76,7 @@ const Berkas = () => {
   };
 
   const handleDelete = async (user) => {
-    console.log(user);
+    setLoading(true);
     if (confirm(`Apakah kamu yakin akan menghapus data?`)) {
       let data = {
         identity: user.identity_user,
@@ -94,14 +101,17 @@ const Berkas = () => {
             )
             .then((res) => {
               alert(res.data.message);
+              setLoading(false);
               getUser();
             })
             .catch((err) => {
               console.log(err.message);
+              setLoading(false);
             });
         })
         .catch((err) => {
           console.log(err.message);
+          setLoading(false);
         });
     }
   };
@@ -117,11 +127,12 @@ const Berkas = () => {
         setFileUpload(response.data.fileupload);
         setUserUpload(response.data.userupload);
         setStudent(response.data.applicant);
-
         let applicant = response.data.applicant;
         let fileuploaded = response.data.fileuploaded;
-        let files = fileuploaded.filter((file) => { return file.namefile == "foto" && file.namefile == "akta-kelahiran" && file.namefile == "kartu-keluarga" })
-        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && files) {
+        let foto = fileuploaded.find((file) => { return file.namefile == "foto" });
+        let akta = fileuploaded.find((file) => { return file.namefile == "akta-kelahiran" });
+        let keluarga = fileuploaded.find((file) => { return file.namefile == "kartu-keluarga" });
+        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
           setScholarship(true);
         }
       })
@@ -193,7 +204,7 @@ const Berkas = () => {
                   {
                     userUpload && (
                       <li className="space-x-2">
-                        <span className="text-gray-900">Kartu Kelaurga</span>
+                        <span className="text-gray-900">Kartu Keluarga</span>
                         {userUpload.find((upload) => upload.fileupload.namefile === 'kartu-keluarga') ? (
                           <i className="text-emerald-500 fa-solid fa-circle-check"></i>
                         ) : (
@@ -204,7 +215,6 @@ const Berkas = () => {
                   }
                 </ul>
               </div>
-
               {
                 scholarship ? (
                   <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-lg text-sm">
@@ -243,7 +253,7 @@ const Berkas = () => {
                         >
                           {user.fileupload.name}
                         </th>
-                        <td className="px-6 py-4 space-x-1">
+                        <td className="flex items-center px-6 py-4 space-x-1">
                           <button className="inline-block bg-green-500 hover:bg-green-600 px-3 py-1 rounded-md text-xs text-white">
                             <i className="fa-solid fa-circle-check" />
                           </button>
@@ -272,7 +282,8 @@ const Berkas = () => {
                           >
                             {file.name}
                           </th>
-                          <td className="px-6 py-4">
+                          <td className="flex items-start gap-3 px-6 py-4">
+                            {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}
                             <form
                               onSubmit={handleUpload}
                               encType="multipart/form-data"

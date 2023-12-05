@@ -1198,10 +1198,6 @@ input:checked + .toggle-bg {
   order: 2;
 }
 
-.m-2 {
-  margin: 0.5rem;
-}
-
 .-mx-1 {
   margin-left: -0.25rem;
   margin-right: -0.25rem;
@@ -1777,10 +1773,6 @@ input:checked + .toggle-bg {
 
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
-}
-
-.grid-cols-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .grid-cols-4 {
@@ -2781,6 +2773,30 @@ input:checked + .toggle-bg {
   fill: #E3A008;
 }
 
+.fill-blue-600 {
+  fill: #1C64F2;
+}
+
+.fill-blue-500 {
+  fill: #3F83F8;
+}
+
+.fill-sky-500 {
+  fill: #0ea5e9;
+}
+
+.fill-sky-200 {
+  fill: #bae6fd;
+}
+
+.fill-sky-600 {
+  fill: #0284c7;
+}
+
+.fill-sky-400 {
+  fill: #38bdf8;
+}
+
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -2820,10 +2836,6 @@ input:checked + .toggle-bg {
 
 .p-6 {
   padding: 1.5rem;
-}
-
-.p-3 {
-  padding: 0.75rem;
 }
 
 .px-0 {
@@ -2906,11 +2918,6 @@ input:checked + .toggle-bg {
   padding-bottom: 1.25rem;
 }
 
-.py-6 {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
-
 .pb-2 {
   padding-bottom: 0.5rem;
 }
@@ -2919,8 +2926,8 @@ input:checked + .toggle-bg {
   padding-bottom: 0.625rem;
 }
 
-.pb-6 {
-  padding-bottom: 1.5rem;
+.pb-5 {
+  padding-bottom: 1.25rem;
 }
 
 .pl-0 {
@@ -2985,10 +2992,6 @@ input:checked + .toggle-bg {
 
 .pt-5 {
   padding-top: 1.25rem;
-}
-
-.pb-5 {
-  padding-bottom: 1.25rem;
 }
 
 .text-left {
@@ -5800,10 +5803,6 @@ input:checked + .toggle-bg {
 
   .md\:h-full {
     height: 100%;
-  }
-
-  .md\:h-screen {
-    height: 100vh;
   }
 
   .md\:w-1\/2 {

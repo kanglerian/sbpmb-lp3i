@@ -7,9 +7,6 @@ const Navbar = () => {
   let location = useLocation();
   const navigate = useNavigate();
 
-  let start = true;
-  const [scholarship, setScholarship] = useState(false);
-
   const token = localStorage.getItem("token");
   const id = localStorage.getItem("id");
   const timeLeft = localStorage.getItem("timeLeft");
@@ -22,12 +19,7 @@ const Navbar = () => {
         },
       })
       .then((response) => {
-        let applicant = response.data.applicant;
-        let fileuploaded = response.data.fileuploaded;
-        let files = fileuploaded.filter((file) => { return file.namefile == "foto" && file.namefile == "akta-kelahiran" && file.namefile == "kartu-keluarga" })
-        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && files) {
-          setScholarship(true);
-        }
+        console.log('sip');
       })
       .catch((error) => {
         if (error.response.status == 401) {
@@ -171,20 +163,6 @@ const Navbar = () => {
                 Upload Berkas
               </Link>
             </li>
-            {
-              scholarship &&
-              <li>
-                <Link
-                  to={`/scholarship`}
-                  className={`${location.pathname == "/scholarship"
-                    ? "text-white bg-blue-700 md:bg-transparent md:text-blue-700"
-                    : "text-gray-900 hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700"
-                    } block py-2 pl-3 pr-4 rounded md:p-0`}
-                >
-                  E-Assesment
-                </Link>
-              </li>
-            }
             <li>
               <button
                 onClick={logoutHandler}

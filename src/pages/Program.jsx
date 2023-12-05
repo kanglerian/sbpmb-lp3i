@@ -2,12 +2,15 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../templates/Navbar.jsx";
 import { Link } from "react-router-dom";
+import Loading from "../components/Loading.jsx";
 
 const Program = () => {
   const [student, setStudent] = useState({});
   const [program, setProgram] = useState("");
   const [programs, setPrograms] = useState([]);
   const [programSecond, setProgramSecond] = useState("");
+
+  const [loading, setLoading] = useState(false);
 
   let start = true;
   const [scholarship, setScholarship] = useState(false);
@@ -32,8 +35,10 @@ const Program = () => {
 
         let applicant = response.data.applicant;
         let fileuploaded = response.data.fileuploaded;
-        let files = fileuploaded.filter((file) => { return file.namefile == "foto" && file.namefile == "akta-kelahiran" && file.namefile == "kartu-keluarga" })
-        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && files) {
+        let foto = fileuploaded.find((file) => { return file.namefile == "foto" });
+        let akta = fileuploaded.find((file) => { return file.namefile == "akta-kelahiran" });
+        let keluarga = fileuploaded.find((file) => { return file.namefile == "kartu-keluarga" });
+        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
           setScholarship(true);
         }
       })
@@ -66,6 +71,7 @@ const Program = () => {
   };
 
   const handleUpdate = async (e) => {
+    setLoading(true);
     e.preventDefault();
     await axios
       .patch(
@@ -81,6 +87,7 @@ const Program = () => {
       )
       .then((res) => {
         alert("Data program studi sudah diperbarui!");
+        setLoading(false);
         getUser();
       })
       .catch((error) => {
@@ -93,8 +100,10 @@ const Program = () => {
           };
           setErrors(newAllErrors);
           alert("Data gagal diperbarui!");
+          setLoading(false);
         } else {
           alert('Server sedang bermasalah.')
+          setLoading(false);
         }
       });
   };
@@ -269,8 +278,9 @@ const Program = () => {
 
             <button
               type="submit"
-              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
+              className="flex items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
+              {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}
               Perbarui Data
             </button>
           </form>

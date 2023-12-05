@@ -6,8 +6,10 @@ import moment from "moment-timezone";
 
 import "../assets/css/datatables-custom.css";
 import Navbar from "../templates/Navbar.jsx";
+import Loading from "../components/Loading.jsx";
 
 const Prestasi = () => {
+  const [loading, setLoading] = useState(false);
   const [student, setStudent] = useState({});
   const [achievements, setAchievements] = useState([]);
   const [modal, setModal] = useState(false);
@@ -48,6 +50,7 @@ const Prestasi = () => {
   };
 
   const addAchievement = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (name && level != 0 && year && result) {
       await axios
@@ -74,6 +77,7 @@ const Prestasi = () => {
           setYear("");
           setResult("");
           setModal(false);
+          setLoading(false);
         })
         .catch((error) => {
           if (error.code !== 'ERR_NETWORK') {
@@ -89,14 +93,17 @@ const Prestasi = () => {
             };
             setErrors(newAllErrors);
             alert("Data gagal diperbarui!");
+            setLoading(false);
           } else {
             alert('Server sedang bermasalah.')
+            setLoading(false);
           }
         });
     }
   };
 
   const deleteAchievement = async (id) => {
+    setLoading(true);
     let confirmDelete = confirm("Apakah anda yakin ingin menghapus prestasi?");
     if (confirmDelete) {
       await axios
@@ -107,6 +114,7 @@ const Prestasi = () => {
         })
         .then((res) => {
           alert(res.data.message);
+          setLoading(false);
           getUser();
         })
         .catch((err) => {
@@ -116,6 +124,7 @@ const Prestasi = () => {
               ? "Mohon maaf, ada kesalahan di sisi Server."
               : err.message
           );
+          setLoading(false);
         });
     }
   };
@@ -375,8 +384,9 @@ const Prestasi = () => {
               <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
                 <button
                   type="submit"
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  className="flex items-center gap-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                 >
+                  {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}
                   Tambahkan
                 </button>
                 <button

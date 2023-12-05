@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../templates/Navbar.jsx";
+import Loading from "../components/Loading.jsx";
 import { useNavigate } from "react-router-dom";
 
 import DattebayoSound from '../assets/sounds/dattebayo.mp3'
@@ -8,6 +9,8 @@ const Scholarship = () => {
   const navigate = useNavigate();
 
   let start = true;
+
+  const [loading, setLoading] = useState(false);
 
   const [identity, setIdentity] = useState(null);
   const [categories, setCategories] = useState([]);
@@ -35,8 +38,10 @@ const Scholarship = () => {
         getHistories(identityVal);
         let applicant = response.data.applicant;
         let fileuploaded = response.data.fileuploaded;
-        let files = fileuploaded.filter((file) => { return file.namefile == "foto" && file.namefile == "akta-kelahiran" && file.namefile == "kartu-keluarga" })
-        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && files) {
+        let foto = fileuploaded.find((file) => { return file.namefile == "foto" });
+        let akta = fileuploaded.find((file) => { return file.namefile == "akta-kelahiran" });
+        let keluarga = fileuploaded.find((file) => { return file.namefile == "kartu-keluarga" });
+        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
           console.log('lengkap');
         } else {
           navigate('/dashboard');
@@ -85,6 +90,7 @@ const Scholarship = () => {
   };
 
   const handleSelect = async (id) => {
+    setLoading(true);
     await axios
       .post(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories`, {
         identity_user: identity,
@@ -92,6 +98,7 @@ const Scholarship = () => {
       })
       .then((response) => {
         navigate("/seleksi-beasiswa", { state: { id: id } });
+        setLoading(false);
         dattebayoPlay();
       })
       .catch((error) => {
@@ -111,8 +118,8 @@ const Scholarship = () => {
       <div className="container mx-auto px-5">
         <Navbar />
         <section className="max-w-7xl mx-auto mt-10">
-          <header className="text-center mb-2 space-y-1">
-            <h2 className="text-gray-900 text-xl font-bold">Tes Seleksi Beasiswa</h2>
+          <header className="flex flex-col justify-center text-center mb-2 space-y-1">
+            <h2 className="flex justify-center items-center gap-2 text-gray-900 text-xl font-bold">Tes Seleksi Beasiswa {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}</h2>
             <p className="text-sm text-gray-600">{message}</p>
           </header>
           <div className="grid grid-cols-1 md:grid-cols-3">
@@ -131,8 +138,9 @@ const Scholarship = () => {
                   onClick={() => handleSelect(category.id)}
                   key={category.id}
                   className="p-2"
+                  disabled={loading}
                 >
-                  <div className="bg-red-500 hover:bg-red-600 text-white p-6 rounded-lg text-sm">
+                  <div className="cursor-pointer bg-red-500 hover:bg-red-600 text-white p-6 rounded-lg text-sm">
                     <span className="mr-2">{category.name}</span>
                     <i className="fa-solid fa-circle-xmark text-white"></i>
                   </div>

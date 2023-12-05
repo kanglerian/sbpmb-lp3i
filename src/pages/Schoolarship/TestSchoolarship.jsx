@@ -6,11 +6,14 @@ import axios from "axios";
 import CointSound from '../../assets/sounds/coin.mp3';
 import GameOverSound from '../../assets/sounds/gameover.mp3';
 import WinSound from '../../assets/sounds/win.mp3';
+import Loading from "../../components/Loading.jsx";
 
 const TestSchoolarship = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const localStorageId = localStorage.getItem("id");
+
+  const [loading, setLoading] = useState(false);
 
   const [buttonActive, setButtonActive] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -168,6 +171,7 @@ const TestSchoolarship = () => {
   };
 
   const handleSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (isSubmitting) {
       return;
@@ -184,9 +188,11 @@ const TestSchoolarship = () => {
             getQuestions(identity);
             setRecordStudent(null);
             coinPlay();
+            setLoading(false);
           })
           .catch((error) => {
             console.log(error);
+            setLoading(false);
           });
       } else {
         if (questions.length > 0) {
@@ -196,9 +202,11 @@ const TestSchoolarship = () => {
               getQuestions(identity);
               setRecordStudent(null);
               coinPlay();
+              setLoading(false);
             })
             .catch((error) => {
               console.log(error);
+              setLoading(false);
             });
         }
       }
@@ -210,9 +218,14 @@ const TestSchoolarship = () => {
   };
 
   const checkMiddleware = () => {
-    localStorage.removeItem("id");
-    localStorage.removeItem("timeLeft");
-    navigate("/scholarship");
+    let confirmAlert = confirm('Yakin gasih mau nyerah?');
+    if(confirmAlert){
+      localStorage.removeItem("id");
+      localStorage.removeItem("timeLeft");
+      navigate("/scholarship");
+    } else {
+      alert('Yowis, mantap nih. Gas terooss! 💪')
+    }
   };
 
   useEffect(() => {
@@ -272,6 +285,7 @@ const TestSchoolarship = () => {
                       type="submit"
                       className="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded-lg text-white flex items-center gap-2"
                     >
+                      { loading && <Loading width={5} height={5} fill="fill-sky-400" color="text-white" />}
                       <span className="text-sm">Lanjutkan</span>
                       <i className="fa-solid fa-chevron-right"></i>
                     </button>
