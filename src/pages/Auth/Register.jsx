@@ -38,6 +38,12 @@ const Register = () => {
     if (password != passwordConf) {
       return alert("Kata sandi tidak sama!");
     }
+    if (phone.length < 11) {
+      return alert("No. Whatsapp / Telpon tidak valid!");
+    }
+    if (nisn.length < 10) {
+      return alert("No. NISN tidak valid. Cek kembali!");
+    }
     await axios
       .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/register`, {
         name: name,
