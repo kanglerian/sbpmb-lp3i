@@ -151,6 +151,19 @@ const Biodata = () => {
       .then((res) => {
         alert("Data sudah diperbarui!");
         setLoading(false);
+        setErrors({
+          phone: [],
+          email: [],
+          nik: [],
+          nisn: [],
+          name: [],
+          religion: [],
+          school: [],
+          year: [],
+          placeOfBirth: [],
+          dateOfBirth: [],
+          address: [],
+        });
         getUser();
       })
       .catch((error) => {
