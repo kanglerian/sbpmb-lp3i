@@ -6,7 +6,7 @@ import Navbar from "../templates/Navbar.jsx";
 import Loading from "../components/Loading.jsx";
 
 const Biodata = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   let start = true;
@@ -34,6 +34,7 @@ const Biodata = () => {
     phone: [],
     email: [],
     nik: [],
+    kip: [],
     nisn: [],
     name: [],
     religion: [],
@@ -155,6 +156,7 @@ const Biodata = () => {
           phone: [],
           email: [],
           nik: [],
+          kip: [],
           nisn: [],
           name: [],
           religion: [],
@@ -171,6 +173,7 @@ const Biodata = () => {
           const phoneError = error.response.data.message.phone || [];
           const emailError = error.response.data.message.email || [];
           const nikError = error.response.data.message.nik || [];
+          const kipError = error.response.data.message.kip || [];
           const nisnError = error.response.data.message.nisn || [];
           const nameError = error.response.data.message.name || [];
           const religionError = error.response.data.message.religion || [];
@@ -183,6 +186,7 @@ const Biodata = () => {
             phone: phoneError,
             email: emailError,
             nik: nikError,
+            kip: kipError,
             nisn: nisnError,
             name: nameError,
             religion: religionError,
@@ -319,13 +323,13 @@ const Biodata = () => {
                   </li>
                 </ul>
               </div>
-              { 
+              {
                 scholarship ? (
                   <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-lg text-sm">
                     <i className="fa-solid fa-pen"></i>
                     <span>Kerjakan E-Assessment</span>
                   </Link>
-                ):(
+                ) : (
                   <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-lg text-sm">
                     <i className="fa-solid fa-circle-xmark"></i>
                     <span>Persyaratan Belum Lengkap</span>
@@ -335,7 +339,7 @@ const Biodata = () => {
             </div>
           </section>
           <form onSubmit={handleUpdate} className="pb-5">
-          <div className="grid grid-cols-1 md:gap-4">
+            <div className="grid grid-cols-1 md:gap-4">
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
                   Nomor Induk Kependudukan (NIK)
@@ -399,6 +403,14 @@ const Biodata = () => {
                   className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="KIP"
                 />
+                {
+                  errors.kip.length > 0 &&
+                  <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                    {errors.kip.map((error, index) => (
+                      <li className="font-regular" key={index}>{error}</li>
+                    ))}
+                  </ul>
+                }
               </div>
             </div>
 

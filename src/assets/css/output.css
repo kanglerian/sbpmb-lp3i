@@ -2741,6 +2741,10 @@ input:checked + .toggle-bg {
   background-repeat: no-repeat;
 }
 
+.fill-blue-500 {
+  fill: #3F83F8;
+}
+
 .fill-current {
   fill: currentColor;
 }
@@ -2769,32 +2773,16 @@ input:checked + .toggle-bg {
   fill: #E02424;
 }
 
-.fill-yellow-400 {
-  fill: #E3A008;
-}
-
-.fill-blue-600 {
-  fill: #1C64F2;
-}
-
-.fill-blue-500 {
-  fill: #3F83F8;
+.fill-sky-400 {
+  fill: #38bdf8;
 }
 
 .fill-sky-500 {
   fill: #0ea5e9;
 }
 
-.fill-sky-200 {
-  fill: #bae6fd;
-}
-
-.fill-sky-600 {
-  fill: #0284c7;
-}
-
-.fill-sky-400 {
-  fill: #38bdf8;
+.fill-yellow-400 {
+  fill: #E3A008;
 }
 
 .object-cover {
