@@ -9,6 +9,9 @@ const Biodata = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
+  const [popoverNik, setPopoverNik] = useState(false);
+  const [popoverNisn, setPopoverNisn] = useState(false);
+
   let start = true;
   const [scholarship, setScholarship] = useState(false);
 
@@ -340,7 +343,22 @@ const Biodata = () => {
           </section>
           <form onSubmit={handleUpdate} className="pb-5">
             <div className="grid grid-cols-1 md:gap-4">
-              <div className="mb-5">
+              <div className="relative mb-5">
+                {
+                  popoverNik &&
+                  <div role="tooltip"
+                    className="absolute top-[-23px] right-[200px] z-10 visible inline-block w-72 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <div
+                      className="flex justify-between items-center px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg">
+                      <h3 className="font-semibold text-gray-900">Bagaimana Cek NIK?</h3>
+                      <span className="cursor-pointer" onClick={() => setPopoverNik(!popoverNik)}><i
+                        className="fa-solid fa-xmark"></i></span>
+                    </div>
+                    <div className="px-3 py-2">
+                      <p>Kalo belum punya KTP, bisa cek di <span className="font-medium">Kartu Keluarga</span> sih.</p>
+                    </div>
+                  </div>
+                }
                 <label className="block mb-2 text-sm font-medium text-gray-900">
                   Nomor Induk Kependudukan (NIK)
                 </label>
@@ -359,16 +377,36 @@ const Biodata = () => {
                       ))}
                     </ul>
                   ) : (
-                    <p className="mt-2 text-xs text-red-600">
+                    <p className="mt-2 flex items-center gap-2 text-xs text-red-600">
                       <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      <div onClick={() => setPopoverNik(!popoverNik)} className="space-x-1 cursor-pointer text-sm text-yellow-500">
+                        <i className="fa-solid fa-circle-info" />
+                        <span className="text-xs">Gatau? Cek disini!</span>
+                      </div>
                     </p>
                   )
                 }
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
+              <div className="relative mb-5">
+                {
+                  popoverNisn &&
+                  <div role="tooltip"
+                    className="absolute top-[-23px] right-[-60px] z-10 visible inline-block w-72 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm">
+                    <div
+                      className="flex justify-between items-center px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg">
+                      <h3 className="font-semibold text-gray-900">Bagaimana Cek NISN?</h3>
+                      <span className="cursor-pointer" onClick={() => setPopoverNisn(!popoverNisn)}>
+                        <i className="fa-solid fa-xmark"></i>
+                      </span>
+                    </div>
+                    <div className="px-3 py-2">
+                      <p>Bro, mampir ke web <a className="underline font-medium" href="https://nisn.data.kemdikbud.go.id/index.php/Cindex/formcaribynama">NISN Kemendikbud</a> ya, terus isi data dirimu.</p>
+                    </div>
+                  </div>
+                }
+                <label NameName="block mb-2 text-sm font-medium text-gray-900">
                   Nomor Induk Siswa Nasional (NISN)
                 </label>
                 <input
@@ -386,8 +424,12 @@ const Biodata = () => {
                       ))}
                     </ul>
                   ) : (
-                    <p className="mt-2 text-xs text-red-600">
+                    <p className="mt-2 flex items-center gap-2 text-xs text-red-600">
                       <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      <div onClick={() => setPopoverNisn(!popoverNisn)} className="space-x-1 cursor-pointer text-sm text-yellow-500">
+                        <i className="fa-solid fa-circle-info" />
+                        <span className="text-xs">Gatau? Cek disini!</span>
+                      </div>
                     </p>
                   )
                 }

@@ -1041,6 +1041,10 @@ input:checked + .toggle-bg {
   pointer-events: none;
 }
 
+.visible {
+  visibility: visible;
+}
+
 .invisible {
   visibility: hidden;
 }
@@ -1164,6 +1168,122 @@ input:checked + .toggle-bg {
 
 .top-4 {
   top: 1rem;
+}
+
+.top-\[0px\] {
+  top: 0px;
+}
+
+.top-\[-75px\] {
+  top: -75px;
+}
+
+.top-\[75px\] {
+  top: 75px;
+}
+
+.top-\[30px\] {
+  top: 30px;
+}
+
+.top-\[20px\] {
+  top: 20px;
+}
+
+.top-\[10px\] {
+  top: 10px;
+}
+
+.top-\[-20px\] {
+  top: -20px;
+}
+
+.top-\[-30px\] {
+  top: -30px;
+}
+
+.top-\[-70px\] {
+  top: -70px;
+}
+
+.top-\[-50px\] {
+  top: -50px;
+}
+
+.right-\[20px\] {
+  right: 20px;
+}
+
+.right-\[10px\] {
+  right: 10px;
+}
+
+.right-\[0px\] {
+  right: 0px;
+}
+
+.right-\[50px\] {
+  right: 50px;
+}
+
+.right-\[60px\] {
+  right: 60px;
+}
+
+.right-\[70px\] {
+  right: 70px;
+}
+
+.right-\[75px\] {
+  right: 75px;
+}
+
+.top-\[-60px\] {
+  top: -60px;
+}
+
+.top-\[-40px\] {
+  top: -40px;
+}
+
+.top-\[-10px\] {
+  top: -10px;
+}
+
+.right-\[80px\] {
+  right: 80px;
+}
+
+.top-\[100px\] {
+  top: 100px;
+}
+
+.right-\[150px\] {
+  right: 150px;
+}
+
+.right-\[-50px\] {
+  right: -50px;
+}
+
+.right-\[200px\] {
+  right: 200px;
+}
+
+.top-\[-25px\] {
+  top: -25px;
+}
+
+.top-\[-23px\] {
+  top: -23px;
+}
+
+.right-\[-20px\] {
+  right: -20px;
+}
+
+.right-\[-60px\] {
+  right: -60px;
 }
 
 .-z-10 {
@@ -1584,6 +1704,10 @@ input:checked + .toggle-bg {
 
 .w-7 {
   width: 1.75rem;
+}
+
+.w-72 {
+  width: 18rem;
 }
 
 .w-8 {
