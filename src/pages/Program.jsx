@@ -57,7 +57,8 @@ const Program = () => {
       .get(`https://dashboard.politekniklp3i-tasikmalaya.ac.id/api/programs`)
       .then((res) => {
         let programsData = res.data;
-        let results = programsData.filter((program) => program.regular == "1");
+        let results = programsData.filter((program) => program.regular == "1" && (program.campus == 'Kampus Tasikmalaya' || program.campus == 'LP3I Tasikmalaya'));
+        console.log(results);
         setPrograms(results);
       })
       .catch((err) => {
