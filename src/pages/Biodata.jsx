@@ -765,7 +765,7 @@ const Biodata = () => {
             {
               address ? (
                 <div className="grid grid-cols-1 gap-3 mb-5">
-                  <div className="relative group">
+                  <div className="relative group space-y-2">
                     <h2 className="block mb-1 text-sm font-medium text-gray-900">Alamat</h2>
                     <p className="text-sm text-gray-700">{address}</p>
                     <button onClick={() => setAddress("")} className="text-xs text-white bg-yellow-400 hover:bg-yellow-500 rounded-lg px-5 py-2"><i className="fa-solid fa-pen-to-square"></i> Ubah alamat</button>
