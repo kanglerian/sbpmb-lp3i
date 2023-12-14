@@ -1146,6 +1146,14 @@ input:checked + .toggle-bg {
   right: 0px;
 }
 
+.right-\[-60px\] {
+  right: -60px;
+}
+
+.right-\[200px\] {
+  right: 200px;
+}
+
 .top-0 {
   top: 0px;
 }
@@ -1170,120 +1178,8 @@ input:checked + .toggle-bg {
   top: 1rem;
 }
 
-.top-\[0px\] {
-  top: 0px;
-}
-
-.top-\[-75px\] {
-  top: -75px;
-}
-
-.top-\[75px\] {
-  top: 75px;
-}
-
-.top-\[30px\] {
-  top: 30px;
-}
-
-.top-\[20px\] {
-  top: 20px;
-}
-
-.top-\[10px\] {
-  top: 10px;
-}
-
-.top-\[-20px\] {
-  top: -20px;
-}
-
-.top-\[-30px\] {
-  top: -30px;
-}
-
-.top-\[-70px\] {
-  top: -70px;
-}
-
-.top-\[-50px\] {
-  top: -50px;
-}
-
-.right-\[20px\] {
-  right: 20px;
-}
-
-.right-\[10px\] {
-  right: 10px;
-}
-
-.right-\[0px\] {
-  right: 0px;
-}
-
-.right-\[50px\] {
-  right: 50px;
-}
-
-.right-\[60px\] {
-  right: 60px;
-}
-
-.right-\[70px\] {
-  right: 70px;
-}
-
-.right-\[75px\] {
-  right: 75px;
-}
-
-.top-\[-60px\] {
-  top: -60px;
-}
-
-.top-\[-40px\] {
-  top: -40px;
-}
-
-.top-\[-10px\] {
-  top: -10px;
-}
-
-.right-\[80px\] {
-  right: 80px;
-}
-
-.top-\[100px\] {
-  top: 100px;
-}
-
-.right-\[150px\] {
-  right: 150px;
-}
-
-.right-\[-50px\] {
-  right: -50px;
-}
-
-.right-\[200px\] {
-  right: 200px;
-}
-
-.top-\[-25px\] {
-  top: -25px;
-}
-
 .top-\[-23px\] {
   top: -23px;
-}
-
-.right-\[-20px\] {
-  right: -20px;
-}
-
-.right-\[-60px\] {
-  right: -60px;
 }
 
 .-z-10 {
@@ -1897,6 +1793,10 @@ input:checked + .toggle-bg {
 
 .grid-cols-1 {
   grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .grid-cols-4 {
@@ -2665,6 +2565,11 @@ input:checked + .toggle-bg {
 .bg-yellow-50 {
   --tw-bg-opacity: 1;
   background-color: rgb(253 253 234 / var(--tw-bg-opacity));
+}
+
+.bg-yellow-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(194 120 3 / var(--tw-bg-opacity));
 }
 
 .bg-yellow-600 {
@@ -3954,6 +3859,16 @@ input:checked + .toggle-bg {
 .hover\:bg-yellow-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(252 233 106 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-yellow-600:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(159 88 10 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-yellow-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(194 120 3 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-gradient-to-br:hover {
@@ -5955,6 +5870,10 @@ input:checked + .toggle-bg {
 
   .md\:grid-cols-3 {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .md\:grid-cols-5 {

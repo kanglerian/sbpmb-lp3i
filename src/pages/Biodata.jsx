@@ -5,6 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
 import Loading from "../components/Loading.jsx";
 
+import { getProvinces, getRegencies, getDistricts, getVillages } from '../utilities/StudentAddress.js'
+import { capitalizeText, numberAddress } from '../config/Capital.js'
+
 const Biodata = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -29,6 +32,20 @@ const Biodata = () => {
   const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+
+  const [studentPlace, setStudentPlace] = useState("");
+  const [studentRt, setStudentRt] = useState("");
+  const [studentRw, setStudentRw] = useState("");
+  const [studentPostalCode, setStudentPostalCode] = useState("");
+  const [studentProvince, setStudentProvince] = useState("");
+  const [studentRegencies, setStudentRegencies] = useState("");
+  const [studentDistricts, setStudentDistricts] = useState("");
+  const [studentVillages, setStudentVillages] = useState("");
+
+  const [provinces, setProvinces] = useState([]);
+  const [regencies, setRegencies] = useState([]);
+  const [districts, setDistricts] = useState([]);
+  const [villages, setVillages] = useState([]);
 
   const [selectedSchool, setSelectedSchool] = useState(null);
   const [schoolsAPI, setSchoolsAPI] = useState([]);
@@ -132,6 +149,14 @@ const Biodata = () => {
   const handleUpdate = async (e) => {
     setLoading(true);
     e.preventDefault();
+    let placeContent = capitalizeText(studentPlace);
+    let rtContent = numberAddress(studentRt);
+    let rwContent = numberAddress(studentRw);
+    let villageContent = capitalizeText(studentVillages);
+    let districtContent = capitalizeText(studentDistricts);
+    let regenciesContent = capitalizeText(studentRegencies);
+    let provinceContent = capitalizeText(studentProvince);
+    let addressContent = `${placeContent}, RT. ${rtContent} RW. ${rwContent}, Desa/Kelurahan ${villageContent}, Kecamatan ${districtContent}, ${regenciesContent}, Provinsi ${provinceContent} ${studentPostalCode}`;
     await axios
       .patch(`https://database.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`, {
         nik: nik,
@@ -144,7 +169,7 @@ const Biodata = () => {
         dateOfBirth: dateOfBirth,
         gender: gender,
         religion: religion,
-        address: address,
+        address: address || addressContent,
         email: email,
         phone: phone,
       }, {
@@ -215,6 +240,11 @@ const Biodata = () => {
     }
     getUser();
     getSchools();
+    getProvinces()
+      .then((response) => {
+        setProvinces(response);
+      })
+      .catch(error => console.log(error));
   }, []);
 
   return (
@@ -676,35 +706,6 @@ const Biodata = () => {
               </div>
             </div>
 
-            <div className="mb-5">
-              <label className="block mb-2 text-sm font-medium text-gray-900">
-                Alamat
-              </label>
-              <textarea
-                type="text"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-                className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                placeholder="Alamat"
-                required
-              >
-                {address}
-              </textarea>
-              {
-                errors.address.length > 0 ? (
-                  <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                    {errors.address.map((error, index) => (
-                      <li className="font-regular" key={index}>{error}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="mt-2 text-xs text-red-600">
-                    <span className="font-medium">Keterangan:</span> Wajib diisi.
-                  </p>
-                )
-              }
-            </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -760,6 +761,212 @@ const Biodata = () => {
                 }
               </div>
             </div>
+
+            {
+              address ? (
+                <div className="grid grid-cols-1 gap-3 mb-5">
+                  <div className="relative group">
+                    <h2 className="block mb-1 text-sm font-medium text-gray-900">Alamat</h2>
+                    <p className="text-sm text-gray-700">{address}</p>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                    <div className="relative group">
+                      <label className="block mb-2 text-sm font-medium text-gray-900">
+                        Jl / Kp / Perum
+                      </label>
+                      <input
+                        type="text"
+                        value={studentPlace}
+                        onChange={(e) => setStudentPlace(e.target.value)}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        placeholder="Jl"
+                        required
+                      />
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    </div>
+                    <div className="relative group">
+                      <label className="block mb-2 text-sm font-medium text-gray-900">
+                        RT.
+                      </label>
+                      <input
+                        type="number"
+                        value={studentRt}
+                        onChange={(e) => setStudentRt(e.target.value)}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        placeholder="RT."
+                        required
+                      />
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    </div>
+                    <div className="relative group">
+                      <label className="block mb-2 text-sm font-medium text-gray-900">
+                        RW.
+                      </label>
+                      <input
+                        type="number"
+                        value={studentRw}
+                        onChange={(e) => setStudentRw(e.target.value)}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        placeholder="RW."
+                        required
+                      />
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    </div>
+                    <div className="relative group">
+                      <label className="block mb-2 text-sm font-medium text-gray-900">
+                        Kode Pos
+                      </label>
+                      <input
+                        type="number"
+                        value={studentPostalCode}
+                        onChange={(e) => setStudentPostalCode(e.target.value)}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        placeholder="Kode Pos"
+                        required
+                      />
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="relative group">
+                      <label className="block mb-2 text-sm font-medium text-gray-900">
+                        Provinsi
+                      </label>
+                      <select
+                        onChange={(e) => {
+                          setStudentProvince(e.target.value);
+                          getRegencies(e.target.options[e.target.selectedIndex].dataset.id)
+                            .then((response) => {
+                              setRegencies(response)
+                            })
+                            .catch((error) => {
+                              console.log(error);
+                            })
+                        }}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        required
+                      >
+                        <option>Pilih Provinsi</option>
+                        {
+                          provinces.length > 0 ? (
+                            provinces.map((province) =>
+                              <option key={province.id} data-id={province.id} value={province.name}>{province.name}</option>
+                            )
+                          ) : (
+                            <option>Pilih Provinsi</option>
+                          )
+                        }
+                      </select>
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    </div>
+                    <div className="relative group">
+                      <label className="block mb-2 text-sm font-medium text-gray-900">
+                        Kota / Kabupaten
+                      </label>
+                      <select
+                        onChange={(e) => {
+                          setStudentRegencies(e.target.value);
+                          getDistricts(e.target.options[e.target.selectedIndex].dataset.id)
+                            .then((response) => {
+                              setDistricts(response)
+                            })
+                            .catch((error) => {
+                              console.log(error);
+                            })
+                        }}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required disabled={regencies.length > 0 ? false : true}
+                      >
+                        {
+                          regencies.length > 0 ? (
+                            regencies.map((regency) =>
+                              <option key={regency.id} data-id={regency.id} value={regency.name}>{regency.name}</option>
+                            )
+                          ) : (
+                            <option>Pilih Kota / Kabupaten</option>
+                          )
+                        }
+                      </select>
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="relative group">
+                      <label className="block mb-2 text-sm font-medium text-gray-900">
+                        Kecamatan
+                      </label>
+                      <select
+                        onChange={(e) => {
+                          setStudentDistricts(e.target.value);
+                          getVillages(e.target.options[e.target.selectedIndex].dataset.id)
+                            .then((response) => {
+                              setVillages(response)
+                            })
+                            .catch((error) => {
+                              console.log(error);
+                            })
+                        }}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={districts.length > 0 ? false : true}
+                        required
+                      >
+                        {
+                          districts.length > 0 ? (
+                            districts.map((district) =>
+                              <option key={district.id} data-id={district.id} value={district.name}>{district.name}</option>
+                            )
+                          ) : (
+                            <option>Pilih Kecamatan</option>
+                          )
+                        }
+                      </select>
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    </div>
+                    <div className="relative group">
+                      <label className="block mb-2 text-sm font-medium text-gray-900">
+                        Desa / Kelurahan
+                      </label>
+                      <select
+                        onChange={(e) => {
+                          setStudentVillages(e.target.value);
+                        }}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={villages.length > 0 ? false : true}
+                        required
+                      >
+                        {
+                          villages.length > 0 ? (
+                            villages.map((village) =>
+                              <option key={village.id} data-id={village.id} value={village.name}>{village.name}</option>
+                            )
+                          ) : (
+                            <option>Pilih Desa / Kelurahan</option>
+                          )
+                        }
+                      </select>
+                      <p className="mt-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                      </p>
+                    </div>
+                  </div>
+                </>
+              )
+            }
 
             <button
               type="submit"

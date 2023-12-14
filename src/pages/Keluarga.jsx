@@ -4,6 +4,9 @@ import Navbar from "../templates/Navbar.jsx";
 import Loading from "../components/Loading.jsx";
 import { Link } from "react-router-dom";
 
+import { getProvinces, getRegencies, getDistricts, getVillages } from '../utilities/StudentAddress.js'
+import { capitalizeText, numberAddress } from '../config/Capital.js'
+
 const Keluarga = () => {
   let start = true;
   const [loading, setLoading] = useState(false);
@@ -27,6 +30,35 @@ const Keluarga = () => {
   const [motherAddress, setMotherAddress] = useState("");
 
   const [incomeParent, setIncomeParent] = useState("");
+
+  const [fatherPlace, setFatherPlace] = useState("");
+  const [fatherRt, setFatherRt] = useState("");
+  const [fatherRw, setFatherRw] = useState("");
+  const [fatherPostalCode, setFatherPostalCode] = useState("");
+  const [fatherProvince, setFatherProvince] = useState("");
+  const [fatherRegencies, setFatherRegency] = useState("");
+  const [fatherDistricts, setFatherDistrict] = useState("");
+  const [fatherVillages, setFatherVillage] = useState("");
+
+  const [provincesFather, setProvincesFather] = useState([]);
+  const [regenciesFather, setRegenciesFather] = useState([]);
+  const [districtsFather, setDistrictsFather] = useState([]);
+  const [villagesFather, setVillagesFather] = useState([]);
+
+
+  const [motherPlace, setMotherPlace] = useState("");
+  const [motherRt, setMotherRt] = useState("");
+  const [motherRw, setMotherRw] = useState("");
+  const [motherPostalCode, setMotherPostalCode] = useState("");
+  const [motherProvince, setMotherProvince] = useState("");
+  const [motherRegencies, setMotherRegency] = useState("");
+  const [motherDistricts, setMotherDistrict] = useState("");
+  const [motherVillages, setMotherVillage] = useState("");
+
+  const [provincesMother, setProvincesMother] = useState([]);
+  const [regenciesMother, setRegenciesMother] = useState([]);
+  const [districtsMother, setDistrictsMother] = useState([]);
+  const [villagesMother, setVillagesMother] = useState([]);
 
   const [errors, setErrors] = useState({
     fatherName: [],
@@ -95,6 +127,25 @@ const Keluarga = () => {
   const handleUpdate = async (e) => {
     setLoading(true);
     e.preventDefault();
+
+    let placeContentFather = capitalizeText(fatherPlace);
+    let rtContentFather = numberAddress(fatherRt);
+    let rwContentFather = numberAddress(fatherRw);
+    let villageContentFather = capitalizeText(fatherVillages);
+    let districtContentFather = capitalizeText(fatherDistricts);
+    let regenciesContentFather = capitalizeText(fatherRegencies);
+    let provinceContentFather = capitalizeText(fatherProvince);
+    let addressContentFather = `${placeContentFather}, RT. ${rtContentFather} RW. ${rwContentFather}, Desa/Kelurahan ${villageContentFather}, Kecamatan ${districtContentFather}, ${regenciesContentFather}, Provinsi ${provinceContentFather} ${fatherPostalCode}`;
+
+    let placeContentMother = capitalizeText(motherPlace);
+    let rtContentMother = numberAddress(motherRt);
+    let rwContentMother = numberAddress(motherRw);
+    let villageContentMother = capitalizeText(motherVillages);
+    let districtContentMother = capitalizeText(motherDistricts);
+    let regenciesContentMother = capitalizeText(motherRegencies);
+    let provinceContentMother = capitalizeText(motherProvince);
+    let addressContentMother = `${placeContentMother}, RT. ${rtContentMother} RW. ${rwContentMother}, Desa/Kelurahan ${villageContentMother}, Kecamatan ${districtContentMother}, ${regenciesContentMother}, Provinsi ${provinceContentMother} ${motherPostalCode}`;
+
     await axios
       .patch(
         `https://database.politekniklp3i-tasikmalaya.ac.id/api/user/updatefamily/${student.identity}`,
@@ -105,14 +156,14 @@ const Keluarga = () => {
           fatherDateOfBirth: fatherDateOfBirth,
           fatherEducation: fatherEducation,
           fatherJob: fatherJob,
-          fatherAddress: fatherAddress,
+          fatherAddress: addressContentFather,
           motherName: motherName,
           motherPhone: motherPhone,
           motherPlaceOfBirth: motherPlaceOfBirth,
           motherDateOfBirth: motherDateOfBirth,
           motherEducation: motherEducation,
           motherJob: motherJob,
-          motherAddress: motherAddress,
+          motherAddress: addressContentMother,
           incomeParent: incomeParent == 0 ? "" : incomeParent,
         }, {
         headers: {
@@ -198,13 +249,18 @@ const Keluarga = () => {
       return navigate("/");
     }
     getUser();
+    getProvinces()
+      .then((response) => {
+        setProvincesFather(response);
+        setProvincesMother(response);
+      })
+      .catch(error => console.log(error));
   }, []);
 
   return (
     <section className="bg-white">
       <div className="container mx-auto px-5">
         <Navbar />
-
         <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-5">
           <section>
             <header className="space-y-1 mb-5">
@@ -535,36 +591,206 @@ const Keluarga = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:gap-4">
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Alamat
-                </label>
-                <textarea
-                  type="text"
-                  value={fatherAddress}
-                  onChange={(e) => setFatherAddress(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Alamat"
-                  required
-                >
-                  {fatherAddress}
-                </textarea>
-                {
-                  errors.fatherAddress.length > 0 ? (
-                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                      {errors.fatherAddress.map((error, index) => (
-                        <li className="font-regular" key={index}>{error}</li>
-                      ))}
-                    </ul>
-                  ) : (
+            {
+              fatherAddress ? (
+                <div className="grid grid-cols-1 gap-3 mb-5">
+                  <div className="relative group space-y-2">
+                    <h2 className="block mb-1 text-sm font-medium text-gray-900">Alamat</h2>
+                    <p className="text-sm text-gray-700">{fatherAddress}</p>
+                    <button onClick={() => setFatherAddress("")} className="text-xs text-white bg-yellow-400 hover:bg-yellow-500 rounded-lg px-5 py-2"><i className="fa-solid fa-pen-to-square"></i> Ubah alamat</button>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-4">
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Jl / Kp / Perum
+                    </label>
+                    <input
+                      type="text"
+                      value={fatherPlace}
+                      onChange={(e) => setFatherPlace(e.target.value)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      placeholder="Jl"
+                      required
+                    />
                     <p className="mt-2 text-xs text-red-600">
                       <span className="font-medium">Keterangan:</span> Wajib diisi.
                     </p>
-                  )
-                }
-              </div>
-            </div>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      RT.
+                    </label>
+                    <input
+                      type="number"
+                      value={fatherRt}
+                      onChange={(e) => setFatherRt(e.target.value)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      placeholder="RT."
+                      required
+                    />
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      RW.
+                    </label>
+                    <input
+                      type="number"
+                      value={fatherRw}
+                      onChange={(e) => setFatherRw(e.target.value)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      placeholder="RW."
+                      required
+                    />
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Kode Pos
+                    </label>
+                    <input
+                      type="number"
+                      value={fatherPostalCode}
+                      onChange={(e) => setFatherPostalCode(e.target.value)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      placeholder="Kode Pos"
+                      required
+                    />
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Provinsi
+                    </label>
+                    <select
+                      onChange={(e) => {
+                        setFatherProvince(e.target.value);
+                        getRegencies(e.target.options[e.target.selectedIndex].dataset.id)
+                          .then((response) => {
+                            setRegenciesFather(response)
+                          })
+                          .catch((error) => {
+                            console.log(error);
+                          })
+                      }}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      required
+                    >
+                      <option>Pilih Provinsi</option>
+                      {
+                        provincesFather.length > 0 ? (
+                          provincesFather.map((province) =>
+                            <option key={province.id} data-id={province.id} value={province.name}>{province.name}</option>
+                          )
+                        ) : (
+                          <option>Pilih Provinsi</option>
+                        )
+                      }
+                    </select>
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Kota / Kabupaten
+                    </label>
+                    <select
+                      onChange={(e) => {
+                        setFatherRegency(e.target.value);
+                        getDistricts(e.target.options[e.target.selectedIndex].dataset.id)
+                          .then((response) => {
+                            setDistrictsFather(response)
+                          })
+                          .catch((error) => {
+                            console.log(error);
+                          })
+                      }}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required disabled={regenciesFather.length > 0 ? false : true}
+                    >
+                      {
+                        regenciesFather.length > 0 ? (
+                          regenciesFather.map((regency) =>
+                            <option key={regency.id} data-id={regency.id} value={regency.name}>{regency.name}</option>
+                          )
+                        ) : (
+                          <option>Pilih Kota / Kabupaten</option>
+                        )
+                      }
+                    </select>
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Kecamatan
+                    </label>
+                    <select
+                      onChange={(e) => {
+                        setFatherDistrict(e.target.value);
+                        getVillages(e.target.options[e.target.selectedIndex].dataset.id)
+                          .then((response) => {
+                            setVillagesFather(response)
+                          })
+                          .catch((error) => {
+                            console.log(error);
+                          })
+                      }}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={districtsFather.length > 0 ? false : true}
+                      required
+                    >
+                      {
+                        districtsFather.length > 0 ? (
+                          districtsFather.map((district) =>
+                            <option key={district.id} data-id={district.id} value={district.name}>{district.name}</option>
+                          )
+                        ) : (
+                          <option>Pilih Kecamatan</option>
+                        )
+                      }
+                    </select>
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Desa / Kelurahan
+                    </label>
+                    <select
+                      onChange={(e) => {
+                        setFatherVillage(e.target.value);
+                      }}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={villagesFather.length > 0 ? false : true}
+                      required
+                    >
+                      {
+                        villagesFather.length > 0 ? (
+                          villagesFather.map((village) =>
+                            <option key={village.id} data-id={village.id} value={village.name}>{village.name}</option>
+                          )
+                        ) : (
+                          <option>Pilih Desa / Kelurahan</option>
+                        )
+                      }
+                    </select>
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                </div>
+              )
+            }
+
             <div className="grid grid-cols-1 md:gap-4">
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -761,36 +987,206 @@ const Keluarga = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:gap-4">
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Alamat
-                </label>
-                <textarea
-                  type="text"
-                  value={motherAddress}
-                  onChange={(e) => setMotherAddress(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Alamat"
-                  required
-                >
-                  {motherAddress}
-                </textarea>
-                {
-                  errors.motherAddress.length > 0 ? (
-                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                      {errors.motherAddress.map((error, index) => (
-                        <li className="font-regular" key={index}>{error}</li>
-                      ))}
-                    </ul>
-                  ) : (
+            {
+              motherAddress ? (
+                <div className="grid grid-cols-1 gap-3 mb-5">
+                  <div className="relative group space-y-2">
+                    <h2 className="block mb-1 text-sm font-medium text-gray-900">Alamat</h2>
+                    <p className="text-sm text-gray-700">{motherAddress}</p>
+                    <button onClick={() => setMotherAddress("")} className="text-xs text-white bg-yellow-400 hover:bg-yellow-500 rounded-lg px-5 py-2"><i className="fa-solid fa-pen-to-square"></i> Ubah alamat</button>
+                  </div>
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-4 mb-4">
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Jl / Kp / Perum
+                    </label>
+                    <input
+                      type="text"
+                      value={motherPlace}
+                      onChange={(e) => setMotherPlace(e.target.value)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      placeholder="Jl"
+                      required
+                    />
                     <p className="mt-2 text-xs text-red-600">
                       <span className="font-medium">Keterangan:</span> Wajib diisi.
                     </p>
-                  )
-                }
-              </div>
-            </div>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      RT.
+                    </label>
+                    <input
+                      type="number"
+                      value={motherRt}
+                      onChange={(e) => setMotherRt(e.target.value)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      placeholder="RT."
+                      required
+                    />
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      RW.
+                    </label>
+                    <input
+                      type="number"
+                      value={motherRw}
+                      onChange={(e) => setMotherRw(e.target.value)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      placeholder="RW."
+                      required
+                    />
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Kode Pos
+                    </label>
+                    <input
+                      type="number"
+                      value={motherPostalCode}
+                      onChange={(e) => setMotherPostalCode(e.target.value)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      placeholder="Kode Pos"
+                      required
+                    />
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Provinsi
+                    </label>
+                    <select
+                      onChange={(e) => {
+                        setMotherProvince(e.target.value);
+                        getRegencies(e.target.options[e.target.selectedIndex].dataset.id)
+                          .then((response) => {
+                            setRegenciesMother(response)
+                          })
+                          .catch((error) => {
+                            console.log(error);
+                          })
+                      }}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      required
+                    >
+                      <option>Pilih Provinsi</option>
+                      {
+                        provincesMother.length > 0 ? (
+                          provincesMother.map((province) =>
+                            <option key={province.id} data-id={province.id} value={province.name}>{province.name}</option>
+                          )
+                        ) : (
+                          <option>Pilih Provinsi</option>
+                        )
+                      }
+                    </select>
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Kota / Kabupaten
+                    </label>
+                    <select
+                      onChange={(e) => {
+                        setMotherRegency(e.target.value);
+                        getDistricts(e.target.options[e.target.selectedIndex].dataset.id)
+                          .then((response) => {
+                            setDistrictsMother(response)
+                          })
+                          .catch((error) => {
+                            console.log(error);
+                          })
+                      }}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required disabled={regenciesMother.length > 0 ? false : true}
+                    >
+                      {
+                        regenciesMother.length > 0 ? (
+                          regenciesMother.map((regency) =>
+                            <option key={regency.id} data-id={regency.id} value={regency.name}>{regency.name}</option>
+                          )
+                        ) : (
+                          <option>Pilih Kota / Kabupaten</option>
+                        )
+                      }
+                    </select>
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Kecamatan
+                    </label>
+                    <select
+                      onChange={(e) => {
+                        setMotherDistrict(e.target.value);
+                        getVillages(e.target.options[e.target.selectedIndex].dataset.id)
+                          .then((response) => {
+                            setVillagesMother(response)
+                          })
+                          .catch((error) => {
+                            console.log(error);
+                          })
+                      }}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={districtsMother.length > 0 ? false : true}
+                      required
+                    >
+                      {
+                        districtsMother.length > 0 ? (
+                          districtsMother.map((district) =>
+                            <option key={district.id} data-id={district.id} value={district.name}>{district.name}</option>
+                          )
+                        ) : (
+                          <option>Pilih Kecamatan</option>
+                        )
+                      }
+                    </select>
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                  <div className="relative group">
+                    <label className="block mb-2 text-sm font-medium text-gray-900">
+                      Desa / Kelurahan
+                    </label>
+                    <select
+                      onChange={(e) => {
+                        setMotherVillage(e.target.value);
+                      }}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={villagesMother.length > 0 ? false : true}
+                      required
+                    >
+                      {
+                        villagesMother.length > 0 ? (
+                          villagesMother.map((village) =>
+                            <option key={village.id} data-id={village.id} value={village.name}>{village.name}</option>
+                          )
+                        ) : (
+                          <option>Pilih Desa / Kelurahan</option>
+                        )
+                      }
+                    </select>
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  </div>
+                </div>
+              )
+            }
+
             <div className="grid grid-cols-1 md:gap-4">
               <button
                 type="submit"
