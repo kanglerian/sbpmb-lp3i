@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+#jika belum ada di repositori maka komentari kode dibawah ini.
+public/json/api-indonesia
