@@ -6,10 +6,12 @@ import { Link } from "react-router-dom";
 
 import { getProvinces, getRegencies, getDistricts, getVillages } from '../utilities/StudentAddress.js'
 import { capitalizeText, numberAddress } from '../config/Capital.js'
+import LoadingScreen from "../components/LoadingScreen.jsx";
 
 const Keluarga = () => {
   let start = true;
   const [loading, setLoading] = useState(false);
+  const [loadingScreen, setLoadingScreen] = useState(true);
   const [scholarship, setScholarship] = useState(false);
 
   const [student, setStudent] = useState({});
@@ -113,6 +115,7 @@ const Keluarga = () => {
         if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
           setScholarship(true);
         }
+        setLoadingScreen(false);
       })
       .catch((error) => {
         if (error.response.status == 401) {
@@ -121,6 +124,7 @@ const Keluarga = () => {
         } else {
           console.log(error);
         }
+        setLoadingScreen(false);
       });
   };
 
@@ -220,29 +224,75 @@ const Keluarga = () => {
       });
   };
 
-  const handleMotherPhoneChange = (e) => {
-    let input = e.target.value;
-
-    if (input.startsWith("62")) {
-      setMotherPhone(input);
-    } else if (input.startsWith("0")) {
-      setMotherPhone("62" + input.substring(1));
-    } else {
-      setMotherPhone("62");
+  const handleMotherPhoneChange = (inputPhone) => {
+    let formattedPhone = inputPhone.trim();
+    if (formattedPhone.length <= 14) {
+      if (formattedPhone.startsWith("62")) {
+        if (formattedPhone.length === 3 && (formattedPhone[2] === "0" || formattedPhone[2] !== "8")) {
+          setMotherPhone('62');
+        } else {
+          setMotherPhone(formattedPhone);
+        }
+      } else if (formattedPhone.startsWith("0")) {
+        setMotherPhone('62' + formattedPhone.substring(1));
+      } else {
+        setMotherPhone('62');
+      }
     }
   };
 
-  const handleFatherPhoneChange = (e) => {
-    let input = e.target.value;
-
-    if (input.startsWith("62")) {
-      setFatherPhone(input);
-    } else if (input.startsWith("0")) {
-      setFatherPhone("62" + input.substring(1));
-    } else {
-      setFatherPhone("62");
+  const handleFatherPhoneChange = (inputPhone) => {
+    let formattedPhone = inputPhone.trim();
+    if (formattedPhone.length <= 14) {
+      if (formattedPhone.startsWith("62")) {
+        if (formattedPhone.length === 3 && (formattedPhone[2] === "0" || formattedPhone[2] !== "8")) {
+          setFatherPhone('62');
+        } else {
+          setFatherPhone(formattedPhone);
+        }
+      } else if (formattedPhone.startsWith("0")) {
+        setFatherPhone('62' + formattedPhone.substring(1));
+      } else {
+        setFatherPhone('62');
+      }
     }
   };
+
+  const setValidateFatherRt = (text, length) => {
+    if (text.length <= length) {
+      setFatherRt(text);
+    }
+  }
+
+  const setValidateFatherRw = (text, length) => {
+    if (text.length <= length) {
+      setFatherRw(text);
+    }
+  }
+
+  const setValidateFatherPostalCode = (text, length) => {
+    if (text.length <= length) {
+      setFatherPostalCode(text);
+    }
+  }
+
+  const setValidateMotherRt = (text, length) => {
+    if (text.length <= length) {
+      setMotherRt(text);
+    }
+  }
+
+  const setValidateMotherRw = (text, length) => {
+    if (text.length <= length) {
+      setMotherRw(text);
+    }
+  }
+
+  const setValidateMotherPostalCode = (text, length) => {
+    if (text.length <= length) {
+      setMotherPostalCode(text);
+    }
+  }
 
   useEffect(() => {
     if (!token) {
@@ -259,6 +309,7 @@ const Keluarga = () => {
 
   return (
     <section className="bg-white">
+      { loadingScreen && <LoadingScreen/> }
       <div className="container mx-auto px-5">
         <Navbar />
         <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-5">
@@ -425,12 +476,12 @@ const Keluarga = () => {
 
               {
                 scholarship ? (
-                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-lg text-sm">
+                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-xl text-sm">
                     <i className="fa-solid fa-pen"></i>
                     <span>Kerjakan E-Assessment</span>
                   </Link>
                 ) : (
-                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-lg text-sm">
+                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-xl text-sm">
                     <i className="fa-solid fa-circle-xmark"></i>
                     <span>Persyaratan Belum Lengkap</span>
                   </button>
@@ -448,8 +499,9 @@ const Keluarga = () => {
                 <input
                   type="text"
                   value={fatherName}
+                  maxLength={50}
                   onChange={(e) => setFatherName(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Nama Lengkap Ayah"
                   required
                 />
@@ -474,8 +526,8 @@ const Keluarga = () => {
                 <input
                   type="number"
                   value={fatherPhone}
-                  onChange={handleFatherPhoneChange}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  onChange={(e) => handleFatherPhoneChange(e.target.value)}
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="No. HP Ayah"
                 />
               </div>
@@ -488,9 +540,10 @@ const Keluarga = () => {
                 </label>
                 <input
                   type="text"
+                  maxLength={100}
                   value={fatherPlaceOfBirth}
                   onChange={(e) => setFatherPlaceOfBirth(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Tempat Lahir Ayah"
                   required
                 />
@@ -516,7 +569,7 @@ const Keluarga = () => {
                   type="date"
                   value={fatherDateOfBirth}
                   onChange={(e) => setFatherDateOfBirth(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Tanggal Lahir Ayah"
                   required
                 />
@@ -541,14 +594,13 @@ const Keluarga = () => {
                 <label className="block mb-2 text-sm font-medium text-gray-900">
                   Pendidikan Terakhir
                 </label>
-                <input
-                  type="text"
-                  value={fatherEducation}
-                  onChange={(e) => setFatherEducation(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Pendidikan Terakhir"
-                  required
-                />
+                <select value={fatherEducation} onChange={(e) => setFatherEducation(e.target.value)} className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                  <option value="">Pilih</option>
+                  <option value="SD">SD</option>
+                  <option value="SMP">SMP</option>
+                  <option value="SMA Sederajat">SMA Sederajat</option>
+                  <option value="Perguruan Tinggi">Perguruan Tinggi</option>
+                </select>
                 {
                   errors.fatherEducation.length > 0 ? (
                     <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
@@ -570,8 +622,9 @@ const Keluarga = () => {
                 <input
                   type="text"
                   value={fatherJob}
+                  maxLength={50}
                   onChange={(e) => setFatherJob(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Pekerjaan"
                   required
                 />
@@ -597,7 +650,7 @@ const Keluarga = () => {
                   <div className="relative group space-y-2">
                     <h2 className="block mb-1 text-sm font-medium text-gray-900">Alamat</h2>
                     <p className="text-sm text-gray-700">{fatherAddress}</p>
-                    <button onClick={() => setFatherAddress("")} className="text-xs text-white bg-yellow-400 hover:bg-yellow-500 rounded-lg px-5 py-2"><i className="fa-solid fa-pen-to-square"></i> Ubah alamat</button>
+                    <button onClick={() => setFatherAddress("")} className="text-xs text-white bg-yellow-400 hover:bg-yellow-500 rounded-xl px-5 py-2"><i className="fa-solid fa-pen-to-square"></i> Ubah alamat</button>
                   </div>
                 </div>
               ) : (
@@ -609,8 +662,9 @@ const Keluarga = () => {
                     <input
                       type="text"
                       value={fatherPlace}
+                      maxLength={100}
                       onChange={(e) => setFatherPlace(e.target.value)}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       placeholder="Jl"
                       required
                     />
@@ -625,8 +679,8 @@ const Keluarga = () => {
                     <input
                       type="number"
                       value={fatherRt}
-                      onChange={(e) => setFatherRt(e.target.value)}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      onChange={(e) => setValidateFatherRt(e.target.value, 2)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       placeholder="RT."
                       required
                     />
@@ -641,8 +695,8 @@ const Keluarga = () => {
                     <input
                       type="number"
                       value={fatherRw}
-                      onChange={(e) => setFatherRw(e.target.value)}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      onChange={(e) => setValidateFatherRw(e.target.value, 2)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       placeholder="RW."
                       required
                     />
@@ -657,8 +711,8 @@ const Keluarga = () => {
                     <input
                       type="number"
                       value={fatherPostalCode}
-                      onChange={(e) => setFatherPostalCode(e.target.value)}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      onChange={(e) => setValidateFatherPostalCode(e.target.value, 7)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       placeholder="Kode Pos"
                       required
                     />
@@ -681,7 +735,7 @@ const Keluarga = () => {
                             console.log(error);
                           })
                       }}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       required
                     >
                       <option>Pilih Provinsi</option>
@@ -714,7 +768,7 @@ const Keluarga = () => {
                             console.log(error);
                           })
                       }}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required disabled={regenciesFather.length > 0 ? false : true}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required disabled={regenciesFather.length > 0 ? false : true}
                     >
                       {
                         regenciesFather.length > 0 ? (
@@ -745,7 +799,7 @@ const Keluarga = () => {
                             console.log(error);
                           })
                       }}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={districtsFather.length > 0 ? false : true}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={districtsFather.length > 0 ? false : true}
                       required
                     >
                       {
@@ -770,7 +824,7 @@ const Keluarga = () => {
                       onChange={(e) => {
                         setFatherVillage(e.target.value);
                       }}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={villagesFather.length > 0 ? false : true}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={villagesFather.length > 0 ? false : true}
                       required
                     >
                       {
@@ -798,7 +852,7 @@ const Keluarga = () => {
                 </label>
                 <select
                   onChange={(e) => setIncomeParent(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   required
                 >
                   {incomeParent ? (
@@ -844,8 +898,9 @@ const Keluarga = () => {
                 <input
                   type="text"
                   value={motherName}
+                  maxLength={50}
                   onChange={(e) => setMotherName(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Nama Lengkap Ibu"
                   required
                 />
@@ -870,8 +925,8 @@ const Keluarga = () => {
                 <input
                   type="number"
                   value={motherPhone}
-                  onChange={handleMotherPhoneChange}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  onChange={(e) => handleMotherPhoneChange(e.target.value)}
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="No. HP Ibu"
                 />
               </div>
@@ -885,8 +940,9 @@ const Keluarga = () => {
                 <input
                   type="text"
                   value={motherPlaceOfBirth}
+                  maxLength={100}
                   onChange={(e) => setMotherPlaceOfBirth(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Tempat Lahir Ibu"
                   required
                 />
@@ -912,7 +968,7 @@ const Keluarga = () => {
                   type="date"
                   value={motherDateOfBirth}
                   onChange={(e) => setMotherDateOfBirth(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Tanggal Lahir Ibu"
                   required
                 />
@@ -937,14 +993,13 @@ const Keluarga = () => {
                 <label className="block mb-2 text-sm font-medium text-gray-900">
                   Pendidikan Terakhir
                 </label>
-                <input
-                  type="text"
-                  value={motherEducation}
-                  onChange={(e) => setMotherEducation(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Pendidikan Terakhir"
-                  required
-                />
+                <select value={motherEducation} onChange={(e) => setMotherEducation(e.target.value)} className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required>
+                  <option value="">Pilih</option>
+                  <option value="SD">SD</option>
+                  <option value="SMP">SMP</option>
+                  <option value="SMA Sederajat">SMA Sederajat</option>
+                  <option value="Perguruan Tinggi">Perguruan Tinggi</option>
+                </select>
                 {
                   errors.motherEducation.length > 0 ? (
                     <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
@@ -966,8 +1021,9 @@ const Keluarga = () => {
                 <input
                   type="text"
                   value={motherJob}
+                  maxLength={50}
                   onChange={(e) => setMotherJob(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Pekerjaan"
                   required
                 />
@@ -993,7 +1049,7 @@ const Keluarga = () => {
                   <div className="relative group space-y-2">
                     <h2 className="block mb-1 text-sm font-medium text-gray-900">Alamat</h2>
                     <p className="text-sm text-gray-700">{motherAddress}</p>
-                    <button onClick={() => setMotherAddress("")} className="text-xs text-white bg-yellow-400 hover:bg-yellow-500 rounded-lg px-5 py-2"><i className="fa-solid fa-pen-to-square"></i> Ubah alamat</button>
+                    <button onClick={() => setMotherAddress("")} className="text-xs text-white bg-yellow-400 hover:bg-yellow-500 rounded-xl px-5 py-2"><i className="fa-solid fa-pen-to-square"></i> Ubah alamat</button>
                   </div>
                 </div>
               ) : (
@@ -1005,8 +1061,9 @@ const Keluarga = () => {
                     <input
                       type="text"
                       value={motherPlace}
+                      maxLength={100}
                       onChange={(e) => setMotherPlace(e.target.value)}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       placeholder="Jl"
                       required
                     />
@@ -1021,8 +1078,8 @@ const Keluarga = () => {
                     <input
                       type="number"
                       value={motherRt}
-                      onChange={(e) => setMotherRt(e.target.value)}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      onChange={(e) => setValidateMotherRt(e.target.value,2)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       placeholder="RT."
                       required
                     />
@@ -1037,8 +1094,8 @@ const Keluarga = () => {
                     <input
                       type="number"
                       value={motherRw}
-                      onChange={(e) => setMotherRw(e.target.value)}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      onChange={(e) => setValidateMotherRw(e.target.value,2)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       placeholder="RW."
                       required
                     />
@@ -1053,8 +1110,8 @@ const Keluarga = () => {
                     <input
                       type="number"
                       value={motherPostalCode}
-                      onChange={(e) => setMotherPostalCode(e.target.value)}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      onChange={(e) => setValidateMotherPostalCode(e.target.value,7)}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       placeholder="Kode Pos"
                       required
                     />
@@ -1077,7 +1134,7 @@ const Keluarga = () => {
                             console.log(error);
                           })
                       }}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       required
                     >
                       <option>Pilih Provinsi</option>
@@ -1110,7 +1167,7 @@ const Keluarga = () => {
                             console.log(error);
                           })
                       }}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required disabled={regenciesMother.length > 0 ? false : true}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required disabled={regenciesMother.length > 0 ? false : true}
                     >
                       {
                         regenciesMother.length > 0 ? (
@@ -1141,7 +1198,7 @@ const Keluarga = () => {
                             console.log(error);
                           })
                       }}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={districtsMother.length > 0 ? false : true}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={districtsMother.length > 0 ? false : true}
                       required
                     >
                       {
@@ -1166,7 +1223,7 @@ const Keluarga = () => {
                       onChange={(e) => {
                         setMotherVillage(e.target.value);
                       }}
-                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={villagesMother.length > 0 ? false : true}
+                      className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={villagesMother.length > 0 ? false : true}
                       required
                     >
                       {
@@ -1190,7 +1247,7 @@ const Keluarga = () => {
             <div className="grid grid-cols-1 md:gap-4">
               <button
                 type="submit"
-                className="flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}
                 Perbarui Data

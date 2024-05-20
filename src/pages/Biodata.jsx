@@ -4,12 +4,14 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
 import Loading from "../components/Loading.jsx";
+import LoadingScreen from "../components/LoadingScreen.jsx";
 
 import { getProvinces, getRegencies, getDistricts, getVillages } from '../utilities/StudentAddress.js'
 import { capitalizeText, numberAddress } from '../config/Capital.js'
 
 const Biodata = () => {
   const navigate = useNavigate();
+  const [loadingScreen, setLoadingScreen] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const [popoverNik, setPopoverNik] = useState(false);
@@ -103,7 +105,7 @@ const Biodata = () => {
         if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
           setScholarship(true);
         }
-
+        setLoadingScreen(false);
       })
       .catch((error) => {
         if (error.response.status == 401) {
@@ -112,8 +114,10 @@ const Biodata = () => {
         } else {
           console.log(error);
         }
+        setLoadingScreen(false);
       });
   };
+
 
   const getSchools = async () => {
     await axios
@@ -141,8 +145,12 @@ const Biodata = () => {
 
   const schoolHandle = (selectedOption) => {
     if (selectedOption) {
-      setSchool(selectedOption.value);
-      setSelectedSchool(selectedOption);
+      if (selectedOption.value.length < 5) {
+        setSchool(selectedOption.value);
+        setSelectedSchool(selectedOption);
+      } else {
+        alert('Nama sekolah harus kurang dari 100 karakter!');
+      }
     }
   };
 
@@ -234,6 +242,59 @@ const Biodata = () => {
       });
   };
 
+  const setValidateNik = (text, length) => {
+    if (text.length <= length) {
+      setNik(text);
+    }
+  }
+
+  const setValidateNisn = (text, length) => {
+    if (text.length <= length) {
+      setNisn(text);
+    }
+  }
+
+  const setValidateYear = (text, length) => {
+    if (text.length <= length) {
+      setYear(text);
+    }
+  }
+
+  const setValidateStudentRt = (text, length) => {
+    if (text.length <= length) {
+      setStudentRt(text);
+    }
+  }
+
+  const setValidateStudentRw = (text, length) => {
+    if (text.length <= length) {
+      setStudentRw(text);
+    }
+  }
+
+  const setValidateStudentPostalCode = (text, length) => {
+    if (text.length <= length) {
+      setStudentPostalCode(text);
+    }
+  }
+
+  const setValidatePhone = (inputPhone) => {
+    let formattedPhone = inputPhone.trim();
+    if (formattedPhone.length <= 14) {
+      if (formattedPhone.startsWith("62")) {
+        if (formattedPhone.length === 3 && (formattedPhone[2] === "0" || formattedPhone[2] !== "8")) {
+          setPhone('62');
+        } else {
+          setPhone(formattedPhone);
+        }
+      } else if (formattedPhone.startsWith("0")) {
+        setPhone('62' + formattedPhone.substring(1));
+      } else {
+        setPhone('62');
+      }
+    }
+  };
+
   useEffect(() => {
     if (!token) {
       return navigate("/");
@@ -249,6 +310,7 @@ const Biodata = () => {
 
   return (
     <section className="bg-white">
+    { loadingScreen && <LoadingScreen/> }
       <div className="container mx-auto px-5">
         <Navbar />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -358,12 +420,12 @@ const Biodata = () => {
               </div>
               {
                 scholarship ? (
-                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-lg text-sm">
+                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-xl text-sm">
                     <i className="fa-solid fa-pen"></i>
                     <span>Kerjakan E-Assessment</span>
                   </Link>
                 ) : (
-                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-lg text-sm">
+                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-xl text-sm">
                     <i className="fa-solid fa-circle-xmark"></i>
                     <span>Persyaratan Belum Lengkap</span>
                   </button>
@@ -377,7 +439,7 @@ const Biodata = () => {
                 {
                   popoverNik &&
                   <div role="tooltip"
-                    className="absolute top-[-23px] right-[200px] z-10 visible inline-block w-72 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm">
+                    className="absolute top-[-23px] right-[200px] z-10 visible inline-block w-72 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-xl shadow-sm">
                     <div
                       className="flex justify-between items-center px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg">
                       <h3 className="font-semibold text-gray-900">Bagaimana Cek NIK?</h3>
@@ -395,8 +457,8 @@ const Biodata = () => {
                 <input
                   type="number"
                   value={nik}
-                  onChange={(e) => setNik(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  onChange={(e) => setValidateNik(e.target.value, 16)}
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Nomor Induk Kependudukan"
                 />
                 {
@@ -423,7 +485,7 @@ const Biodata = () => {
                 {
                   popoverNisn &&
                   <div role="tooltip"
-                    className="absolute top-[-23px] right-[-60px] z-10 visible inline-block w-72 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm">
+                    className="absolute top-[-23px] right-[-60px] z-10 visible inline-block w-72 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-xl shadow-sm">
                     <div
                       className="flex justify-between items-center px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg">
                       <h3 className="font-semibold text-gray-900">Bagaimana Cek NISN?</h3>
@@ -436,33 +498,35 @@ const Biodata = () => {
                     </div>
                   </div>
                 }
-                <label NameName="block mb-2 text-sm font-medium text-gray-900">
-                  Nomor Induk Siswa Nasional (NISN)
-                </label>
-                <input
-                  type="number"
-                  value={nisn}
-                  onChange={(e) => setNisn(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="NISN"
-                />
-                {
-                  errors.nisn.length > 0 ? (
-                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                      {errors.nisn.map((error, index) => (
-                        <li className="font-regular" key={index}>{error}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="mt-2 flex items-center gap-2 text-xs text-red-600">
-                      <span className="font-medium">Keterangan:</span> Wajib diisi.
-                      <div onClick={() => setPopoverNisn(!popoverNisn)} className="space-x-1 cursor-pointer text-sm text-yellow-500">
-                        <i className="fa-solid fa-circle-info" />
-                        <span className="text-xs">Gatau? Cek disini!</span>
-                      </div>
-                    </p>
-                  )
-                }
+                <div className="mb-5">
+                  <label className="block mb-2 text-sm font-medium text-gray-900">
+                    Nomor Induk Siswa Nasional (NISN)
+                  </label>
+                  <input
+                    type="number"
+                    value={nisn}
+                    onChange={(e) => setValidateNisn(e.target.value, 10)}
+                    className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    placeholder="NISN"
+                  />
+                  {
+                    errors.nisn.length > 0 ? (
+                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                        {errors.nisn.map((error, index) => (
+                          <li className="font-regular" key={index}>{error}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-2 flex items-center gap-2 text-xs text-red-600">
+                        <span className="font-medium">Keterangan:</span> Wajib diisi.
+                        <div onClick={() => setPopoverNisn(!popoverNisn)} className="space-x-1 cursor-pointer text-sm text-yellow-500">
+                          <i className="fa-solid fa-circle-info" />
+                          <span className="text-xs">Gatau? Cek disini!</span>
+                        </div>
+                      </p>
+                    )
+                  }
+                </div>
               </div>
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
@@ -471,8 +535,9 @@ const Biodata = () => {
                 <input
                   type="text"
                   value={kip}
+                  maxLength={16}
                   onChange={(e) => setKip(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="KIP"
                 />
                 {
@@ -494,8 +559,9 @@ const Biodata = () => {
                 <input
                   type="text"
                   value={name}
+                  maxLength={50}
                   onChange={(e) => setName(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Nama lengkap"
                   required
                 />
@@ -520,7 +586,7 @@ const Biodata = () => {
 
                 <select
                   onChange={(e) => setReligion(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   required
                 >
                   {religion ? (
@@ -592,8 +658,9 @@ const Biodata = () => {
                 <input
                   type="number"
                   value={year}
-                  onChange={(e) => setYear(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
+                  min="1945" max="3000"
+                  onChange={(e) => setValidateYear(e.target.value, 4)}
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full px-2.5 py-2"
                   placeholder="Tahun Lulus"
                   required
                 />
@@ -621,8 +688,9 @@ const Biodata = () => {
                 <input
                   type="text"
                   value={placeOfBirth}
+                  maxLength={50}
                   onChange={(e) => setPlaceOfBirth(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Tempat Lahir"
                   required
                 />
@@ -649,7 +717,7 @@ const Biodata = () => {
                   type="date"
                   value={dateOfBirth}
                   onChange={(e) => setDateOfBirth(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Tanggal Lahir"
                   required
                 />
@@ -714,8 +782,9 @@ const Biodata = () => {
                 <input
                   type="email"
                   value={email}
+                  maxLength={5}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="Email"
                   required
                 />
@@ -741,8 +810,8 @@ const Biodata = () => {
                 <input
                   type="number"
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  onChange={(e) => setValidatePhone(e.target.value)}
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   placeholder="No. Telpon (Whatsapp)"
                   readOnly
                 />
@@ -768,7 +837,7 @@ const Biodata = () => {
                   <div className="relative group space-y-2">
                     <h2 className="block mb-1 text-sm font-medium text-gray-900">Alamat</h2>
                     <p className="text-sm text-gray-700">{address}</p>
-                    <button onClick={() => setAddress("")} className="text-xs text-white bg-yellow-400 hover:bg-yellow-500 rounded-lg px-5 py-2"><i className="fa-solid fa-pen-to-square"></i> Ubah alamat</button>
+                    <button onClick={() => setAddress("")} className="text-xs text-white bg-yellow-400 hover:bg-yellow-500 rounded-xl px-5 py-2"><i className="fa-solid fa-pen-to-square"></i> Ubah alamat</button>
                   </div>
                 </div>
               ) : (
@@ -781,8 +850,9 @@ const Biodata = () => {
                       <input
                         type="text"
                         value={studentPlace}
+                        maxLength={100}
                         onChange={(e) => setStudentPlace(e.target.value)}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="Jl"
                         required
                       />
@@ -797,8 +867,8 @@ const Biodata = () => {
                       <input
                         type="number"
                         value={studentRt}
-                        onChange={(e) => setStudentRt(e.target.value)}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        onChange={(e) => setValidateStudentRt(e.target.value,2)}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="RT."
                         required
                       />
@@ -813,8 +883,8 @@ const Biodata = () => {
                       <input
                         type="number"
                         value={studentRw}
-                        onChange={(e) => setStudentRw(e.target.value)}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        onChange={(e) => setValidateStudentRw(e.target.value,2)}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="RW."
                         required
                       />
@@ -829,8 +899,8 @@ const Biodata = () => {
                       <input
                         type="number"
                         value={studentPostalCode}
-                        onChange={(e) => setStudentPostalCode(e.target.value)}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        onChange={(e) => setValidateStudentPostalCode(e.target.value, 7)}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="Kode Pos"
                         required
                       />
@@ -856,7 +926,7 @@ const Biodata = () => {
                               console.log(error);
                             })
                         }}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         required
                       >
                         <option>Pilih Provinsi</option>
@@ -889,7 +959,7 @@ const Biodata = () => {
                               console.log(error);
                             })
                         }}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required disabled={regencies.length > 0 ? false : true}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" required disabled={regencies.length > 0 ? false : true}
                       >
                         {
                           regencies.length > 0 ? (
@@ -922,7 +992,7 @@ const Biodata = () => {
                               console.log(error);
                             })
                         }}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={districts.length > 0 ? false : true}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={districts.length > 0 ? false : true}
                         required
                       >
                         {
@@ -947,7 +1017,7 @@ const Biodata = () => {
                         onChange={(e) => {
                           setStudentVillages(e.target.value);
                         }}
-                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={villages.length > 0 ? false : true}
+                        className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" disabled={villages.length > 0 ? false : true}
                         required
                       >
                         {
@@ -971,7 +1041,7 @@ const Biodata = () => {
 
             <button
               type="submit"
-              className="flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}
               Perbarui Data

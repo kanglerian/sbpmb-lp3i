@@ -45,7 +45,7 @@ const Home = () => {
             <Link to={`/register`}>
               <button
                 type="button"
-                className="w-1/2 md:w-full md:inline-flex justify-center items-center py-3 px-5 text-sm md:text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
+                className="w-1/2 md:w-full md:inline-flex justify-center items-center py-3 px-5 text-sm md:text-base font-medium text-center text-white rounded-xl bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300"
               >
                 Daftar Sekarang
                 <i className="fa-solid fa-arrow-right-long ml-2"></i>
@@ -54,7 +54,7 @@ const Home = () => {
             <Link to={`/login`}>
               <button
                 type="button"
-                className="w-1/2 md:w-full md:inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 text-sm md:text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"
+                className="w-1/2 md:w-full md:inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 text-sm md:text-base font-medium text-center text-white rounded-xl border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400"
               >
                 Masuk
               </button>

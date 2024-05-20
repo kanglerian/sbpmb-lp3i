@@ -23,7 +23,7 @@ const Navbar = (props) => {
           </div>
         </Link>
         <div className="flex items-center gap-2">
-          <span className="bg-gray-100 px-4 py-2 rounded-lg">
+          <span className="bg-gray-100 px-4 py-2 rounded-xl">
             {props.timeleft}
           </span>
         </div>

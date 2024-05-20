@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "../templates/Navbar.jsx";
 import { Link } from "react-router-dom";
 import Loading from "../components/Loading.jsx";
+import LoadingScreen from "../components/LoadingScreen.jsx";
 
 const Program = () => {
   const [student, setStudent] = useState({});
@@ -10,6 +11,7 @@ const Program = () => {
   const [programs, setPrograms] = useState([]);
   const [programSecond, setProgramSecond] = useState("");
 
+  const [loadingScreen, setLoadingScreen] = useState(true);
   const [loading, setLoading] = useState(false);
 
   let start = true;
@@ -41,6 +43,7 @@ const Program = () => {
         if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
           setScholarship(true);
         }
+        setLoadingScreen(false);
       })
       .catch((error) => {
         if (error.response.status == 401) {
@@ -49,6 +52,7 @@ const Program = () => {
         } else {
           console.log(error);
         }
+        setLoadingScreen(false);
       });
   };
 
@@ -118,6 +122,7 @@ const Program = () => {
 
   return (
     <section className="bg-white">
+      { loadingScreen && <LoadingScreen/> }
       <div className="container mx-auto px-5">
         <Navbar />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -156,12 +161,12 @@ const Program = () => {
 
               {
                 scholarship ? (
-                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-lg text-sm">
+                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-xl text-sm">
                     <i className="fa-solid fa-pen"></i>
                     <span>Kerjakan E-Assessment</span>
                   </Link>
                 ) : (
-                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-lg text-sm">
+                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-xl text-sm">
                     <i className="fa-solid fa-circle-xmark"></i>
                     <span>Persyaratan Belum Lengkap</span>
                   </button>
@@ -181,7 +186,7 @@ const Program = () => {
                 <select
                   value={program || 0}
                   onChange={(e) => setProgram(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   required
                 >
                   {program ? (
@@ -233,7 +238,7 @@ const Program = () => {
                 <select
                   value={programSecond || 0}
                   onChange={(e) => setProgramSecond(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                   required
                 >
                   {programSecond ? (
@@ -278,7 +283,7 @@ const Program = () => {
 
             <button
               type="submit"
-              className="flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="flex justify-center items-center gap-2 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}
               Perbarui Data

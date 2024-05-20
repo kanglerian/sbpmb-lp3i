@@ -7,8 +7,10 @@ import moment from "moment-timezone";
 import "../assets/css/datatables-custom.css";
 import Navbar from "../templates/Navbar.jsx";
 import Loading from "../components/Loading.jsx";
+import LoadingScreen from "../components/LoadingScreen.jsx";
 
 const Prestasi = () => {
+  const [loadingScreen, setLoadingScreen] = useState(true);
   const [loading, setLoading] = useState(false);
   const [student, setStudent] = useState({});
   const [achievements, setAchievements] = useState([]);
@@ -38,6 +40,7 @@ const Prestasi = () => {
       .then((response) => {
         setStudent(response.data.applicant);
         setAchievements(response.data.achievements);
+        setLoadingScreen(false);
       })
       .catch((error) => {
         if (error.response.status == 401) {
@@ -46,6 +49,7 @@ const Prestasi = () => {
         } else {
           console.log(error);
         }
+        setLoadingScreen(false);
       });
   };
 
@@ -144,6 +148,7 @@ const Prestasi = () => {
 
   return (
     <section className="bg-white">
+    { loadingScreen && <LoadingScreen/> }
       <div className="container mx-auto px-5">
         <Navbar />
 
@@ -151,7 +156,7 @@ const Prestasi = () => {
           <button
             type="button"
             onClick={() => setModal(!modal)}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5"
           >
             Tambah Data
           </button>
@@ -199,7 +204,7 @@ const Prestasi = () => {
                         <button
                           type="button"
                           onClick={() => deleteAchievement(achievement.id)}
-                          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5"
+                          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-xl text-sm px-5 py-2.5"
                         >
                           Hapus
                         </button>
@@ -235,7 +240,7 @@ const Prestasi = () => {
         <div className="fixed top-0 left-0 right-0 bottom-0 bg-black opacity-50"></div>
         <div className="relative w-full max-w-2xl max-h-full">
           {/* Modal content */}
-          <div className="relative bg-white rounded-lg shadow">
+          <div className="relative bg-white rounded-xl shadow">
             {/* Modal header */}
             <div className="flex items-start justify-between p-4 border-b rounded-t">
               <h3 className="text-xl font-semibold text-gray-900">
@@ -243,7 +248,7 @@ const Prestasi = () => {
               </h3>
               <button
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-xl text-sm w-8 h-8 ml-auto inline-flex justify-center items-center"
                 onClick={() => setModal(!modal)}
               >
                 <i className="fa-solid fa-xmark"></i>
@@ -265,7 +270,7 @@ const Prestasi = () => {
                     id="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Tulis nama kegiatan disini.."
                     required
                   />
@@ -292,7 +297,7 @@ const Prestasi = () => {
                   </label>
                   <select
                     onChange={(e) => setLevel(e.target.value)}
-                    className="bg-white border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     required
                   >
                     <option value={0}>Pilih Tingkat</option>
@@ -331,7 +336,7 @@ const Prestasi = () => {
                     id="year"
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Tulis tahun disini.."
                     required
                   />
@@ -361,7 +366,7 @@ const Prestasi = () => {
                     id="result"
                     value={result}
                     onChange={(e) => setResult(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                     placeholder="Tulis pencapaian disini.."
                     required
                   />
@@ -384,7 +389,7 @@ const Prestasi = () => {
               <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
                 <button
                   type="submit"
-                  className="flex items-center gap-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
+                  className="flex items-center gap-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5 text-center"
                 >
                   {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}
                   Tambahkan
@@ -392,7 +397,7 @@ const Prestasi = () => {
                 <button
                   onClick={() => setModal(!modal)}
                   type="button"
-                  className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
+                  className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-xl border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
                 >
                   Batalkan
                 </button>

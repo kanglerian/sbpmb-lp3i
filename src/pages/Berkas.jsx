@@ -3,6 +3,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
 import Loading from "../components/Loading.jsx";
+import LoadingScreen from "../components/LoadingScreen.jsx";
 
 const Berkas = () => {
 
@@ -16,6 +17,7 @@ const Berkas = () => {
   const [fileUpload, setFileUpload] = useState([]);
   const [userUpload, setUserUpload] = useState([]);
 
+  const [loadingScreen, setLoadingScreen] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
@@ -135,6 +137,7 @@ const Berkas = () => {
         if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
           setScholarship(true);
         }
+        setLoadingScreen(false);
       })
       .catch((error) => {
         if (error.response.status == 401) {
@@ -143,6 +146,7 @@ const Berkas = () => {
         } else {
           console.log(error);
         }
+        setLoadingScreen(false);
       });
   };
 
@@ -160,6 +164,7 @@ const Berkas = () => {
 
   return (
     <section className="bg-white">
+    { loadingScreen && <LoadingScreen/> }
       <div className="container mx-auto px-5">
         <Navbar />
         <div className="flex flex-wrap">
@@ -217,12 +222,12 @@ const Berkas = () => {
               </div>
               {
                 scholarship ? (
-                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-lg text-sm">
+                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-xl text-sm">
                     <i className="fa-solid fa-pen"></i>
                     <span>Kerjakan E-Assessment</span>
                   </Link>
                 ) : (
-                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-lg text-sm">
+                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-xl text-sm">
                     <i className="fa-solid fa-circle-xmark"></i>
                     <span>Persyaratan Belum Lengkap</span>
                   </button>

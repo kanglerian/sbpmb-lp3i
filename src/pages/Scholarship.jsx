@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../templates/Navbar.jsx";
 import Loading from "../components/Loading.jsx";
+import LoadingScreen from "../components/LoadingScreen.jsx";
 import { useNavigate } from "react-router-dom";
 
 import DattebayoSound from '../assets/sounds/dattebayo.mp3'
@@ -10,6 +11,7 @@ const Scholarship = () => {
 
   let start = true;
 
+  const [loadingScreen, setLoadingScreen] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const [identity, setIdentity] = useState(null);
@@ -46,6 +48,7 @@ const Scholarship = () => {
         } else {
           navigate('/dashboard');
         }
+        setLoadingScreen(false);
       })
       .catch((error) => {
         console.log(error);
@@ -55,6 +58,7 @@ const Scholarship = () => {
         } else {
           console.log(error);
         }
+        setLoadingScreen(false);
       });
   };
 
@@ -115,6 +119,7 @@ const Scholarship = () => {
 
   return (
     <section className="bg-white">
+    { loadingScreen && <LoadingScreen/> }
       <div className="container mx-auto px-5">
         <Navbar />
         <section className="max-w-7xl mx-auto mt-10">

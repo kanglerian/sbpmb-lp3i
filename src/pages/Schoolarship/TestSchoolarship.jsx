@@ -283,7 +283,7 @@ const TestSchoolarship = () => {
                     buttonActive &&
                     <button
                       type="submit"
-                      className="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded-lg text-white flex items-center gap-2"
+                      className="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded-xl text-white flex items-center gap-2"
                     >
                       { loading && <Loading width={5} height={5} fill="fill-sky-400" color="text-white" />}
                       <span className="text-sm">Lanjutkan</span>
@@ -293,7 +293,7 @@ const TestSchoolarship = () => {
                     <button
                       onClick={() => { checkMiddleware(); winPlay(); }}
                       type="button"
-                      className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white flex items-center gap-2"
+                      className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl text-white flex items-center gap-2"
                     >
                       <span className="text-sm">Selesai</span>
                       <i className="fa-solid fa-save"></i>
@@ -303,7 +303,7 @@ const TestSchoolarship = () => {
                   buttonActive &&
                   <button
                     type="submit"
-                    className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded-lg text-white flex items-center gap-2"
+                    className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded-xl text-white flex items-center gap-2"
                   >
                     <span className="text-sm">Ubah Jawaban</span>
                     <i className="fa-solid fa-save"></i>
@@ -351,7 +351,7 @@ const TestSchoolarship = () => {
               </p>
             </header>
             <div className="flex flex-col gap-2">
-              <button onClick={() => { checkMiddleware(); gameOverPlay(); }} className="bg-red-500 hover:bg-red-600 text-white py-2 text-sm rounded-lg">
+              <button onClick={() => { checkMiddleware(); gameOverPlay(); }} className="bg-red-500 hover:bg-red-600 text-white py-2 text-sm rounded-xl">
                 <i className="fa-solid fa-hand mr-2"></i>
                 <span>Menyerah</span>
               </button>
@@ -370,14 +370,14 @@ const TestSchoolarship = () => {
                     <button
                       key={question.id}
                       onClick={() => changeQuestion(question)}
-                      className="bg-gray-100 hover:bg-gray-200 text-base px-4 py-2 rounded-lg"
+                      className="bg-gray-100 hover:bg-gray-200 text-base px-4 py-2 rounded-xl"
                     >
                       <i className="fa-solid fa-xmark"></i>
                     </button>
                   ))}
                 </div>
               ) : (
-                <p className="bg-emerald-500 hover:bg-emerald-600 text-xs py-2 px-4 rounded-lg text-white text-center">Soal sudah terjawab.</p>
+                <p className="bg-emerald-500 hover:bg-emerald-600 text-xs py-2 px-4 rounded-xl text-white text-center">Soal sudah terjawab.</p>
               )}
             </div>
             <hr />
@@ -394,14 +394,14 @@ const TestSchoolarship = () => {
                     <button
                       key={record.id}
                       onClick={() => updateQuestion(record)}
-                      className="bg-emerald-500 hover:bg-emerald-600 text-white text-base px-4 py-2 rounded-lg"
+                      className="bg-emerald-500 hover:bg-emerald-600 text-white text-base px-4 py-2 rounded-xl"
                     >
                       <i className="fa-solid fa-circle-check"></i>
                     </button>
                   ))}
                 </div>
               ) : (
-                <p className="bg-red-500 hover:bg-red-600 text-xs py-2 px-4 rounded-lg text-white text-center">Belum ada yang terjawab.</p>
+                <p className="bg-red-500 hover:bg-red-600 text-xs py-2 px-4 rounded-xl text-white text-center">Belum ada yang terjawab.</p>
               )}
             </div>
           </div>
