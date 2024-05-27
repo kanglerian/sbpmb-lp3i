@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import Navbar from "../components/Navbar";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import DroneBackground from "../assets/image/drone-background.jpeg";

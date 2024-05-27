@@ -24,4 +24,8 @@ dist-ssr
 *.sw?
 
 #jika belum ada di repositori maka komentari kode dibawah ini.
+<<<<<<< HEAD
 #public/json/api-indonesia
+=======
+public/json/api-indonesia
+>>>>>>> 12c9bf19 (first)
