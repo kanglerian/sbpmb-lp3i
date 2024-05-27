@@ -32,7 +32,6 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git checkout --orphan gh-pages
           git reset --hard
-          git rm -rf src
           git commit -m "Empty the gh-pages branch"
           git push origin gh-pages --force
           ls -l
