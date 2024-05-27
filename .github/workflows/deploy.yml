@@ -35,4 +35,6 @@ jobs:
           ls -l
           git add .
           git commit -m "Deploy to GitHub Pages"
-          ls -l
+          git push -u origin gh-pages
+          git checkout -
+          git stash pop
