@@ -34,6 +34,7 @@ jobs:
           git reset --hard
           mv -f dist/* .
           rm -rf dist
+          rm -rf node_modules
           git add .
           git commit -m "Empty the gh-pages branch"
           git push origin gh-pages --force
