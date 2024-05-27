@@ -26,6 +26,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git stash --include-untracked
           git fetch origin
+          ls -l
           if git ls-remote --exit-code --heads origin gh-pages; then
             git checkout gh-pages
             git fetch --all
