@@ -84,7 +84,7 @@ const Keluarga = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
+      .get("http://127.0.0.1:8000/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -152,7 +152,7 @@ const Keluarga = () => {
 
     await axios
       .patch(
-        `https://database.politekniklp3i-tasikmalaya.ac.id/api/user/updatefamily/${student.identity}`,
+        `http://127.0.0.1:8000/api/user/updatefamily/${student.identity}`,
         {
           fatherName: fatherName,
           fatherPhone: fatherPhone,

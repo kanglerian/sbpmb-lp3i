@@ -49,7 +49,7 @@ const Berkas = () => {
           .then(async (res) => {
             await axios
               .post(
-                `https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload`,
+                `http://127.0.0.1:8000/api/userupload`,
                 status, {
                 headers: {
                   Authorization: `Bearer ${token}`
@@ -95,7 +95,7 @@ const Berkas = () => {
         .then(async (res) => {
           await axios
             .delete(
-              `https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`, {
+              `http://127.0.0.1:8000/api/userupload/${user.id}`, {
               headers: {
                 Authorization: `Bearer ${token}`
               }
@@ -120,7 +120,7 @@ const Berkas = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
+      .get("http://127.0.0.1:8000/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

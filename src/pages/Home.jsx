@@ -11,7 +11,7 @@ import KampusMandiriPutih from "../assets/logo/kampusmandiri-putih.png";
 
 const Home = () => {
   const navigate = useNavigate();
-  
+
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (token) {
@@ -21,26 +21,62 @@ const Home = () => {
 
   return (
     <section
-      className="bg-center bg-no-repeat h-screen bg-cover bg-gray-700 bg-blend-multiply"
+      className="bg-center bg-no-repeat md:h-screen bg-cover bg-gray-800 bg-blend-multiply"
       style={{ backgroundImage: `url(${DroneBackground})` }}
     >
-      <div className="flex flex-col items-center justify-between h-screen py-5">
+      <div className="flex flex-col items-center justify-between gap-10 md:h-screen py-5">
         <header className="flex flex-wrap justify-center items-center gap-5">
-          <img src={LP3IPutih} alt="" width={150} />
-          <img src={Tagline} alt="" width={150} />
-          <img src={KampusMandiriPutih} alt="" width={150} />
+          <img src={LP3IPutih} alt="" width={140} />
+          <img src={Tagline} alt="" width={135} />
+          <img src={KampusMandiriPutih} alt="" width={135} />
         </header>
-        <div className="px-4 mx-auto max-w-screen-xl text-center">
-          <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">
-            Program Beasiswa
-            <br />
-            Yayasan Global Mandiri Utama
+        <div className="space-y-8 text-center">
+          <h1 className="text-3xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl uppercase">
+            Gebyar Beasiswa<br />Politeknik LP3I Se-Indonesia
           </h1>
-          <p className="mb-8 text-base font-normal text-gray-300 md:text-lg sm:px-16 lg:px-48">
-            Temukan langkah terbaik untuk meraih impianmu! Bergabunglah dengan
-            Politeknik LP3I Kampus Tasikmalaya dan jadilah bagian dari perubahan
-            yang lebih baik.
-          </p>
+          <div className="max-w-5xl mx-auto space-y-1">
+            <h4 className="text-xl md:text-3xl text-white font-bold">Global Mandiri Utama Foundation</h4>
+            <p className="text-sm md:text-base font-normal text-gray-300 md:text-lg">
+              Temukan langkah terbaik untuk meraih impianmu! Bergabunglah dengan
+              Politeknik LP3I Kampus Tasikmalaya dan jadilah bagian dari perubahan
+              yang lebih baik.
+            </p>
+          </div>
+          <ul className="flex flex-wrap justify-center items-center gap-5 text-sm md:text-base list-disc">
+            <li className="text-amber-300">Prestasi Bidang Akademik</li>
+            <li className="text-white">Prestasi Bidang Non Akademik</li>
+            <li className="text-amber-300">Prestasi Ranking 1 - 5</li>
+            <li className="text-white">Prestasi Hafidz Quran 5 - 30 Juz</li>
+            <li className="text-amber-300">Prestasi Atlet</li>
+            <li className="text-white">Putra/i TNI/POLRI/ASN/Guru</li>
+          </ul>
+          <section className="grid grid-cols-1 md:grid-cols-4 gap-5 text-sm md:text-base text-white">
+            <div className="flex flex-col items-center justify-center border border-gray-100 p-4 rounded-xl">
+              <p className="flex flex-col items-center justify-center">
+                <span>Dapatkan</span>
+                <span>Beasiswa Pendidikan s.d 100%</span>
+                <span className="font-italic text-xs">*Syarat dan ketentuan berlaku</span>
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center border border-gray-100 p-4 rounded-xl">
+              <p className="flex flex-col items-center justify-center">
+                <span>Periode Pendaftaran</span>
+                <span>22 Mei - 2 Juni 2024</span>
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center border border-gray-100 p-4 rounded-xl">
+              <p className="flex flex-col items-center justify-center">
+                <span>Pembukaan</span>
+                <span>4 Juni 2024</span>
+              </p>
+            </div>
+            <div className="flex flex-col items-center justify-center border border-gray-100 p-4 rounded-xl">
+              <p className="flex flex-col items-center justify-center">
+                <span>Pelaksaan Tes</span>
+                <span>4 Juni - 5 Juni 2024</span>
+              </p>
+            </div>
+          </section>
           <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
             <Link to={`/register`}>
               <button

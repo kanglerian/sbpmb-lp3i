@@ -9,7 +9,7 @@ const Dashboard = () => {
 
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
+      .get("http://127.0.0.1:8000/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

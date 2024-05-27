@@ -70,7 +70,7 @@ const Biodata = () => {
   const token = localStorage.getItem("token");
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
+      .get("http://127.0.0.1:8000/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -121,7 +121,7 @@ const Biodata = () => {
 
   const getSchools = async () => {
     await axios
-      .get(`https://database.politekniklp3i-tasikmalaya.ac.id/api/school/getall`)
+      .get(`http://127.0.0.1:8000/api/school/getall`)
       .then((res) => {
         let bucket = [];
         let dataSchools = res.data.schools;
@@ -166,7 +166,7 @@ const Biodata = () => {
     let provinceContent = capitalizeText(studentProvince);
     let addressContent = `${placeContent}, RT. ${rtContent} RW. ${rwContent}, Desa/Kelurahan ${villageContent}, Kecamatan ${districtContent}, ${regenciesContent}, Provinsi ${provinceContent} ${studentPostalCode}`;
     await axios
-      .patch(`https://database.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`, {
+      .patch(`http://127.0.0.1:8000/api/user/update/${student.identity}`, {
         nik: nik,
         nisn: nisn,
         kip: kip,

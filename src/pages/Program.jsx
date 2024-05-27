@@ -25,7 +25,7 @@ const Program = () => {
   const token = localStorage.getItem("token");
   const getUser = async () => {
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
+      .get("http://127.0.0.1:8000/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -79,7 +79,7 @@ const Program = () => {
     e.preventDefault();
     await axios
       .patch(
-        `https://database.politekniklp3i-tasikmalaya.ac.id/api/user/updateprogram/${student.identity}`,
+        `http://127.0.0.1:8000/api/user/updateprogram/${student.identity}`,
         {
           program: program == 0 ? "" : program,
           program_second: programSecond == 0 ? "" : programSecond,
