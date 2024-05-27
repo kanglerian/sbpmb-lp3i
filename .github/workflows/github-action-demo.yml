@@ -36,3 +36,8 @@ jobs:
           mv -f dist/* .
           ls -l
           ls -l dist
+          rm -rf distgit add .
+          git commit -m "Deploy to GitHub Pages"
+          git push -u origin gh-pages
+          git checkout -
+          git stash pop
