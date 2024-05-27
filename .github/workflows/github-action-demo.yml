@@ -32,4 +32,4 @@ jobs:
           else
             git checkout --orphan gh-pages
           fi
-          ls -l dist
+          ls -l
