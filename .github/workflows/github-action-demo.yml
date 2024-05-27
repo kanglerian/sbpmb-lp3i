@@ -32,7 +32,5 @@ jobs:
           else
             git checkout --orphan gh-pages
           fi
-          git rm -rf .
-          git reset -- dist
-          git checkout -- .
+          git rm -rf src
           ls -l
