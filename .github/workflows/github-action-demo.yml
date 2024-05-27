@@ -32,6 +32,7 @@ jobs:
           else
             git checkout --orphan gh-pages
           fi
+          ls
           git add .
           git commit -m "Deploy to GitHub Pages"
           git push -u origin gh-pages
