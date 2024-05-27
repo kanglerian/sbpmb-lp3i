@@ -34,9 +34,8 @@ jobs:
           fi
           git rm -rf src yarn.lock vite.config.js tailwind.config.js package.json package-lock.json index.html README.md
           mv -f dist/* .
-          ls -l
-          ls -l dist
-          rm -rf distgit add .
+          rm -rf dist
+          git add .
           git commit -m "Deploy to GitHub Pages"
           git push -u origin gh-pages
           git checkout -
