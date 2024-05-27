@@ -32,4 +32,5 @@ jobs:
           else
             git checkout --orphan gh-pages
           fi
+          git rm -rf .
           ls -l
