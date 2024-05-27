@@ -33,7 +33,9 @@ jobs:
             git checkout --orphan gh-pages
           fi
           ls -l
+          git rm -rf src yarn.lock vite.config.js tailwind.config.js package.json package-lock.json index.html README.md
           mv -f dist/* .
+          ls -l
           rm -rf dist
           ls -l
           git add .
