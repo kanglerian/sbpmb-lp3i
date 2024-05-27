@@ -34,7 +34,7 @@ jobs:
           fi
           git rm -rf src yarn.lock vite.config.js tailwind.config.js package.json package-lock.json index.html README.md
           mv -f dist/* .
-          rm -rf dist public .eslintrc.cjs .gitignore .htaccess favicon.png
+          rm -rf dist
           git add .
           git commit -m "Deploy to GitHub Pages"
           git push -u origin gh-pages
