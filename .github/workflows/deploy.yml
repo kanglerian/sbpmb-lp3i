@@ -30,30 +30,12 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git stash
-
           git fetch origin
           if git ls-remote --exit-code --heads origin gh-pages; then
-            echo 'Branch gh-pages exists. Resetting...'
-            git checkout gh-pages
-            git rm -rf .
-            rm -rf assets
-            git clean -fd
-            touch .gitkeep  # Menambahkan file kosong agar commit tidak kosong, opsional
-            git add .gitkeep
-            git commit -m "Reset branch gh-pages"
-            git push -f origin gh-pages
-          else
-            echo 'Branch gh-pages does not exist. Creating new orphan branch...'
-            git checkout --orphan gh-pages
-            git rm -rf .
-            rm -rf assets
-            git clean -fd
-            touch .gitkeep  # Menambahkan file kosong agar commit tidak kosong, opsional
-            git add .gitkeep
-            git commit -m "Initialize branch gh-pages"
-            git push -u origin gh-pages
+            echo 'Branch gh-pages exists. Deleting...'
+            git push origin --delete gh-pages
           fi
-
-          git stash pop
-
+          git checkout --orphan gh-pages
+          git add .
+          git commit -m "Deployment sementara"
+          git push -u origin gh-pages
