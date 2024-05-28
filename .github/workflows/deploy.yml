@@ -33,7 +33,6 @@ jobs:
           git fetch origin
           if git ls-remote --exit-code --heads origin gh-pages; then
             git checkout gh-pages
-            git pull origin gh-pages --rebase
             git add .
             git commit -m "Deploy to GitHub Pages Sudah Ada"
             git push -u origin gh-pages
