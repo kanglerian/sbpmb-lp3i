@@ -30,4 +30,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          ls -l
+          if git ls-remote --exit-code --heads origin gh-pages; then
+            echo 'ada'
+          else
+            echo 'tidak ada'
+          fi
