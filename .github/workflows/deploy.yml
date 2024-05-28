@@ -29,7 +29,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.DEPLOY }}
         run: |
           git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com" git stash --include-untracked
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git stash --include-untracked
           git fetch origin
           if git ls-remote --exit-code --heads origin gh-pages; then
             git checkout gh-pages
