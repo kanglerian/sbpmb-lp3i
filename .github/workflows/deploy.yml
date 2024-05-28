@@ -32,10 +32,22 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git fetch origin
           if git ls-remote --exit-code --heads origin gh-pages; then
-            echo 'Branch gh-pages exists. Deleting...'
-            git push origin --delete gh-pages
+            echo 'Branch gh-pages exists. Resetting...'
+            git checkout gh-pages
+            git rm -rf .
+            git clean -fd
+            touch .gitkeep  # Menambahkan file kosong agar commit tidak kosong, opsional
+            git add .gitkeep
+            git commit -m "Reset branch gh-pages"
+            git push -f origin gh-pages
+          else
+            echo 'Branch gh-pages does not exist. Creating new orphan branch...'
+            git checkout --orphan gh-pages
+            git rm -rf .
+            git clean -fd
+            touch .gitkeep  # Menambahkan file kosong agar commit tidak kosong, opsional
+            git add .gitkeep
+            git commit -m "Initialize branch gh-pages"
+            git push -u origin gh-pages
           fi
-          git checkout --orphan gh-pages
-          git add .
-          git commit -m "coba"
-          git push -u origin gh-pages
+
