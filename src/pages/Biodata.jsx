@@ -296,7 +296,7 @@ const Biodata = () => {
 
   return (
     <section className="bg-white">
-    { loadingScreen && <LoadingScreen/> }
+      {loadingScreen && <LoadingScreen />}
       <div className="container mx-auto px-5">
         <Navbar />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -413,6 +413,56 @@ const Biodata = () => {
           </section>
           <form onSubmit={handleUpdate} className="pb-5">
             <div className="grid grid-cols-1 md:gap-4">
+              <div className="mb-5">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
+                  Nama Lengkap
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  maxLength={50}
+                  onChange={(e) => setName(e.target.value)}
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  placeholder="Nama lengkap"
+                  required
+                />
+                {
+                  errors.name.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.name.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
+              </div>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+              <div className="mb-5">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
+                  No. Kartu Indonesia Pintar
+                </label>
+                <input
+                  type="text"
+                  value={kip}
+                  maxLength={16}
+                  onChange={(e) => setKip(e.target.value)}
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  placeholder="KIP"
+                />
+                {
+                  errors.kip.length > 0 &&
+                  <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                    {errors.kip.map((error, index) => (
+                      <li className="font-regular" key={index}>{error}</li>
+                    ))}
+                  </ul>
+                }
+              </div>
               <div className="relative mb-5">
                 {
                   popoverNik &&
@@ -458,98 +508,6 @@ const Biodata = () => {
                 }
               </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  No. Kartu Indonesia Pintar
-                </label>
-                <input
-                  type="text"
-                  value={kip}
-                  maxLength={16}
-                  onChange={(e) => setKip(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="KIP"
-                />
-                {
-                  errors.kip.length > 0 &&
-                  <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                    {errors.kip.map((error, index) => (
-                      <li className="font-regular" key={index}>{error}</li>
-                    ))}
-                  </ul>
-                }
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Nama Lengkap
-                </label>
-                <input
-                  type="text"
-                  value={name}
-                  maxLength={50}
-                  onChange={(e) => setName(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  placeholder="Nama lengkap"
-                  required
-                />
-                {
-                  errors.name.length > 0 ? (
-                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                      {errors.name.map((error, index) => (
-                        <li className="font-regular" key={index}>{error}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="mt-2 text-xs text-red-600">
-                      <span className="font-medium">Keterangan:</span> Wajib diisi.
-                    </p>
-                  )
-                }
-              </div>
-              <div className="mb-5">
-                <label className="block mb-2 text-sm font-medium text-gray-900">
-                  Agama
-                </label>
-
-                <select
-                  onChange={(e) => setReligion(e.target.value)}
-                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  required
-                >
-                  {religion ? (
-                    <option value={religion} selected>
-                      {religion}
-                    </option>
-                  ) : (
-                    <option value={0}>Pilih</option>
-                  )}
-                  <option value="Islam">Islam</option>
-                  <option value="Kristen Katholik">Kristen Katholik</option>
-                  <option value="Kristen Protestan">Kristen Protestan</option>
-                  <option value="Hindu">Hindu</option>
-                  <option value="Buddha">Buddha</option>
-                  <option value="Khonghucu">Khonghucu</option>
-                </select>
-                {
-                  errors.religion.length > 0 ? (
-                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                      {errors.religion.map((error, index) => (
-                        <li className="font-regular" key={index}>{error}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="mt-2 text-xs text-red-600">
-                      <span className="font-medium">Keterangan:</span> Wajib diisi.
-                    </p>
-                  )
-                }
-              </div>
-            </div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
               {schoolsAPI.length > 0 && (
                 <div className="mb-5">
@@ -666,41 +624,79 @@ const Biodata = () => {
                   )
                 }
               </div>
-            </div>
 
-            <div className="mb-5">
-              <label className="block mb-2 text-sm font-medium text-gray-900">
-                Jenis Kelamin
-              </label>
+              <div className="mb-5">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
+                  Agama
+                </label>
 
-              <div className="flex gap-10 mt-5">
-                <div className="flex items-center mb-4">
-                  <input
-                    type="radio"
-                    defaultValue
-                    value={1}
-                    onClick={() => setGender(1)}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                    checked={gender == 1}
-                  />
-                  <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                    Laki-laki
-                  </label>
-                </div>
-                <div className="flex items-center mb-4">
-                  <input
-                    type="radio"
-                    value={0}
-                    onClick={() => setGender(0)}
-                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
-                    checked={gender == 0}
-                  />
-                  <label
-                    htmlFor="default-radio-1"
-                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                  >
-                    Perempuan
-                  </label>
+                <select
+                  onChange={(e) => setReligion(e.target.value)}
+                  className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  required
+                >
+                  {religion ? (
+                    <option value={religion} selected>
+                      {religion}
+                    </option>
+                  ) : (
+                    <option value={0}>Pilih</option>
+                  )}
+                  <option value="Islam">Islam</option>
+                  <option value="Kristen Katholik">Kristen Katholik</option>
+                  <option value="Kristen Protestan">Kristen Protestan</option>
+                  <option value="Hindu">Hindu</option>
+                  <option value="Buddha">Buddha</option>
+                  <option value="Khonghucu">Khonghucu</option>
+                </select>
+                {
+                  errors.religion.length > 0 ? (
+                    <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
+                      {errors.religion.map((error, index) => (
+                        <li className="font-regular" key={index}>{error}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="mt-2 text-xs text-red-600">
+                      <span className="font-medium">Keterangan:</span> Wajib diisi.
+                    </p>
+                  )
+                }
+              </div>
+              <div className="mb-5">
+                <label className="block mb-2 text-sm font-medium text-gray-900">
+                  Jenis Kelamin
+                </label>
+
+                <div className="flex gap-10 mt-5">
+                  <div className="flex items-center mb-4">
+                    <input
+                      type="radio"
+                      defaultValue
+                      value={1}
+                      onClick={() => setGender(1)}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                      checked={gender == 1}
+                    />
+                    <label className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                      Laki-laki
+                    </label>
+                  </div>
+                  <div className="flex items-center mb-4">
+                    <input
+                      type="radio"
+                      value={0}
+                      onClick={() => setGender(0)}
+                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500"
+                      checked={gender == 0}
+                    />
+                    <label
+                      htmlFor="default-radio-1"
+                      className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    >
+                      Perempuan
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -798,7 +794,7 @@ const Biodata = () => {
                       <input
                         type="number"
                         value={studentRt}
-                        onChange={(e) => setValidateStudentRt(e.target.value,2)}
+                        onChange={(e) => setValidateStudentRt(e.target.value, 2)}
                         className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="RT."
                         required
@@ -814,7 +810,7 @@ const Biodata = () => {
                       <input
                         type="number"
                         value={studentRw}
-                        onChange={(e) => setValidateStudentRw(e.target.value,2)}
+                        onChange={(e) => setValidateStudentRw(e.target.value, 2)}
                         className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="RW."
                         required
