@@ -20,7 +20,7 @@ jobs:
         run: npm run build
       - name: After build project
         run: |
-          rm -rf README.md node_modules index.html package.json package-lock.json public src tailwind.config.js vite.config.js yarn.lock
+          rm -rf README.md node_modules index.html package.json package-lock.json public src tailwind.config.js vite.config.js yarn.lock .github
           mv -f dist/* .
           rm -rf dist
           ls -l
