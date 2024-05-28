@@ -19,7 +19,9 @@ jobs:
       - name: Build project
         run: npm run build
       - name: After build project
-        run: ls -l
+        run: |
+          rm -rf README.md node_modules index.html package.json package-lock.json public src tailwind.config.js vite.config.js yarn.lock
+          ls -l
       - name: Deploy to GitHub Pages
         env:
           GITHUB_TOKEN: ${{ secrets.DEPLOY }}
