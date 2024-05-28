@@ -36,6 +36,7 @@ jobs:
             git checkout gh-pages
             git reset --hard origin/gh-pages
             git rm -rf .
+            touch coba.txt
           else
             echo 'tidak ada'
             git checkout --orphan gh-pages
