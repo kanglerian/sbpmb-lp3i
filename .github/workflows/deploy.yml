@@ -37,6 +37,7 @@ jobs:
             echo 'Branch gh-pages exists. Resetting...'
             git checkout gh-pages
             git rm -rf .
+            git rm -rf assets
             git clean -fd
             touch .gitkeep  # Menambahkan file kosong agar commit tidak kosong, opsional
             git add .gitkeep
@@ -46,6 +47,7 @@ jobs:
             echo 'Branch gh-pages does not exist. Creating new orphan branch...'
             git checkout --orphan gh-pages
             git rm -rf .
+            git rm -rf assets
             git clean -fd
             touch .gitkeep  # Menambahkan file kosong agar commit tidak kosong, opsional
             git add .gitkeep
