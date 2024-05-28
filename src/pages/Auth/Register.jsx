@@ -12,7 +12,6 @@ const Register = () => {
   const [icon, setIcon] = useState(false);
 
   const [name, setName] = useState("");
-  const [nisn, setNisn] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [school, setSchool] = useState("");
@@ -26,7 +25,6 @@ const Register = () => {
 
   const [errors, setErrors] = useState({
     name: [],
-    nisn: [],
     school: [],
     email: [],
     phone: [],
@@ -46,14 +44,9 @@ const Register = () => {
       setLoading(false);
       return alert("No. Whatsapp / Telpon tidak valid!");
     }
-    if (nisn.length < 10) {
-      setLoading(false);
-      return alert("No. NISN tidak valid. Cek kembali!");
-    }
     await axios
-      .post(`http://127.0.0.1:8000/api/register`, {
+      .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/register`, {
         name: name,
-        nisn: nisn,
         email: email,
         phone: phone,
         school: school,
@@ -70,7 +63,6 @@ const Register = () => {
       .catch((error) => {
         if (error.code !== 'ERR_NETWORK') {
           const nameError = error.response.data.message.name || [];
-          const nisnError = error.response.data.message.nisn || [];
           const schoolError = error.response.data.message.school || [];
           const emailError = error.response.data.message.email || [];
           const phoneError = error.response.data.message.phone || [];
@@ -78,7 +70,6 @@ const Register = () => {
           const yearError = error.response.data.message.year || [];
           const newAllErrors = {
             name: nameError,
-            nisn: nisnError,
             school: schoolError,
             email: emailError,
             phone: phoneError,
@@ -101,7 +92,7 @@ const Register = () => {
   const getSchools = async () => {
     await axios
       .get(
-        `http://127.0.0.1:8000/api/school/getall`
+        `https://database.politekniklp3i-tasikmalaya.ac.id/api/school/getall`
       )
       .then((res) => {
         let bucket = [];
@@ -178,37 +169,6 @@ const Register = () => {
               errors.name.length > 0 ? (
                 <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
                   {errors.name.map((error, index) => (
-                    <li className="font-regular" key={index}>{error}</li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-2 text-xs text-red-600">
-                  <span className="font-medium">Keterangan:</span> Wajib diisi.
-                </p>
-              )
-            }
-          </div>
-
-          <div className="mb-5">
-            <label
-              htmlFor="nisn"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              NISN
-            </label>
-            <input
-              type="number"
-              id="nisn"
-              value={nisn}
-              onChange={(e) => setNisn(e.target.value)}
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="Isi dengan NISN anda..."
-              required
-            />
-            {
-              errors.nisn.length > 0 ? (
-                <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                  {errors.nisn.map((error, index) => (
                     <li className="font-regular" key={index}>{error}</li>
                   ))}
                 </ul>

@@ -15,14 +15,12 @@ const Biodata = () => {
   const [loading, setLoading] = useState(false);
 
   const [popoverNik, setPopoverNik] = useState(false);
-  const [popoverNisn, setPopoverNisn] = useState(false);
 
   let start = true;
   const [scholarship, setScholarship] = useState(false);
 
   const [student, setStudent] = useState({});
   const [nik, setNik] = useState("");
-  const [nisn, setNisn] = useState("");
   const [kip, setKip] = useState("");
   const [name, setName] = useState("");
   const [school, setSchool] = useState("");
@@ -57,7 +55,6 @@ const Biodata = () => {
     email: [],
     nik: [],
     kip: [],
-    nisn: [],
     name: [],
     religion: [],
     school: [],
@@ -70,7 +67,7 @@ const Biodata = () => {
   const token = localStorage.getItem("token");
   const getUser = async () => {
     await axios
-      .get("http://127.0.0.1:8000/api/user", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -78,7 +75,6 @@ const Biodata = () => {
       .then((response) => {
         setStudent(response.data.applicant);
         setNik(response.data.applicant.nik);
-        setNisn(response.data.applicant.nisn);
         setKip(response.data.applicant.kip);
         setName(response.data.applicant.name);
         setSchool(response.data.applicant.school);
@@ -102,7 +98,7 @@ const Biodata = () => {
         let foto = fileuploaded.find((file) => { return file.namefile == "foto" });
         let akta = fileuploaded.find((file) => { return file.namefile == "akta-kelahiran" });
         let keluarga = fileuploaded.find((file) => { return file.namefile == "kartu-keluarga" });
-        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
+        if (start && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
           setScholarship(true);
         }
         setLoadingScreen(false);
@@ -121,7 +117,7 @@ const Biodata = () => {
 
   const getSchools = async () => {
     await axios
-      .get(`http://127.0.0.1:8000/api/school/getall`)
+      .get(`https://database.politekniklp3i-tasikmalaya.ac.id/api/school/getall`)
       .then((res) => {
         let bucket = [];
         let dataSchools = res.data.schools;
@@ -166,9 +162,8 @@ const Biodata = () => {
     let provinceContent = capitalizeText(studentProvince);
     let addressContent = `${placeContent}, RT. ${rtContent} RW. ${rwContent}, Desa/Kelurahan ${villageContent}, Kecamatan ${districtContent}, ${regenciesContent}, Provinsi ${provinceContent} ${studentPostalCode}`;
     await axios
-      .patch(`http://127.0.0.1:8000/api/user/update/${student.identity}`, {
+      .patch(`https://database.politekniklp3i-tasikmalaya.ac.id/api/user/update/${student.identity}`, {
         nik: nik,
-        nisn: nisn,
         kip: kip,
         name: name,
         school: school,
@@ -185,7 +180,7 @@ const Biodata = () => {
           Authorization: `Bearer ${token}`
         }
       })
-      .then((res) => {
+      .then((response) => {
         alert("Data sudah diperbarui!");
         setLoading(false);
         setErrors({
@@ -193,7 +188,6 @@ const Biodata = () => {
           email: [],
           nik: [],
           kip: [],
-          nisn: [],
           name: [],
           religion: [],
           school: [],
@@ -210,7 +204,6 @@ const Biodata = () => {
           const emailError = error.response.data.message.email || [];
           const nikError = error.response.data.message.nik || [];
           const kipError = error.response.data.message.kip || [];
-          const nisnError = error.response.data.message.nisn || [];
           const nameError = error.response.data.message.name || [];
           const religionError = error.response.data.message.religion || [];
           const schoolError = error.response.data.message.school || [];
@@ -223,7 +216,6 @@ const Biodata = () => {
             email: emailError,
             nik: nikError,
             kip: kipError,
-            nisn: nisnError,
             name: nameError,
             religion: religionError,
             school: schoolError,
@@ -245,12 +237,6 @@ const Biodata = () => {
   const setValidateNik = (text, length) => {
     if (text.length <= length) {
       setNik(text);
-    }
-  }
-
-  const setValidateNisn = (text, length) => {
-    if (text.length <= length) {
-      setNisn(text);
     }
   }
 
@@ -331,14 +317,6 @@ const Biodata = () => {
                   <li className="space-x-2">
                     <span className="text-gray-900">NIK</span>
                     {student.nik ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
-                  </li>
-                  <li className="space-x-2">
-                    <span className="text-gray-900">NISN</span>
-                    {student.nisn ? (
                       <i className="text-emerald-500 fa-solid fa-circle-check"></i>
                     ) : (
                       <i className="text-red-500 fa-solid fa-circle-xmark"></i>
@@ -481,53 +459,6 @@ const Biodata = () => {
               </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              <div className="relative mb-5">
-                {
-                  popoverNisn &&
-                  <div role="tooltip"
-                    className="absolute top-[-23px] right-[-60px] z-10 visible inline-block w-72 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-xl shadow-sm">
-                    <div
-                      className="flex justify-between items-center px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg">
-                      <h3 className="font-semibold text-gray-900">Bagaimana Cek NISN?</h3>
-                      <span className="cursor-pointer" onClick={() => setPopoverNisn(!popoverNisn)}>
-                        <i className="fa-solid fa-xmark"></i>
-                      </span>
-                    </div>
-                    <div className="px-3 py-2">
-                      <p>Bro, mampir ke web <a className="underline font-medium" href="https://nisn.data.kemdikbud.go.id/index.php/Cindex/formcaribynama">NISN Kemendikbud</a> ya, terus isi data dirimu.</p>
-                    </div>
-                  </div>
-                }
-                <div className="mb-5">
-                  <label className="block mb-2 text-sm font-medium text-gray-900">
-                    Nomor Induk Siswa Nasional (NISN)
-                  </label>
-                  <input
-                    type="number"
-                    value={nisn}
-                    onChange={(e) => setValidateNisn(e.target.value, 10)}
-                    className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="NISN"
-                  />
-                  {
-                    errors.nisn.length > 0 ? (
-                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                        {errors.nisn.map((error, index) => (
-                          <li className="font-regular" key={index}>{error}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="mt-2 flex items-center gap-2 text-xs text-red-600">
-                        <span className="font-medium">Keterangan:</span> Wajib diisi.
-                        <div onClick={() => setPopoverNisn(!popoverNisn)} className="space-x-1 cursor-pointer text-sm text-yellow-500">
-                          <i className="fa-solid fa-circle-info" />
-                          <span className="text-xs">Gatau? Cek disini!</span>
-                        </div>
-                      </p>
-                    )
-                  }
-                </div>
-              </div>
               <div className="mb-5">
                 <label className="block mb-2 text-sm font-medium text-gray-900">
                   No. Kartu Indonesia Pintar

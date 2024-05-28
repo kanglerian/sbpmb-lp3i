@@ -54,7 +54,7 @@ const TestSchoolarship = () => {
 
   const getUser = async () => {
     await axios
-      .get("http://127.0.0.1:8000/api/user", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

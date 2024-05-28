@@ -32,7 +32,7 @@ const Prestasi = () => {
 
   const getUser = async () => {
     await axios
-      .get("http://127.0.0.1:8000/api/user", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -59,7 +59,7 @@ const Prestasi = () => {
     if (name && level != 0 && year && result) {
       await axios
         .post(
-          `http://127.0.0.1:8000/api/achievement`,
+          `https://database.politekniklp3i-tasikmalaya.ac.id/api/achievement`,
           {
             name: name,
             level: level,
@@ -111,7 +111,7 @@ const Prestasi = () => {
     let confirmDelete = confirm("Apakah anda yakin ingin menghapus prestasi?");
     if (confirmDelete) {
       await axios
-        .delete(`http://127.0.0.1:8000/api/achievement/${id}`, {
+        .delete(`https://database.politekniklp3i-tasikmalaya.ac.id/api/achievement/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

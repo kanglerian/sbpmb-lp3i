@@ -29,7 +29,7 @@ const Scholarship = () => {
 
   const getUser = async () => {
     await axios
-      .get("http://127.0.0.1:8000/api/user", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -43,7 +43,7 @@ const Scholarship = () => {
         let foto = fileuploaded.find((file) => { return file.namefile == "foto" });
         let akta = fileuploaded.find((file) => { return file.namefile == "akta-kelahiran" });
         let keluarga = fileuploaded.find((file) => { return file.namefile == "kartu-keluarga" });
-        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
+        if (start && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
           console.log('lengkap');
         } else {
           navigate('/dashboard');

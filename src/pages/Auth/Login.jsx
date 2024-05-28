@@ -18,7 +18,7 @@ const Login = () => {
     e.preventDefault();
 
     await axios
-      .post(`http://127.0.0.1:8000/api/login`, {
+      .post(`https://database.politekniklp3i-tasikmalaya.ac.id/api/login`, {
         email: email,
         password: password,
       })

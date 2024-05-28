@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../templates/Navbar.jsx";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading.jsx";
 import LoadingScreen from "../components/LoadingScreen.jsx";
 
 const Program = () => {
+  const navigate = useNavigate();
   const [student, setStudent] = useState({});
   const [program, setProgram] = useState("");
   const [programs, setPrograms] = useState([]);
@@ -25,7 +26,7 @@ const Program = () => {
   const token = localStorage.getItem("token");
   const getUser = async () => {
     await axios
-      .get("http://127.0.0.1:8000/api/user", {
+      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -40,7 +41,7 @@ const Program = () => {
         let foto = fileuploaded.find((file) => { return file.namefile == "foto" });
         let akta = fileuploaded.find((file) => { return file.namefile == "akta-kelahiran" });
         let keluarga = fileuploaded.find((file) => { return file.namefile == "kartu-keluarga" });
-        if (start && applicant.nisn && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
+        if (start && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job && foto && akta && keluarga) {
           setScholarship(true);
         }
         setLoadingScreen(false);
@@ -79,7 +80,7 @@ const Program = () => {
     e.preventDefault();
     await axios
       .patch(
-        `http://127.0.0.1:8000/api/user/updateprogram/${student.identity}`,
+        `https://database.politekniklp3i-tasikmalaya.ac.id/api/user/updateprogram/${student.identity}`,
         {
           program: program == 0 ? "" : program,
           program_second: programSecond == 0 ? "" : programSecond,
