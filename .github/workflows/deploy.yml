@@ -35,7 +35,7 @@ jobs:
             git checkout gh-pages
             git pull origin gh-pages --rebase
             git add .
-            git commit -m "Deploy to GitHub Pages"
+            git commit -m "Deploy to GitHub Pages Sudah Ada"
             git push -u origin gh-pages
             git checkout -
             git stash pop
@@ -45,7 +45,7 @@ jobs:
             mv -f dist/* .
             rm -rf dist
             git add .
-            git commit -m "Deploy to GitHub Pages"
+            git commit -m "Deploy to GitHub Pages Baru"
             git push -u origin gh-pages
             git checkout -
             git stash pop
