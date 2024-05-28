@@ -30,13 +30,14 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin
+
           if git ls-remote --exit-code --heads origin gh-pages; then
             echo 'ada'
             git checkout gh-pages
             git reset --hard origin/gh-pages
+            git rm -rf .
           else
             echo 'tidak ada'
+            git checkout --orphan gh-pages
           fi
-          git add .
-          git commit -m "Deploy"
-          git push -u origin gh-pages
