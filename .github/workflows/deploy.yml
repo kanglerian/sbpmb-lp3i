@@ -30,17 +30,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git fetch origin
-          if git ls-remote --exit-code --heads origin gh-pages; then
-            echo 'ada'
-            git checkout gh-pages
-            git reset --hard origin/gh-pages
-            git rm -rf .
-            touch coba.txt
-          else
-            echo 'tidak ada'
-            git checkout --orphan gh-pages
-          fi
+          git branch -D gh-pages
+          git checkout --orphan gh-pages
           git add .
           git commit -m "deploy"
           git push -u origin gh-pages
