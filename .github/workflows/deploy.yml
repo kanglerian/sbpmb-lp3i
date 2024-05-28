@@ -30,6 +30,8 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git stash
+
           git fetch origin
           if git ls-remote --exit-code --heads origin gh-pages; then
             echo 'Branch gh-pages exists. Resetting...'
@@ -50,4 +52,6 @@ jobs:
             git commit -m "Initialize branch gh-pages"
             git push -u origin gh-pages
           fi
+
+          git stash pop
 
