@@ -30,14 +30,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git stash --include-untracked
-          git fetch origin
-          if git ls-remote --exit-code --heads origin gh-pages; then
-            git checkout gh-pages
-            git pull origin gh-pages --rebase
-          else
-            git checkout --orphan gh-pages
-          fi
+          git checkout --orphan gh-pages
           git add .
           git commit -m "Deploy to GitHub Pages"
           git push -u origin gh-pages
