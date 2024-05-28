@@ -36,7 +36,7 @@ jobs:
             git push origin --delete gh-pages
           fi
           git checkout --orphan gh-pages
-          ls -l
+          git rm -rf .
           git add .
           git commit -m "coba"
           git push -u origin gh-pages
