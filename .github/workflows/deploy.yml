@@ -32,7 +32,7 @@ jobs:
           git stash --include-untracked
           git fetch origin
           if git ls-remote --exit-code --heads origin gh-pages; then
-            git checkout origin gh-pages
+            git checkout gh-pages
             git add .
             git commit -m "Deploy to GitHub Pages Sudah Ada"
             git push -u origin gh-pages
