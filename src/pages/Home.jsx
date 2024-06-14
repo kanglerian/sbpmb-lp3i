@@ -62,18 +62,6 @@ const Home = () => {
                 <span>22 Mei - 2 Juni 2024</span>
               </p>
             </div>
-            <div className="flex flex-col items-center justify-center border border-gray-100 p-4 rounded-xl">
-              <p className="flex flex-col items-center justify-center">
-                <span>Pembukaan</span>
-                <span>4 Juni 2024</span>
-              </p>
-            </div>
-            <div className="flex flex-col items-center justify-center border border-gray-100 p-4 rounded-xl">
-              <p className="flex flex-col items-center justify-center">
-                <span>Pelaksaan Tes</span>
-                <span>4 Juni - 5 Juni 2024</span>
-              </p>
-            </div>
           </section>
           <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
             <Link to={`/register`}>
