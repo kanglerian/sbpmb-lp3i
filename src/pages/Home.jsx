@@ -48,21 +48,6 @@ const Home = () => {
             <li className="text-amber-300">Prestasi Atlet</li>
             <li className="text-white">Putra/i TNI/POLRI/ASN/Guru</li>
           </ul>
-          <section className="grid grid-cols-1 md:grid-cols-4 gap-5 text-sm md:text-base text-white">
-            <div className="flex flex-col items-center justify-center border border-gray-100 p-4 rounded-xl">
-              <p className="flex flex-col items-center justify-center">
-                <span>Dapatkan</span>
-                <span>Beasiswa Pendidikan s.d 100%</span>
-                <span className="font-italic text-xs">*Syarat dan ketentuan berlaku</span>
-              </p>
-            </div>
-            <div className="flex flex-col items-center justify-center border border-gray-100 p-4 rounded-xl">
-              <p className="flex flex-col items-center justify-center">
-                <span>Periode Pendaftaran</span>
-                <span>22 Mei - 2 Juni 2024</span>
-              </p>
-            </div>
-          </section>
           <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-4">
             <Link to={`/register`}>
               <button
