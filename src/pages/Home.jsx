@@ -70,7 +70,7 @@ const Home = () => {
         </div>
         <footer>
           <p className="text-white text-xs">
-            Copyright © 2024 Politeknik LP3I Kampus Tasikmalaya
+            Copyright © 2024 Politeknik LP3I Kampus Tasikmalayas
           </p>
         </footer>
       </div>
