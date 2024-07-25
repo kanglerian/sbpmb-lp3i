@@ -4,7 +4,6 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom'
-import './assets/css/output.css'
 
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
@@ -16,11 +15,9 @@ import Keluarga from './pages/Keluarga'
 import Prestasi from './pages/Prestasi'
 import Organisasi from './pages/Organisasi'
 import Berkas from './pages/Berkas'
-
-import 'flowbite'
-import 'flowbite-react'
 import TestSchoolarship from './pages/Schoolarship/TestSchoolarship'
 import Scholarship from './pages/Scholarship'
+import './input.css'
 
 const router = createBrowserRouter([
   {
