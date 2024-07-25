@@ -8,6 +8,8 @@ import LoadingScreen from "../components/LoadingScreen.jsx";
 
 import { getProvinces, getRegencies, getDistricts, getVillages } from '../utilities/StudentAddress.js'
 import { capitalizeText, numberAddress } from '../config/Capital.js'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Biodata = () => {
   const navigate = useNavigate();
@@ -316,83 +318,43 @@ const Biodata = () => {
                 <ul className="space-y-2 text-sm list-disc ml-5">
                   <li className="space-x-2">
                     <span className="text-gray-900">NIK</span>
-                    {student.nik ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.nik ? faCircleCheck : faCircleXmark} className={student.nik ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                   <li className="space-x-2">
                     <span className="text-gray-900">Nama lengkap</span>
-                    {student.name ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.name ? faCircleCheck : faCircleXmark} className={student.name ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                   <li className="space-x-2">
                     <span className="text-gray-900">Agama</span>
-                    {student.religion ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.religion ? faCircleCheck : faCircleXmark} className={student.religion ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                   <li className="space-x-2">
                     <span className="text-gray-900">Sekolah</span>
-                    {student.school ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.school ? faCircleCheck : faCircleXmark} className={student.school ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                   <li className="space-x-2">
                     <span className="text-gray-900">Tahun Lulus</span>
-                    {student.year ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.year ? faCircleCheck : faCircleXmark} className={student.year ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                   <li className="space-x-2">
                     <span className="text-gray-900">Tempat Lahir</span>
-                    {student.place_of_birth ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.place_of_birth ? faCircleCheck : faCircleXmark} className={student.place_of_birth ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                   <li className="space-x-2">
                     <span className="text-gray-900">Tanggal Lahir</span>
-                    {student.date_of_birth ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.date_of_birth ? faCircleCheck : faCircleXmark} className={student.date_of_birth ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                   <li className="space-x-2">
                     <span className="text-gray-900">Alamat</span>
-                    {student.address ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.address ? faCircleCheck : faCircleXmark} className={student.address ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                   <li className="space-x-2">
                     <span className="text-gray-900">Email</span>
-                    {student.email ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.email ? faCircleCheck : faCircleXmark} className={student.email ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                   <li className="space-x-2">
                     <span className="text-gray-900">No. Whatsapp</span>
-                    {student.phone ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.phone ? faCircleCheck : faCircleXmark} className={student.phone ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                 </ul>
               </div>

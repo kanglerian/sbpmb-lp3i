@@ -21,28 +21,19 @@ const Home = () => {
   return (
     <main className="flex flex-col items-center justify-center bg-gradient-to-b from-lp3i-400 via-lp3i-200 to-lp3i-400 md:h-screen">
       <section className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 items-center mx-auto gap-5">
-        <div className="text-white space-y-8 p-5">
+        <div className="text-white space-y-6 p-5">
           <header className="flex items-center gap-5 py-5">
             <img src={LP3IPutih} alt="" width={170} />
             <img src={KampusMandiriPutih} alt="" width={130} />
           </header>
           <div className='space-y-6'>
-            <h3 className='inline-block py-2.5 px-4 text-sm md:text-base rounded-xl font-medium border border-gray-300'>SBPMB LP3I - Global Mandiri Utama Foundation</h3>
+            <h3 className='inline-block py-2.5 px-4 text-xs md:text-sm rounded-xl font-medium border border-gray-300'>SBPMB LP3I - Global Mandiri Utama Foundation</h3>
             <div className='space-y-2'>
               <h2 className='font-bold text-3xl md:text-4xl'>Gebyar Beasiswa Politeknik LP3I Se-Indonesia</h2>
               <p className='text-sm md:text-base'>Temukan langkah terbaik untuk meraih impianmu! Bergabunglah dengan
                 Politeknik LP3I Kampus Tasikmalaya dan jadilah bagian dari perubahan
                 yang lebih baik.</p>
-              <FontAwesomeIcon icon="fa-brands fa-twitter" />
             </div>
-            <ul className="flex flex-wrap items-center gap-1 text-sm md:text-base">
-              <li className="text-amber-300">Prestasi Bidang Akademik,</li>
-              <li className="text-white">Prestasi Bidang Non Akademik,</li>
-              <li className="text-amber-300">Prestasi Ranking 1 - 5,</li>
-              <li className="text-white">Prestasi Hafidz Quran 5 - 30 Juz,</li>
-              <li className="text-amber-300">Prestasi Atlet,</li>
-              <li className="text-white">Putra/i TNI/POLRI/ASN/Guru</li>
-            </ul>
             <div className='flex items-center gap-3'>
               <Link to={`/register`}>
                 <button

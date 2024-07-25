@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../templates/Navbar.jsx";
 import Loading from "../components/Loading.jsx";
 import LoadingScreen from "../components/LoadingScreen.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Berkas = () => {
 
@@ -164,7 +166,7 @@ const Berkas = () => {
 
   return (
     <section className="bg-white">
-    { loadingScreen && <LoadingScreen/> }
+      {loadingScreen && <LoadingScreen />}
       <div className="container mx-auto px-5">
         <Navbar />
         <div className="flex flex-wrap">
@@ -186,11 +188,7 @@ const Berkas = () => {
                     userUpload && (
                       <li className="space-x-2">
                         <span className="text-gray-900">Foto</span>
-                        {userUpload.find((upload) => upload.fileupload.namefile === 'foto') ? (
-                          <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                        ) : (
-                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                        )}
+                        <FontAwesomeIcon icon={userUpload.find((upload) => upload.fileupload.namefile === 'foto') ? faCircleCheck : faCircleXmark} className={userUpload.find((upload) => upload.fileupload.namefile === 'foto') ? 'text-emerald-500' : 'text-red-500'} />
                       </li>
                     )
                   }
@@ -198,11 +196,7 @@ const Berkas = () => {
                     userUpload && (
                       <li className="space-x-2">
                         <span className="text-gray-900">Akta Kelahiran</span>
-                        {userUpload.find((upload) => upload.fileupload.namefile === 'akta-kelahiran') ? (
-                          <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                        ) : (
-                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                        )}
+                        <FontAwesomeIcon icon={userUpload.find((upload) => upload.fileupload.namefile === 'akta-kelahiran') ? faCircleCheck : faCircleXmark} className={userUpload.find((upload) => upload.fileupload.namefile === 'akta-kelahiran') ? 'text-emerald-500' : 'text-red-500'} />
                       </li>
                     )
                   }
@@ -210,11 +204,7 @@ const Berkas = () => {
                     userUpload && (
                       <li className="space-x-2">
                         <span className="text-gray-900">Kartu Keluarga</span>
-                        {userUpload.find((upload) => upload.fileupload.namefile === 'kartu-keluarga') ? (
-                          <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                        ) : (
-                          <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                        )}
+                        <FontAwesomeIcon icon={userUpload.find((upload) => upload.fileupload.namefile === 'kartu-keluarga') ? faCircleCheck : faCircleXmark} className={userUpload.find((upload) => upload.fileupload.namefile === 'kartu-keluarga') ? 'text-emerald-500' : 'text-red-500'} />
                       </li>
                     )
                   }

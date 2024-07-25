@@ -7,6 +7,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { getProvinces, getRegencies, getDistricts, getVillages } from '../utilities/StudentAddress.js'
 import { capitalizeText, numberAddress } from '../config/Capital.js'
 import LoadingScreen from "../components/LoadingScreen.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Keluarga = () => {
   let start = true;
@@ -113,7 +115,7 @@ const Keluarga = () => {
         let foto = fileuploaded.find((file) => { return file.namefile == "foto" });
         let akta = fileuploaded.find((file) => { return file.namefile == "akta-kelahiran" });
         let keluarga = fileuploaded.find((file) => { return file.namefile == "kartu-keluarga" });
-        if (start &&  applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job) {
+        if (start && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job) {
           setScholarship(true);
         }
         setLoadingScreen(false);
@@ -310,7 +312,7 @@ const Keluarga = () => {
 
   return (
     <section className="bg-white">
-      { loadingScreen && <LoadingScreen/> }
+      {loadingScreen && <LoadingScreen />}
       <div className="container mx-auto px-5">
         <Navbar />
         <form onSubmit={handleUpdate} className="grid grid-cols-1 md:grid-cols-3 gap-10 pb-5">
@@ -331,61 +333,37 @@ const Keluarga = () => {
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Nama Lengkap</span>
-                      {student.father && student.father.name ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.father && student.father.name) ? faCircleCheck : faCircleXmark} className={(student.father && student.father.name) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Tempat Lahir</span>
-                      {student.father && student.father.place_of_birth ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.father && student.father.place_of_birth) ? faCircleCheck : faCircleXmark} className={(student.father && student.father.place_of_birth) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Tanggal Lahir</span>
-                      {student.father && student.father.date_of_birth ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.father && student.father.date_of_birth) ? faCircleCheck : faCircleXmark} className={(student.father && student.father.date_of_birth) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Pendidikan Terakhir</span>
-                      {student.father && student.father.education ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.father && student.father.education) ? faCircleCheck : faCircleXmark} className={(student.father && student.father.education) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Pekerjaan</span>
-                      {student.father && student.father.job ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.father && student.father.job) ? faCircleCheck : faCircleXmark} className={(student.father && student.father.job) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Alamat</span>
-                      {student.father && student.father.address ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.father && student.father.address) ? faCircleCheck : faCircleXmark} className={(student.father && student.father.address) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                 </ul>
@@ -398,61 +376,37 @@ const Keluarga = () => {
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Nama Lengkap</span>
-                      {student.mother && student.mother.name ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.mother && student.mother.name) ? faCircleCheck : faCircleXmark} className={(student.mother && student.mother.name) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Tempat Lahir</span>
-                      {student.mother && student.mother.place_of_birth ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.mother && student.mother.place_of_birth) ? faCircleCheck : faCircleXmark} className={(student.mother && student.mother.place_of_birth) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Tanggal Lahir</span>
-                      {student.mother && student.mother.date_of_birth ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.mother && student.mother.date_of_birth) ? faCircleCheck : faCircleXmark} className={(student.mother && student.mother.date_of_birth) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Pendidikan Terakhir</span>
-                      {student.mother && student.mother.education ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.mother && student.mother.education) ? faCircleCheck : faCircleXmark} className={(student.mother && student.mother.education) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Pekerjaan</span>
-                      {student.mother && student.mother.job ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.mother && student.mother.job) ? faCircleCheck : faCircleXmark} className={(student.mother && student.mother.job) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Alamat</span>
-                      {student.mother && student.mother.address ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={(student.mother && student.mother.address) ? faCircleCheck : faCircleXmark} className={(student.mother && student.mother.address) ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                 </ul>
@@ -465,11 +419,7 @@ const Keluarga = () => {
                   {student &&
                     <li className="space-x-2">
                       <span className="text-gray-900">Penghasilan Orang Tua</span>
-                      {student.income_parent ? (
-                        <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                      ) : (
-                        <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                      )}
+                      <FontAwesomeIcon icon={student.income_parent ? faCircleCheck : faCircleXmark} className={student.income_parent ? 'text-emerald-500' : 'text-red-500'} />
                     </li>
                   }
                 </ul>
@@ -1079,7 +1029,7 @@ const Keluarga = () => {
                     <input
                       type="number"
                       value={motherRt}
-                      onChange={(e) => setValidateMotherRt(e.target.value,2)}
+                      onChange={(e) => setValidateMotherRt(e.target.value, 2)}
                       className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       placeholder="RT."
                       required
@@ -1095,7 +1045,7 @@ const Keluarga = () => {
                     <input
                       type="number"
                       value={motherRw}
-                      onChange={(e) => setValidateMotherRw(e.target.value,2)}
+                      onChange={(e) => setValidateMotherRw(e.target.value, 2)}
                       className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       placeholder="RW."
                       required
@@ -1111,7 +1061,7 @@ const Keluarga = () => {
                     <input
                       type="number"
                       value={motherPostalCode}
-                      onChange={(e) => setValidateMotherPostalCode(e.target.value,7)}
+                      onChange={(e) => setValidateMotherPostalCode(e.target.value, 7)}
                       className="bg-white border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                       placeholder="Kode Pos"
                       required

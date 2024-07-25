@@ -4,6 +4,8 @@ import Navbar from "../templates/Navbar.jsx";
 import { Link, useNavigate } from "react-router-dom";
 import Loading from "../components/Loading.jsx";
 import LoadingScreen from "../components/LoadingScreen.jsx";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 
 const Program = () => {
   const navigate = useNavigate();
@@ -143,19 +145,11 @@ const Program = () => {
                 <ul className="space-y-2 text-sm list-disc ml-5">
                   <li className="space-x-2">
                     <span className="text-gray-900">Program 1</span>
-                    {student.program ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.program ? faCircleCheck : faCircleXmark} className={student.program ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                   <li className="space-x-2">
                     <span className="text-gray-900">Program 2</span>
-                    {student.program_second ? (
-                      <i className="text-emerald-500 fa-solid fa-circle-check"></i>
-                    ) : (
-                      <i className="text-red-500 fa-solid fa-circle-xmark"></i>
-                    )}
+                    <FontAwesomeIcon icon={student.program_second ? faCircleCheck : faCircleXmark} className={student.program_second ? 'text-emerald-500' : 'text-red-500'} />
                   </li>
                 </ul>
               </div>
