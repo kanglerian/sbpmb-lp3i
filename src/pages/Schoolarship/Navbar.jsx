@@ -7,9 +7,9 @@ const Navbar = (props) => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (!token) {
-      return navigate("/");
-    }
+    // if (!token) {
+    //   return navigate("/");
+    // }
   }, []);
 
   return (

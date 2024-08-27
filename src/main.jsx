@@ -7,17 +7,17 @@ import {
 
 import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
+import Pribadi from './pages/Pribadi'
 import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
-import Biodata from './pages/Biodata'
-import Program from './pages/Program'
-import Keluarga from './pages/Keluarga'
 import Prestasi from './pages/Prestasi'
 import Organisasi from './pages/Organisasi'
 import Berkas from './pages/Berkas'
 import TestSchoolarship from './pages/Schoolarship/TestSchoolarship'
 import Scholarship from './pages/Scholarship'
 import './input.css'
+import Orangtua from './pages/Orangtua'
+import Prodi from './pages/Prodi'
 
 const router = createBrowserRouter([
   {
@@ -33,14 +33,14 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register/>,
   },{
-    path: "/biodata",
-    element: <Biodata/>,
+    path: "/pribadi",
+    element: <Pribadi/>,
   },{
     path: "/programstudi",
-    element: <Program/>,
+    element: <Prodi/>,
   },{
-    path: "/keluarga",
-    element: <Keluarga/>,
+    path: "/orangtua",
+    element: <Orangtua/>,
   },{
     path: "/prestasi",
     element: <Prestasi/>,

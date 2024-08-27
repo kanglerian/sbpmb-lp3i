@@ -9,46 +9,9 @@ const Navbar = () => {
   let location = useLocation();
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("LP3ISBPMB:token");
   const id = localStorage.getItem("id");
   const timeLeft = localStorage.getItem("timeLeft");
-
-  const getUser = async () => {
-    await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        console.log('sip');
-      })
-      .catch((error) => {
-        if (error.response.status == 401) {
-          localStorage.removeItem("token");
-          navigate("/");
-        } else {
-          console.log(error);
-        }
-      });
-  };
-
-  const logoutHandler = async () => {
-    await axios
-      .post("https://database.politekniklp3i-tasikmalaya.ac.id/api/logout", null, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((res) => {
-        localStorage.removeItem("id");
-        localStorage.removeItem("token");
-        navigate("/");
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
-  };
 
   useEffect(() => {
     if (!token) {
@@ -57,7 +20,6 @@ const Navbar = () => {
     if (id && timeLeft) {
       return navigate("/seleksi-beasiswa");
     }
-    getUser();
   }, []);
 
   const [open, setOpen] = useState(false);

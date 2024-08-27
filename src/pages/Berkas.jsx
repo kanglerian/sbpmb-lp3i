@@ -1,30 +1,100 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
-import Navbar from "../templates/Navbar.jsx";
-import Loading from "../components/Loading.jsx";
-import LoadingScreen from "../components/LoadingScreen.jsx";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { useEffect, useState } from 'react'
+import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowLeft, faCheckCircle, faCircleDot, faTrash, } from '@fortawesome/free-solid-svg-icons'
+import { jwtDecode } from 'jwt-decode'
+import LogoLP3IPutih from '../assets/logo-lp3i-putih.svg'
+import ServerError from './errors/ServerError'
+import LoadingScreen from './LoadingScreen';
 
 const Berkas = () => {
-
   const navigate = useNavigate();
-
-  let start = true;
-  const [scholarship, setScholarship] = useState(false);
-
-  const [student, setStudent] = useState({});
-
-  const [fileUpload, setFileUpload] = useState([]);
-  const [userUpload, setUserUpload] = useState([]);
-
-  const [loadingScreen, setLoadingScreen] = useState(true);
+  const [user, setUser] = useState({
+    name: 'Loading...'
+  });
   const [loading, setLoading] = useState(false);
 
-  const token = localStorage.getItem("token");
+  const [errorPage, setErrorPage] = useState(false);
+  const [fileupload, setFileupload] = useState([]);
+  const [userupload, setUserupload] = useState([]);
+
+  const getInfo = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem('LP3ISBPMB:token');
+      if (!token) {
+        return navigate('/');
+      }
+      const decoded = jwtDecode(token);
+      setUser(decoded.data);
+      const fetchProfile = async (token) => {
+        const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/profiles/v1', {
+          headers: { Authorization: token },
+          withCredentials: true,
+        });
+        return response.data;
+      };
+      try {
+        const profileData = await fetchProfile(token);
+        setUserupload(profileData.userupload);
+        setFileupload(profileData.fileupload);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      } catch (profileError) {
+        if (profileError.response && profileError.response.status === 403) {
+          try {
+            const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3', {
+              withCredentials: true,
+            });
+            const newToken = response.data;
+            const decodedNewToken = jwtDecode(newToken);
+            localStorage.setItem('LP3ISBPMB:token', newToken);
+            setUser(decodedNewToken.data);
+            const newProfileData = await fetchProfile(newToken);
+            setUserupload(newProfileData.userupload);
+            setFileupload(newProfileData.fileupload);
+            setTimeout(() => {
+              setLoading(false);
+            }, 1000);
+          } catch (error) {
+            console.error('Error refreshing token or fetching profile:', error);
+            if (error.response && error.response.status === 400) {
+              localStorage.removeItem('LP3ISBPMB:token');
+            } else {
+              setErrorPage(true);
+            }
+          }
+        } else {
+          console.error('Error fetching profile:', profileError);
+          setErrorPage(true);
+        }
+      }
+    } catch (error) {
+      if (error.response) {
+        if ([400, 403].includes(error.response.status)) {
+          localStorage.removeItem('LP3ISBPMB:token');
+          navigate('/login');
+        } else {
+          console.error('Unexpected HTTP error:', error);
+        }
+      } else if (error.request) {
+        console.error('Network error:', error);
+      } else {
+        console.error('Error:', error);
+        setErrorPage(true);
+      }
+      navigate('/login');
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
 
   const handleFileChange = (e) => {
+    e.preventDefault();
     setLoading(true);
     const targetFile = e.target.files[0];
     const targetId = e.target.dataset.id;
@@ -33,123 +103,70 @@ const Berkas = () => {
       const reader = new FileReader();
       reader.onload = async (event) => {
         let data = {
-          identity: student.identity,
+          identity: user.identity,
           image: event.target.result.split(";base64,").pop(),
           namefile: targetNamefile,
           typefile: targetFile.name.split(".").pop(),
         };
         let status = {
-          identity_user: student.identity,
+          identity_user: user.identity,
           fileupload_id: targetId,
           typefile: targetFile.name.split(".").pop(),
         };
-        await axios
-          .post(
-            `https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/upload`,
-            data
-          )
-          .then(async (res) => {
-            await axios
-              .post(
-                `https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload`,
-                status, {
-                headers: {
-                  Authorization: `Bearer ${token}`
+        const token = localStorage.getItem('LP3ISBPMB:token');
+        await axios.post(`https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/upload`, data)
+          .then(async () => {
+            await axios.post(`https://api.politekniklp3i-tasikmalaya.ac.id/pmb/userupload`, status, {
+              headers: { Authorization: token },
+              withCredentials: true
+            }
+            ).then(() => {
+              getInfo();
+              setTimeout(() => {
+                setLoading(false);
+              }, 1000);
+            })
+              .catch(async (error) => {
+                if (error.response && error.response.status === 403) {
+                  try {
+                    const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3', {
+                      withCredentials: true,
+                    });
+
+                    const newToken = response.data;
+                    const decodedNewToken = jwtDecode(newToken);
+                    localStorage.setItem('LP3ISBPMB:token', newToken);
+                    setUser(decodedNewToken.data);
+                    await axios.post(`https://api.politekniklp3i-tasikmalaya.ac.id/pmb/userupload`, status, {
+                      headers: { Authorization: newToken },
+                      withCredentials: true
+                    });
+                    getInfo();
+                    setTimeout(() => {
+                      setLoading(false);
+                    }, 2000);
+                    navigate('/berkas');
+                  } catch (error) {
+                    console.error('Error refreshing token or fetching profile:', error);
+                    if (error.response && error.response.status === 400) {
+                      localStorage.removeItem('LP3ISBPMB:token');
+                    } else {
+                      setErrorPage(true);
+                    }
+                  }
+                } else {
+                  console.error('Error fetching profile:', error);
+                  setErrorPage(true);
                 }
-              }
-              )
-              .then((res) => {
-                alert("Berhasil diupload!");
-                setLoading(false);
-                getUser();
-              })
-              .catch((err) => {
-                alert("Mohon maaf, ada kesalahan di sisi Server.");
-                setLoading(false);
-                console.log(err.message);
               });
           })
-          .catch((err) => {
+          .catch(() => {
             alert("Mohon maaf, ada kesalahan di sisi Server.");
             setLoading(false);
           });
       };
-
       reader.readAsDataURL(targetFile);
     }
-  };
-
-  const handleDelete = async (user) => {
-    setLoading(true);
-    if (confirm(`Apakah kamu yakin akan menghapus data?`)) {
-      let data = {
-        identity: user.identity_user,
-        namefile: user.fileupload.namefile,
-        typefile: user.typefile,
-      };
-      await axios
-        .delete(
-          `https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/delete`,
-          {
-            params: data,
-          }
-        )
-        .then(async (res) => {
-          await axios
-            .delete(
-              `https://database.politekniklp3i-tasikmalaya.ac.id/api/userupload/${user.id}`, {
-              headers: {
-                Authorization: `Bearer ${token}`
-              }
-            }
-            )
-            .then((res) => {
-              alert(res.data.message);
-              setLoading(false);
-              getUser();
-            })
-            .catch((err) => {
-              console.log(err.message);
-              setLoading(false);
-            });
-        })
-        .catch((err) => {
-          console.log(err.message);
-          setLoading(false);
-        });
-    }
-  };
-
-  const getUser = async () => {
-    await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        setFileUpload(response.data.fileupload);
-        setUserUpload(response.data.userupload);
-        setStudent(response.data.applicant);
-        let applicant = response.data.applicant;
-        let fileuploaded = response.data.fileuploaded;
-        let foto = fileuploaded.find((file) => { return file.namefile == "foto" });
-        let akta = fileuploaded.find((file) => { return file.namefile == "akta-kelahiran" });
-        let keluarga = fileuploaded.find((file) => { return file.namefile == "kartu-keluarga" });
-        if (start && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job) {
-          setScholarship(true);
-        }
-        setLoadingScreen(false);
-      })
-      .catch((error) => {
-        if (error.response.status == 401) {
-          localStorage.removeItem('token');
-          navigate('/');
-        } else {
-          console.log(error);
-        }
-        setLoadingScreen(false);
-      });
   };
 
   const handleUpload = (e) => {
@@ -157,159 +174,151 @@ const Berkas = () => {
     alert("upload!");
   };
 
-  useEffect(() => {
-    if (!token) {
-      return navigate("/");
+  const handleDelete = async (user) => {
+    if (confirm(`Apakah kamu yakin akan menghapus data?`)) {
+      const data = {
+        identity: user.identityUser,
+        namefile: user.fileupload.namefile,
+        typefile: user.typefile,
+      };
+      const token = localStorage.getItem('LP3ISBPMB:token');
+      setLoading(true);
+      await axios
+        .delete(
+          `https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/delete`,
+          {
+            params: data,
+          }
+        )
+        .then(async () => {
+          setLoading(false);
+          await axios
+            .delete(
+              `https://api.politekniklp3i-tasikmalaya.ac.id/pmb/userupload/${user.id}`, {
+              headers: {
+                Authorization: token
+              },
+              withCredentials: true
+            }
+            )
+            .then(() => {
+              getInfo();
+              setTimeout(() => {
+                setLoading(false);
+              }, 1000);
+            })
+            .catch(async (error) => {
+              if (error.response && error.response.status === 403) {
+                try {
+                  const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3', {
+                    withCredentials: true,
+                  });
+
+                  const newToken = response.data;
+                  const decodedNewToken = jwtDecode(newToken);
+                  localStorage.setItem('LP3ISBPMB:token', newToken);
+                  setUser(decodedNewToken.data);
+
+                  await axios.delete(`https://api.politekniklp3i-tasikmalaya.ac.id/pmb/userupload/${user.id}`, {
+                    headers: { Authorization: newToken },
+                    withCredentials: true
+                  });
+                  getInfo();
+                  setTimeout(() => {
+                    setLoading(false);
+                  }, 2000);
+                  navigate('/berkas');
+                } catch (error) {
+                  console.error('Error refreshing token or fetching profile:', error);
+                  if (error.response && error.response.status === 400) {
+                    localStorage.removeItem('LP3ISBPMB:token');
+                  } else {
+                    setErrorPage(true);
+                  }
+                }
+              } else {
+                console.error('Error fetching profile:', error);
+                setErrorPage(true);
+              }
+            });
+        })
+        .catch(() => {
+          setLoading(false);
+        });
     }
-    getUser();
+  };
+
+  useEffect(() => {
+    getInfo();
   }, []);
 
   return (
-    <section className="bg-white">
-      {loadingScreen && <LoadingScreen />}
-      <div className="container mx-auto px-5">
-        <Navbar />
-        <div className="flex flex-wrap">
-          <div className="w-full md:w-1/2 p-6">
-            <header className="space-y-1 mb-5">
-              <h2 className="font-bold text-gray-900">Selamat Datang Calon Mahasiswa Baru!</h2>
-              <p className="text-sm text-gray-700">Berikut ini adalah halaman informasi biodata kamu. Silahkan untuk diisi selengkap mungkin untuk syarat mengikuti E-Assessment.</p>
-            </header>
-            <div className="bg-white border border-gray-200 p-6 rounded-xl space-y-2">
-              <header>
-                <h2 className="font-bold text-gray-900">Informasi Persyaratan: </h2>
-                <p className="text-sm text-gray-700">Silahkan lengkapi untuk persyaratan beasiswa.</p>
-              </header>
-              <hr />
-              <div className="space-y-2 py-2">
-                <h5 className="text-sm text-gray-900 font-bold">Persyaratan</h5>
-                <ul className="space-y-2 text-sm list-disc ml-5">
-                  {
-                    userUpload && (
-                      <li className="space-x-2">
-                        <span className="text-gray-900">Foto</span>
-                        <FontAwesomeIcon icon={userUpload.find((upload) => upload.fileupload.namefile === 'foto') ? faCircleCheck : faCircleXmark} className={userUpload.find((upload) => upload.fileupload.namefile === 'foto') ? 'text-emerald-500' : 'text-red-500'} />
-                      </li>
-                    )
-                  }
-                  {
-                    userUpload && (
-                      <li className="space-x-2">
-                        <span className="text-gray-900">Akta Kelahiran</span>
-                        <FontAwesomeIcon icon={userUpload.find((upload) => upload.fileupload.namefile === 'akta-kelahiran') ? faCircleCheck : faCircleXmark} className={userUpload.find((upload) => upload.fileupload.namefile === 'akta-kelahiran') ? 'text-emerald-500' : 'text-red-500'} />
-                      </li>
-                    )
-                  }
-                  {
-                    userUpload && (
-                      <li className="space-x-2">
-                        <span className="text-gray-900">Kartu Keluarga</span>
-                        <FontAwesomeIcon icon={userUpload.find((upload) => upload.fileupload.namefile === 'kartu-keluarga') ? faCircleCheck : faCircleXmark} className={userUpload.find((upload) => upload.fileupload.namefile === 'kartu-keluarga') ? 'text-emerald-500' : 'text-red-500'} />
-                      </li>
-                    )
-                  }
-                </ul>
+    errorPage ? (
+      <ServerError />
+    ) : (
+      loading ? (
+        <LoadingScreen />
+      ) : (
+        <main className='flex flex-col items-center justify-center bg-gradient-to-b from-lp3i-400 via-lp3i-200 to-lp3i-400 py-10 px-5 md:h-screen'>
+          <div className='max-w-5xl w-full mx-auto shadow-xl'>
+            <header className='grid grid-cols-1 md:grid-cols-3 items-center gap-5 bg-lp3i-500 px-10 py-6 rounded-t-2xl'>
+              <Link to={'/dashboard'} className='text-white hover:text-gray-200 text-center md:text-left text-sm space-x-2'>
+                <FontAwesomeIcon icon={faArrowLeft} />
+                <span>Kembali</span>
+              </Link>
+              <h2 className='text-white text-center font-bold space-x-2'>
+                <FontAwesomeIcon icon={faCircleDot} />
+                <span>Data Berkas</span>
+              </h2>
+              <div className='flex justify-center md:justify-end'>
+                <img src={LogoLP3IPutih} alt="" width={150} />
               </div>
-              {
-                scholarship ? (
-                  <Link to={`/scholarship`} className="space-x-2 bg-sky-500 hover:bg-sky-600 text-white block text-center w-full px-4 py-2 rounded-xl text-sm">
-                    <i className="fa-solid fa-pen"></i>
-                    <span>Kerjakan E-Assessment</span>
-                  </Link>
-                ) : (
-                  <button className="space-x-2 bg-red-500 hover:bg-red-600 text-white block w-full px-4 py-2 rounded-xl text-sm">
-                    <i className="fa-solid fa-circle-xmark"></i>
-                    <span>Persyaratan Belum Lengkap</span>
-                  </button>
-                )
-              }
+            </header>
+            <div className='bg-white px-8 py-10 rounded-b-2xl'>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
+                {userupload.length > 0 &&
+                  userupload.map((user) => (
+                    <div key={user.id}>
+                      <label className="block mb-2 text-sm font-medium text-gray-900 space-x-1">
+                        <span>{user.fileupload.name}</span>
+                      </label>
+                      <div className='flex items-center justify-between gap-2'>
+                        <p className='w-full text-sm bg-gray-50 border border-gray-300 rounded-xl px-2 py-2.5 text-center space-x-2'>
+                          <span className='font-medium'>Uploaded!</span>
+                          <FontAwesomeIcon icon={faCheckCircle} className='text-emerald-500' />
+                        </p>
+                        <div className='flex items-center gap-1'>
+                          <button type='button' onClick={() => handleDelete(user)} className='w-full block bg-red-500 hover:bg-red-600 text-sm px-5 py-2 rounded-xl'>
+                            <FontAwesomeIcon icon={faTrash} className='text-white' />
+                          </button>
+                        </div>
+                      </div>
+                      <p className="mt-2 ml-1 text-xs text-gray-500">
+                        <span className="font-medium">Keterangan file:</span>
+                        {" "}
+                        <span className="underline">{user.fileupload.accept}</span>
+                      </p>
+                    </div>
+                  ))}
+                {fileupload.length > 0 &&
+                  fileupload.map((file) => (
+                    <form key={file.id} onSubmit={handleUpload} encType="multipart/form-data">
+                      <label className="block mb-2 text-sm font-medium text-gray-900">{file.name}</label>
+                      <input className="block w-full text-xs text-gray-900 border border-gray-300 rounded-xl p-3 cursor-pointer bg-gray-50 focus:outline-none" type="file" accept={file.accept} data-id={file.id} data-namefile={file.namefile} name="berkas" onChange={handleFileChange} />
+                      <p className="mt-2 ml-1 text-xs text-gray-500">
+                        <span className="font-medium">Keterangan file:</span>
+                        {" "}
+                        <span className="underline">{file.accept}</span>
+                      </p>
+                    </form>
+                  ))}
+              </div>
             </div>
           </div>
-          <div className="w-full md:w-1/2 p-6 bg-white border border-gray-200 rounded-2xl mx-auto my-5">
-            <div className="relative overflow-x-auto">
-              <table className="w-full text-sm text-left text-gray-500">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                  <tr>
-                    <th scope="col" className="px-6 py-3">
-                      Nama berkas
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Aksi
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {userUpload.length > 0 &&
-                    userUpload.map((user) => (
-                      <tr key={user.id} className="bg-white border-b">
-                        <th
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                        >
-                          {user.fileupload.name}
-                        </th>
-                        <td className="flex items-center px-6 py-4 space-x-1">
-                          <button className="inline-block bg-green-500 hover:bg-green-600 px-3 py-1 rounded-md text-xs text-white">
-                            <i className="fa-solid fa-circle-check" />
-                          </button>
-                          <button
-                            onClick={() => handleDelete(user)}
-                            className="inline-block bg-red-500 hover:bg-red-600 px-3 py-1 rounded-md text-xs text-white"
-                          >
-                            <i className="fa-solid fa-trash"></i>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  {fileUpload.length > 0 &&
-                    fileUpload
-                      .filter(
-                        (file) =>
-                          file.namefile !== "bukti-pembayaran" &&
-                          file.namefile !== "surat-keterangan-bekerja" &&
-                          file.namefile !== "surat-keterangan-berwirausaha"
-                      )
-                      .map((file, index) => (
-                        <tr key={file.id} className="bg-white border-b">
-                          <th
-                            scope="row"
-                            className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
-                          >
-                            {file.name}
-                          </th>
-                          <td className="flex items-start gap-3 px-6 py-4">
-                            {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}
-                            <form
-                              onSubmit={handleUpload}
-                              encType="multipart/form-data"
-                              className="text-sm"
-                            >
-                              <input
-                                type="file"
-                                accept={file.accept}
-                                data-id={file.id}
-                                data-namefile={file.namefile}
-                                name="berkas"
-                                className="text-xs"
-                                onChange={handleFileChange}
-                              />
-                              <p className="mt-2 text-xs text-gray-500">
-                                <span className="font-medium">Keterangan file:</span>
-                                {" "}
-                                <span className="underline">{file.accept}</span>
-                              </p>
-                            </form>
-                          </td>
-                        </tr>
-                      ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
+        </main>
+      )
+    )
+  )
+}
 
-export default Berkas;
+export default Berkas

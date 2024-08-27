@@ -1,66 +1,138 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../templates/Navbar.jsx";
-import Loading from "../components/Loading.jsx";
-import LoadingScreen from "../components/LoadingScreen.jsx";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowLeft,
+  faCheckCircle,
+  faCircleDot,
+  faPlus,
+  faXmark,
+  faXmarkCircle,
+} from "@fortawesome/free-solid-svg-icons";
+import { jwtDecode } from "jwt-decode";
+import LogoLP3IPutih from "../assets/logo-lp3i-putih.svg";
+import ServerError from "./errors/ServerError";
+import LoadingScreen from "./LoadingScreen";
 
 import DattebayoSound from '../assets/sounds/dattebayo.mp3'
+
 const Scholarship = () => {
   const navigate = useNavigate();
-
-  let start = true;
-
-  const [loadingScreen, setLoadingScreen] = useState(true);
+  const [user, setUser] = useState({
+    name: "Loading...",
+  });
   const [loading, setLoading] = useState(false);
+  const [modal, setModal] = useState(false);
 
-  const [identity, setIdentity] = useState(null);
+  const [errorPage, setErrorPage] = useState(false);
+
   const [categories, setCategories] = useState([]);
   const [histories, setHistories] = useState([]);
 
-  const [message, setMessage] = useState('Memuat kategori soal...');
-
-  const token = localStorage.getItem("token");
-
-  const dattebayoPlay = () => {
-    let audio = new Audio(DattebayoSound);
-    audio.play();
-  }
-
-  const getUser = async () => {
-    await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        let identityVal = response.data.user.identity;
-        setIdentity(identityVal);
-        getHistories(identityVal);
-        let applicant = response.data.applicant;
-        let fileuploaded = response.data.fileuploaded;
-        let foto = fileuploaded.find((file) => { return file.namefile == "foto" });
-        let akta = fileuploaded.find((file) => { return file.namefile == "akta-kelahiran" });
-        let keluarga = fileuploaded.find((file) => { return file.namefile == "kartu-keluarga" });
-        if (start && applicant.name && applicant.religion && applicant.school && applicant.year && applicant.place_of_birth && applicant.date_of_birth && applicant.gender && applicant.address && applicant.email && applicant.phone && applicant.program && applicant.income_parent && applicant.father.name && applicant.father.date_of_birth && applicant.father.education && applicant.father.address && applicant.father.job && applicant.mother.name && applicant.mother.date_of_birth && applicant.mother.education && applicant.mother.address && applicant.mother.job) {
-          console.log('lengkap');
-        } else {
+  const getInfo = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("LP3ISBPMB:token");
+      if (!token) {
+        return navigate("/");
+      }
+      const decoded = jwtDecode(token);
+      setUser(decoded.data);
+      getHistories(decoded.data.identity);
+      const fetchProfile = async (token) => {
+        const response = await axios.get(
+          "https://api.politekniklp3i-tasikmalaya.ac.id/pmb/profiles/v1",
+          {
+            headers: { Authorization: token },
+            withCredentials: true,
+          }
+        );
+        return response.data;
+      };
+      try {
+        const profileData = await fetchProfile(token);
+        if(!profileData.validate.validate_files){
           navigate('/dashboard');
         }
-        setLoadingScreen(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      } catch (profileError) {
+        if (profileError.response && profileError.response.status === 403) {
+          try {
+            const response = await axios.get(
+              "https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3",
+              {
+                withCredentials: true,
+              }
+            );
+            const newToken = response.data;
+            const decodedNewToken = jwtDecode(newToken);
+            localStorage.setItem("LP3ISBPMB:token", newToken);
+            setUser(decodedNewToken.data);
+            const newProfileData = await fetchProfile(newToken);
+            if(!newProfileData.validate.validate_files){
+              navigate('/dashboard');
+            }
+            setTimeout(() => {
+              setLoading(false);
+            }, 1000);
+          } catch (error) {
+            console.error("Error refreshing token or fetching profile:", error);
+            if (error.response && error.response.status === 400) {
+              localStorage.removeItem("LP3ISBPMB:token");
+            } else {
+              setErrorPage(true);
+            }
+          }
+        } else {
+          console.error("Error fetching profile:", profileError);
+          setErrorPage(true);
+        }
+      }
+    } catch (error) {
+      if (error.response) {
+        if ([400, 403].includes(error.response.status)) {
+          localStorage.removeItem("LP3ISBPMB:token");
+          navigate("/login");
+        } else {
+          console.error("Unexpected HTTP error:", error);
+        }
+      } else if (error.request) {
+        console.error("Network error:", error);
+      } else {
+        console.error("Error:", error);
+        setErrorPage(true);
+      }
+      navigate("/login");
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+      identity_user: user.identity,
+      name: e.target.elements.name.value,
+      level: e.target.elements.level.value,
+      year: e.target.elements.year.value,
+      result: e.target.elements.result.value
+    }
+    await axios
+      .post(`https://api.politekniklp3i-tasikmalaya.ac.id/pmb/achievements`, data)
+      .then((response) => {
+        alert(response.data.message);
+        setModal(false);
+        getInfo();
       })
       .catch((error) => {
         console.log(error);
-        if (error.response.status == 401) {
-          localStorage.removeItem('token');
-          navigate('/');
-        } else {
-          console.log(error);
-        }
-        setLoadingScreen(false);
       });
-  };
+  }
 
   const getHistories = async (identity) => {
     try {
@@ -70,39 +142,36 @@ const Scholarship = () => {
       const historiesResponse = await axios.get(
         `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories?identity_user=${identity}`
       );
-      if (categoriesResponse.data && historiesResponse.data) {
-        const filterResponse = categoriesResponse.data.filter(
-          (question) =>
-            !historiesResponse.data.some(
-              (record) => record.category_id === question.id
-            )
-        );
-        if (filterResponse.length > 0) {
-          setCategories(filterResponse);
-        } else {
-          setCategories([]);
-        }
-        setHistories(historiesResponse.data);
-        setMessage('Berikut ini adalah kategori soal yang harus dikerjakan.')
+      const filterResponse = categoriesResponse.data.filter(
+        (question) =>
+          !historiesResponse.data.some(
+            (record) => record.category_id === question.id
+          )
+      );
+      if (filterResponse.length > 0) {
+        setCategories(filterResponse);
       } else {
-        setMessage('Tidak ada kategori soal yang harus dikerjakan.')
+        setCategories([]);
       }
+      setHistories(historiesResponse.data);
     } catch (error) {
-      setMessage('Server tes beasiswa sedang tidak tersedia. Silahkan periksa kembali secara berkala.')
       console.log(error.message);
     }
   };
 
+  const dattebayoPlay = () => {
+    let audio = new Audio(DattebayoSound);
+    audio.play();
+  }
+
   const handleSelect = async (id) => {
-    setLoading(true);
     await axios
       .post(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories`, {
-        identity_user: identity,
+        identity_user: user.identity,
         category_id: id,
       })
-      .then((response) => {
+      .then(() => {
         navigate("/seleksi-beasiswa", { state: { id: id } });
-        setLoading(false);
         dattebayoPlay();
       })
       .catch((error) => {
@@ -111,50 +180,149 @@ const Scholarship = () => {
   };
 
   useEffect(() => {
-    if (!token) {
-      return navigate("/");
-    }
-    getUser();
+    getInfo();
   }, []);
 
-  return (
-    <section className="bg-white">
-    { loadingScreen && <LoadingScreen/> }
-      <div className="container mx-auto px-5">
-        <Navbar />
-        <section className="max-w-7xl mx-auto mt-10">
-          <header className="flex flex-col justify-center text-center mb-2 space-y-1">
-            <h2 className="flex justify-center items-center gap-2 text-gray-900 text-xl font-bold">Tes Seleksi Beasiswa {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}</h2>
-            <p className="text-sm text-gray-600">{message}</p>
-          </header>
-          <div className="grid grid-cols-1 md:grid-cols-3">
-            {histories.length > 0 &&
-              histories.map((history) => (
-                <button key={history.id} className="p-2">
-                  <div className="bg-emerald-500 hover:bg-emerald-600 text-white p-6 rounded-lg text-sm">
-                    <span className="mr-2">{history.category.name}</span>
-                    <i className="fa-solid fa-circle-check text-white"></i>
-                  </div>
-                </button>
-              ))}
-            {categories.length > 0 &&
-              categories.map((category) => (
-                <button
-                  onClick={() => handleSelect(category.id)}
-                  key={category.id}
-                  className="p-2"
-                  disabled={loading}
-                >
-                  <div className="cursor-pointer bg-red-500 hover:bg-red-600 text-white p-6 rounded-lg text-sm">
-                    <span className="mr-2">{category.name}</span>
-                    <i className="fa-solid fa-circle-xmark text-white"></i>
-                  </div>
-                </button>
-              ))}
+  return errorPage ? (
+    <ServerError />
+  ) : loading ? (
+    <LoadingScreen />
+  ) : (
+    <main className="flex flex-col items-center justify-center bg-gradient-to-b from-lp3i-400 via-lp3i-200 to-lp3i-400 py-10 px-5 h-screen">
+      <div className="max-w-5xl w-full mx-auto shadow-xl">
+        <header className="grid grid-cols-1 md:grid-cols-3 items-center gap-5 bg-lp3i-500 px-10 py-6 rounded-t-2xl">
+          <Link
+            to={"/dashboard"}
+            className="text-white hover:text-gray-200 text-center md:text-left text-sm space-x-2"
+          >
+            <FontAwesomeIcon icon={faArrowLeft} />
+            <span>Kembali</span>
+          </Link>
+          <h2 className="text-white text-center font-bold space-x-2">
+            <FontAwesomeIcon icon={faCircleDot} />
+            <span>Soal Ujian - CAT</span>
+          </h2>
+          <div className="flex justify-center md:justify-end">
+            <img src={LogoLP3IPutih} alt="" width={150} />
           </div>
+        </header>
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white px-8 py-10 rounded-b-2xl">
+          {histories.length > 0 &&
+            histories.map((history) => (
+              <button type="button" key={history.id} className="bg-emerald-500 hover:bg-emerald-600 transition-all ease-in-out py-8 px-4 rounded-2xl space-x-2">
+                <span className="text-white text-sm">Kemampuan Analisa</span>
+                <FontAwesomeIcon icon={faCheckCircle} className="text-white" />
+              </button>
+            ))}
+          {categories.length > 0 &&
+            categories.map((category) => (
+              <button onClick={() => handleSelect(category.id)} type="button" key={category.id} className="bg-red-500 hover:bg-red-600 transition-all ease-in-out py-8 px-4 rounded-2xl space-x-2">
+                <span className="text-white text-sm">{category.name}</span>
+                <FontAwesomeIcon icon={faXmarkCircle} className="text-white" />
+              </button>
+            ))}
         </section>
       </div>
-    </section>
+
+      {
+        modal &&
+        <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+          <div className="relative p-4 w-full max-w-md bg-white rounded-3xl">
+            {/* Modal header */}
+            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+              <h3 className="text-lg font-semibold text-gray-900">
+                Tambah Prestasi
+              </h3>
+              <button
+                onClick={() => setModal(false)}
+                type="button"
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-xl text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
+              >
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+            </div>
+            {/* Modal body */}
+            <form onSubmit={handleSubmit} className="p-4 md:p-5">
+              <div className="grid gap-4 mb-4 grid-cols-2">
+                <div className="col-span-2">
+                  <label
+                    htmlFor="name"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Nama kegiatan
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full px-3.5 py-2.5"
+                    placeholder="Nama kegiatan"
+                    required
+                  />
+                </div>
+                <div className="col-span-1">
+                  <label
+                    htmlFor="year"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Tahun
+                  </label>
+                  <input
+                    type="date"
+                    name="year"
+                    id="year"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full px-3.5 py-2.5"
+                    placeholder="Tahun"
+                    required
+                  />
+                </div>
+                <div className="col-span-1">
+                  <label
+                    htmlFor="level"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Tingkat
+                  </label>
+                  <select id="level" name="level" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-lp3i-100 focus:border-lp3i-200 block w-full px-3 py-2.5">
+                    <option selected>Pilih tingkat</option>
+                    <option value="International">International</option>
+                    <option value="Nasional">Nasional</option>
+                    <option value="Kota / Kabupaten">Kota / Kabupaten</option>
+                    <option value="Kecamatan">Kecamatan</option>
+                    <option value="Desa / Kelurahan">Desa / Kelurahan</option>
+                    <option value="Sekolah">Sekolah</option>
+                    <option value="Jurusan">Jurusan</option>
+                  </select>
+                </div>
+                <div className="col-span-2">
+                  <label
+                    htmlFor="result"
+                    className="block mb-2 text-sm font-medium text-gray-900"
+                  >
+                    Hasil
+                  </label>
+                  <input
+                    type="text"
+                    name="result"
+                    id="result"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full px-3.5 py-2.5"
+                    placeholder="Hasil"
+                    required
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="text-white inline-flex items-center bg-lp3i-100 hover:bg-lp3i-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm px-3.5 py-2.5 space-x-2 text-center"
+              >
+                <FontAwesomeIcon icon={faPlus} />
+                <span>Tambahkan</span>
+              </button>
+            </form>
+          </div>
+        </div>
+      }
+    </main>
   );
 };
 

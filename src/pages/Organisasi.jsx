@@ -1,217 +1,228 @@
-import React, { useEffect, useRef, useState } from "react";
-import $ from "jquery";
-import "datatables.net-dt";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import moment from "moment-timezone";
-
-import "../assets/css/datatables-custom.css";
-import Navbar from "../templates/Navbar.jsx";
-import Loading from "../components/Loading.jsx";
-import LoadingScreen from "../components/LoadingScreen.jsx";
+import { Link, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowLeft,
+  faCircleDot,
+  faPlus,
+  faTrashAlt,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { jwtDecode } from "jwt-decode";
+import LogoLP3IPutih from "../assets/logo-lp3i-putih.svg";
+import ServerError from "./errors/ServerError";
+import LoadingScreen from "./LoadingScreen";
 
 const Organisasi = () => {
-  const [loadingScreen, setLoadingScreen] = useState(true);
+  const navigate = useNavigate();
+  const [user, setUser] = useState({
+    name: "Loading...",
+  });
   const [loading, setLoading] = useState(false);
-  const [student, setStudent] = useState({});
-  const [organizations, setOrganizations] = useState([]);
   const [modal, setModal] = useState(false);
 
-  const tableRef = useRef(null);
-  const token = localStorage.getItem("token");
-  const [name, setName] = useState("");
-  const [position, setPosition] = useState("");
-  const [year, setYear] = useState("");
+  const [errorPage, setErrorPage] = useState(false);
+  const [organizations, setOrganizations] = useState([]);
 
-  const [errors, setErrors] = useState({
-    name: [],
-    position: [],
-    year: [],
-  });
+  const getInfo = async () => {
+    setLoading(true);
+    try {
+      const token = localStorage.getItem("LP3ISBPMB:token");
+      if (!token) {
+        return navigate("/");
+      }
+      const decoded = jwtDecode(token);
+      setUser(decoded.data);
+      const fetchProfile = async (token) => {
+        const response = await axios.get(
+          "https://api.politekniklp3i-tasikmalaya.ac.id/pmb/profiles/v1",
+          {
+            headers: { Authorization: token },
+            withCredentials: true,
+          }
+        );
+        return response.data;
+      };
+      try {
+        const profileData = await fetchProfile(token);
+        setOrganizations(profileData.organizations);
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      } catch (profileError) {
+        if (profileError.response && profileError.response.status === 403) {
+          try {
+            const response = await axios.get(
+              "https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3",
+              {
+                withCredentials: true,
+              }
+            );
+            const newToken = response.data;
+            const decodedNewToken = jwtDecode(newToken);
+            localStorage.setItem("LP3ISBPMB:token", newToken);
+            setUser(decodedNewToken.data);
+            const newProfileData = await fetchProfile(newToken);
+            setOrganizations(newProfileData.organizations);
+            setTimeout(() => {
+              setLoading(false);
+            }, 1000);
+          } catch (error) {
+            console.error("Error refreshing token or fetching profile:", error);
+            if (error.response && error.response.status === 400) {
+              localStorage.removeItem("LP3ISBPMB:token");
+            } else {
+              setErrorPage(true);
+            }
+          }
+        } else {
+          console.error("Error fetching profile:", profileError);
+          setErrorPage(true);
+        }
+      }
+    } catch (error) {
+      if (error.response) {
+        if ([400, 403].includes(error.response.status)) {
+          localStorage.removeItem("LP3ISBPMB:token");
+          navigate("/login");
+        } else {
+          console.error("Unexpected HTTP error:", error);
+        }
+      } else if (error.request) {
+        console.error("Network error:", error);
+      } else {
+        console.error("Error:", error);
+        setErrorPage(true);
+      }
+      navigate("/login");
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
 
-  const getUser = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+      identity_user: user.identity,
+      name: e.target.elements.name.value,
+      position: e.target.elements.position.value,
+      year: e.target.elements.year.value,
+    }
     await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .post(`https://api.politekniklp3i-tasikmalaya.ac.id/pmb/organizations`, data)
       .then((response) => {
-        setStudent(response.data.applicant);
-        setOrganizations(response.data.organizations);
-        setLoadingScreen(false);
+        alert(response.data.message);
+        setModal(false);
+        getInfo();
       })
       .catch((error) => {
-        if (error.response.status == 401) {
-          localStorage.removeItem('token');
-          navigate('/');
-        } else {
-          console.log(error);
-        }
-        setLoadingScreen(false);
+        console.log(error);
       });
-  };
+  }
 
-  const addOrganization = async (e) => {
-    setLoading(true);
-    e.preventDefault();
-    if (name && position && year) {
+  const handleDelete = async (organization) => {
+    if (confirm("Apakah anda yakin akan menghapus organisasi ini?")) {
       await axios
-        .post(
-          `https://database.politekniklp3i-tasikmalaya.ac.id/api/organization`,
-          {
-            name: name,
-            position: position,
-            year: year,
-            identity_user: student.identity,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        )
-        .then((res) => {
-          alert(res.data.message);
-          setName("");
-          setPosition("");
-          setYear("");
-          getUser();
-          setModal(false);
-          setLoading(false);
+        .delete(`https://api.politekniklp3i-tasikmalaya.ac.id/pmb/organizations/${organization.id}`)
+        .then((response) => {
+          alert(response.data.message);
+          getInfo();
         })
         .catch((error) => {
-          if (error.code !== 'ERR_NETWORK') {
-            const nameError = error.response.data.message.name || [];
-            const positionError = error.response.data.message.position || [];
-            const yearError = error.response.data.message.year || [];
-            const newAllErrors = {
-              name: nameError,
-              position: positionError,
-              year: yearError,
-            };
-            setErrors(newAllErrors);
-            alert("Data gagal diperbarui!");
-            setLoading(false);
-          } else {
-            alert('Server sedang bermasalah.')
-            setLoading(false);
-          }
-        });
-    }
-  };
-
-  const deleteOrganization = async (id) => {
-    setLoading(true);
-    let confirmDelete = confirm(
-      "Apakah anda yakin ingin menghapus organisasi?"
-    );
-    if (confirmDelete) {
-      await axios
-        .delete(`https://database.politekniklp3i-tasikmalaya.ac.id/api/organization/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => {
-          alert(res.data.message);
-          getUser();
-          setLoading(false);
-        })
-        .catch((err) => {
-          let networkError = err.message == "Network Error";
-          alert(
-            networkError
-              ? "Mohon maaf, ada kesalahan di sisi Server."
-              : err.message
-          );
-          setLoading(false);
+          console.log(error);
         });
     }
   };
 
   useEffect(() => {
-    if (!token) {
-      return navigate("/");
-    }
-    getUser();
+    getInfo();
   }, []);
 
-  useEffect(() => {
-    if (organizations.length > 0 && tableRef.current) {
-      $(tableRef.current).DataTable();
-    }
-  }, [organizations]);
-
-  return (
-    <section className="bg-white">
-    { loadingScreen && <LoadingScreen/> }
-      <div className="container mx-auto px-5">
-        <Navbar />
-
-        <div className="block max-w-7xl px-6 py-4 bg-white border border-gray-200 rounded-2xl mx-auto mt-5">
-          <button
-            type="button"
-            onClick={() => setModal(!modal)}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5"
+  return errorPage ? (
+    <ServerError />
+  ) : loading ? (
+    <LoadingScreen />
+  ) : (
+    <main className="flex flex-col items-center justify-center bg-gradient-to-b from-lp3i-400 via-lp3i-200 to-lp3i-400 py-10 px-5 h-screen">
+      <div className="max-w-5xl w-full mx-auto shadow-xl">
+        <header className="grid grid-cols-1 md:grid-cols-3 items-center gap-5 bg-lp3i-500 px-10 py-6 rounded-t-2xl">
+          <Link
+            to={"/dashboard"}
+            className="text-white hover:text-gray-200 text-center md:text-left text-sm space-x-2"
           >
-            Tambah Data
+            <FontAwesomeIcon icon={faArrowLeft} />
+            <span>Kembali</span>
+          </Link>
+          <h2 className="text-white text-center font-bold space-x-2">
+            <FontAwesomeIcon icon={faCircleDot} />
+            <span>Data Organisasi</span>
+          </h2>
+          <div className="flex justify-center md:justify-end">
+            <img src={LogoLP3IPutih} alt="" width={150} />
+          </div>
+        </header>
+        <div className="bg-white px-8 py-10 rounded-b-2xl">
+          <button
+            type="button" onClick={() => setModal(true)}
+            className="text-white bg-lp3i-100 hover:bg-lp3i-200 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5 mb-3"
+          >
+            Tambah data
           </button>
-          <div className="relative overflow-x-auto py-5">
-            <table
-              ref={tableRef}
-              className="w-full text-sm text-left text-gray-500"
-            >
-              <thead className="text-xs text-gray-700 uppercase bg-gray-100">
+          <div className="relative overflow-x-auto sm:rounded-lg">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+              <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 whitespace-nowrap rounded-tl-xl">
+                  <th scope="col" className="px-6 py-3">
                     No.
                   </th>
-                  <th className="px-6 py-3 whitespace-nowrap">
+                  <th scope="col" className="px-6 py-3">
                     Nama Organisasi
                   </th>
-                  <th className="px-6 py-3 whitespace-nowrap">Jabatan</th>
-                  <th className="px-6 py-3 whitespace-nowrap">Tahun</th>
-                  <th className="px-6 py-3 whitespace-nowrap rounded-tr-xl">
-                    Aksi
+                  <th scope="col" className="px-6 py-3">
+                    Jabatan
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Tahun
+                  </th>
+                  <th scope="col" className="px-6 py-3">
+                    Action
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {organizations.length > 0 ? (
-                  organizations.map((organization, i) => (
-                    <tr className="bg-white border-b" key={organization.id}>
-                      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                        {i + 1}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {organization.name}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {organization.position}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        {moment
-                          .tz(organization.year, "Asia/Jakarta")
-                          .format("L")}
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
+                  organizations.map((organization, index) => (
+                    <tr key={organization.id} className="bg-white border-b">
+                      <th
+                        scope="row"
+                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+                      >
+                        {index + 1}
+                      </th>
+                      <td className="px-6 py-4">{organization.name}</td>
+                      <td className="px-6 py-4">{organization.position}</td>
+                      <td className="px-6 py-4">{organization.year}</td>
+                      <td className="px-6 py-4">
                         <button
+                          onClick={() => handleDelete(organization)}
                           type="button"
-                          onClick={() => deleteOrganization(organization.id)}
-                          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-xl text-sm px-5 py-2.5"
+                          className="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-xs px-3.5 py-1.5"
                         >
-                          Hapus
+                          <FontAwesomeIcon icon={faTrashAlt} />
                         </button>
                       </td>
                     </tr>
                   ))
                 ) : (
-                  <tr>
+                  <tr className="bg-white border-b">
                     <td
-                      colSpan={5}
-                      className="px-6 py-4 whitespace-nowrap text-center"
+                      colSpan="5"
+                      className="px-6 py-4 text-center text-gray-600"
                     >
-                      Data organisasi belum ada.
+                      Data tidak ditemukan.
                     </td>
                   </tr>
                 )}
@@ -221,37 +232,27 @@ const Organisasi = () => {
         </div>
       </div>
 
-      {/* Modal Add */}
-      <div
-        id="staticModal"
-        data-modal-backdrop="static"
-        tabIndex={-1}
-        aria-hidden="true"
-        className={`${modal ? "" : "hidden"
-          } flex justify-center items-center fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full`}
-      >
-        <div className="fixed top-0 left-0 right-0 bottom-0 bg-black opacity-50"></div>
-        <div className="relative w-full max-w-2xl max-h-full">
-          {/* Modal content */}
-          <div className="relative bg-white rounded-xl shadow">
+      {
+        modal &&
+        <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
+          <div className="relative p-4 w-full max-w-md bg-white rounded-3xl">
             {/* Modal header */}
-            <div className="flex items-start justify-between p-4 border-b rounded-t">
-              <h3 className="text-xl font-semibold text-gray-900">
+            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+              <h3 className="text-lg font-semibold text-gray-900">
                 Tambah Organisasi
               </h3>
               <button
+                onClick={() => setModal(false)}
                 type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-xl text-sm w-8 h-8 ml-auto inline-flex justify-center items-center"
-                onClick={() => setModal(!modal)}
+                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-xl text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
               >
-                <i className="fa-solid fa-xmark"></i>
-                <span className="sr-only">Tutup modal</span>
+                <FontAwesomeIcon icon={faXmark} />
               </button>
             </div>
             {/* Modal body */}
-            <form method="POST" onSubmit={addOrganization}>
-              <div className="p-6 space-y-6">
-                <div className="mb-5">
+            <form onSubmit={handleSubmit} className="p-4 md:p-5">
+              <div className="grid gap-4 mb-4 grid-cols-2">
+                <div className="col-span-2">
                   <label
                     htmlFor="name"
                     className="block mb-2 text-sm font-medium text-gray-900"
@@ -260,58 +261,30 @@ const Organisasi = () => {
                   </label>
                   <input
                     type="text"
+                    name="name"
                     id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="Tulis nama organisasi disini.."
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full px-3.5 py-2.5"
+                    placeholder="Nama organisasi"
                     required
                   />
-                  {
-                    errors.name.length > 0 ? (
-                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                        {errors.name.map((error, index) => (
-                          <li className="font-regular" key={index}>{error}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="mt-2 text-xs text-red-600">
-                        <span className="font-medium">Keterangan:</span> Wajib diisi.
-                      </p>
-                    )
-                  }
                 </div>
-                <div className="mb-5">
+                <div className="col-span-1">
                   <label
                     htmlFor="position"
                     className="block mb-2 text-sm font-medium text-gray-900"
                   >
-                    Jabatan
+                    Posisi
                   </label>
                   <input
                     type="text"
+                    name="position"
                     id="position"
-                    value={position}
-                    onChange={(e) => setPosition(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="Tulis jabatan disini.."
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full px-3.5 py-2.5"
+                    placeholder="Posisi"
                     required
                   />
-                  {
-                    errors.position.length > 0 ? (
-                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                        {errors.position.map((error, index) => (
-                          <li className="font-regular" key={index}>{error}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="mt-2 text-xs text-red-600">
-                        <span className="font-medium">Keterangan:</span> Wajib diisi.
-                      </p>
-                    )
-                  }
                 </div>
-                <div className="mb-5">
+                <div className="col-span-1">
                   <label
                     htmlFor="year"
                     className="block mb-2 text-sm font-medium text-gray-900"
@@ -320,50 +293,26 @@ const Organisasi = () => {
                   </label>
                   <input
                     type="date"
+                    name="year"
                     id="year"
-                    value={year}
-                    onChange={(e) => setYear(e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                    placeholder="Tulis tahun disini.."
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full px-3.5 py-2.5"
+                    placeholder="Tahun"
                     required
                   />
-                  {
-                    errors.year.length > 0 ? (
-                      <ul className="ml-5 mt-2 text-xs text-red-600 list-disc">
-                        {errors.year.map((error, index) => (
-                          <li className="font-regular" key={index}>{error}</li>
-                        ))}
-                      </ul>
-                    ) : (
-                      <p className="mt-2 text-xs text-red-600">
-                        <span className="font-medium">Keterangan:</span> Wajib diisi.
-                      </p>
-                    )
-                  }
                 </div>
               </div>
-              {/* Modal footer */}
-              <div className="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b">
-                <button
-                  type="submit"
-                  className="flex items-center gap-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5 text-center"
-                >
-                  {loading && <Loading width={5} height={5} fill="fill-sky-500" color="text-gray-200" />}
-                  Tambahkan
-                </button>
-                <button
-                  onClick={() => setModal(!modal)}
-                  type="button"
-                  className="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-xl border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
-                >
-                  Batalkan
-                </button>
-              </div>
+              <button
+                type="submit"
+                className="text-white inline-flex items-center bg-lp3i-100 hover:bg-lp3i-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm px-3.5 py-2.5 space-x-2 text-center"
+              >
+                <FontAwesomeIcon icon={faPlus} />
+                <span>Tambahkan</span>
+              </button>
             </form>
           </div>
         </div>
-      </div>
-    </section>
+      }
+    </main>
   );
 };
 
