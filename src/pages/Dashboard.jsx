@@ -61,9 +61,6 @@ const Dashboard = () => {
             const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3', {
               withCredentials: true,
             });
-            console.log(response);
-
-
             const newToken = response.data;
             const decodedNewToken = jwtDecode(newToken);
             localStorage.setItem('LP3ISBPMB:token', newToken);
@@ -77,25 +74,25 @@ const Dashboard = () => {
             setValidate(newProfileData.validate.validate);
           } catch (error) {
             console.error('Error refreshing token or fetching profile:', error);
-            // if (error.response && error.response.status === 400) {
-            //   localStorage.removeItem('LP3ISBPMB:token');
-            //   navigate('/')
-            // }
+            if (error.response && error.response.status === 400) {
+              localStorage.removeItem('LP3ISBPMB:token');
+              navigate('/')
+            }
           }
         } else {
           console.error('Error fetching profile:', profileError);
-          // localStorage.removeItem('LP3ISBPMB:token');
-          // setErrorPage(true);
-          // setTimeout(() => {
-          //   navigate('/');
-          // }, 2000);
+          localStorage.removeItem('LP3ISBPMB:token');
+          setErrorPage(true);
+          setTimeout(() => {
+            navigate('/');
+          }, 2000);
         }
       }
     } catch (error) {
       if (error.response) {
         if ([400, 403].includes(error.response.status)) {
-          // localStorage.removeItem('LP3ISBPMB:token');
-          // navigate('/');
+          localStorage.removeItem('LP3ISBPMB:token');
+          navigate('/');
         } else {
           console.error('Unexpected HTTP error:', error);
           setErrorPage(true);
@@ -131,8 +128,8 @@ const Dashboard = () => {
         });
         if (responseData) {
           alert(responseData.data.message);
-          // localStorage.removeItem('LP3ISBPMB:token');
-          // navigate('/login')
+          localStorage.removeItem('LP3ISBPMB:token');
+          navigate('/login')
         }
       } catch (error) {
         if (error.response && error.response.status === 403) {
@@ -149,8 +146,8 @@ const Dashboard = () => {
             });
             if (responseData) {
               alert(responseData.data.message);
-              // localStorage.removeItem('LP3ISBPMB:token');
-              // navigate('/login')
+              localStorage.removeItem('LP3ISBPMB:token');
+              navigate('/login')
             }
           } catch (error) {
             console.error('Error refreshing token or fetching profile:', error);

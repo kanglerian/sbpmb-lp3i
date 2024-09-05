@@ -52,9 +52,9 @@ const Scholarship = () => {
       };
       try {
         const profileData = await fetchProfile(token);
-        if(!profileData.validate.validate_files){
+        // if(!profileData.validate.validate_files){
           navigate('/dashboard');
-        }
+        // }
         setTimeout(() => {
           setLoading(false);
         }, 1000);
