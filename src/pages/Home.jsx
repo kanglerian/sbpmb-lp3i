@@ -35,7 +35,7 @@ const Home = () => {
                 yang lebih baik.</p>
             </div>
             <div className='flex items-center gap-3'>
-              <Link to={`/register`}>
+              {/* <Link to={`/register`}>
                 <button
                   type="button"
                   className="text-white bg-lp3i-600 hover:bg-lp3i-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5 space-x-1"
@@ -43,7 +43,7 @@ const Home = () => {
                   <span>Daftar Sekarang</span>
                   <FontAwesomeIcon icon={faFileLines} />
                 </button>
-              </Link>
+              </Link> */}
               <Link to={`/login`}>
                 <button
                   type="button"
