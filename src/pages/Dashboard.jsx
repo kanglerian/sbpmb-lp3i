@@ -186,7 +186,8 @@ const Dashboard = () => {
             <div className='flex flex-col items-center justify-center gap-5 md:gap-8 max-w-3xl w-full mx-auto px-5 md:h-screen'>
               <section className='flex flex-col items-center text-center gap-1'>
                 <h1 className='text-white text-xl font-medium'>Halo, {user.name}! 👋</h1>
-                <p className='text-gray-200 text-sm'>Selamat datang <span className='underline'>{user.name}</span> dengan email <span className='underline'>{user.email}</span>. Lakukan registrasi mahasiswa baru dengan melengkapi isian dan langkah-langkah berikut.</p>
+                {/* <p className='text-gray-200 text-sm'>Selamat datang <span className='underline'>{user.name}</span> dengan email <span className='underline'>{user.email}</span>. Lakukan registrasi mahasiswa baru dengan melengkapi isian dan langkah-langkah berikut.</p> */}
+                <p className='text-gray-200 text-sm'>Selamat datang <span className='underline'>{user.name}</span> dengan email <span className='underline'>{user.email}</span>. Silahkan untuk masuk ke menu CAT dan memilih kategori soal!</p>
               </section>
               {/* <section className='w-full grid grid-cols-1 items-center gap-3'> */}
               {/* <Link to={`/pribadi`} className='flex flex-col items-center gap-1 shadow-xl bg-gray-50 hover:bg-lp3i-400 text-gray-800 hover:text-white border-4 hover:border-lp3i-200 px-5 py-4 cursor-pointer transition-all rounded-2xl space-y-1'>
