@@ -43,6 +43,11 @@ const TestSchoolarship = () => {
   const [recordStudent, setRecordStudent] = useState(null);
   const [isUpdate, setIsUpdate] = useState(false);
 
+  const WinSoundPlay = () => {
+    let audio = new Audio(WinSound);
+    audio.play();
+  }
+
   const CointSoundPlay = () => {
     let audio = new Audio(CointSound);
     audio.play();
@@ -279,6 +284,7 @@ const TestSchoolarship = () => {
     await axios.post(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/records`, bucket)
       .then((response) => {
         alert(response.data.message);
+        WinSoundPlay();
         localStorage.removeItem('LP3ISBPMB:bucket');
         localStorage.removeItem('timeLeft');
         localStorage.removeItem('id');
