@@ -53,7 +53,7 @@ const Scholarship = () => {
       try {
         const profileData = await fetchProfile(token);
         // if(!profileData.validate.validate_files){
-          navigate('/dashboard');
+          // navigate('/dashboard');
         // }
         setTimeout(() => {
           setLoading(false);
@@ -72,9 +72,9 @@ const Scholarship = () => {
             localStorage.setItem("LP3ISBPMB:token", newToken);
             setUser(decodedNewToken.data);
             const newProfileData = await fetchProfile(newToken);
-            if(!newProfileData.validate.validate_files){
-              navigate('/dashboard');
-            }
+            // if(!newProfileData.validate.validate_files){
+              // navigate('/dashboard');
+            // }
             setTimeout(() => {
               setLoading(false);
             }, 1000);
