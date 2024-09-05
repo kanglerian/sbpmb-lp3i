@@ -43,6 +43,11 @@ const TestSchoolarship = () => {
   const [recordStudent, setRecordStudent] = useState(null);
   const [isUpdate, setIsUpdate] = useState(false);
 
+  const CointSoundPlay = () => {
+    let audio = new Audio(CointSound);
+    audio.play();
+  }
+
   const getInfo = async () => {
     try {
       const token = localStorage.getItem("LP3ISBPMB:token");
@@ -239,6 +244,7 @@ const TestSchoolarship = () => {
         localStorage.setItem("LP3ISBPMB:bucket", JSON.stringify(bucket));
       }
     }
+    CointSoundPlay();
     getQuestions(user.identity);
     setSelected(null);
     setTimeout(() => {
@@ -320,7 +326,7 @@ const TestSchoolarship = () => {
   }, []);
 
   return (
-    <main className="max-w-7xl mx-auto flex items-center justify-center md:h-screen py-5">
+    <main className="max-w-7xl mx-auto flex items-center justify-center md:h-screen md:py-5">
       <div className="w-full flex flex-col md:flex-row items-center">
         <form
           onSubmit={handleSave}
