@@ -211,6 +211,7 @@ const Scholarship = () => {
   ) : (
     <main className="flex flex-col items-center justify-center bg-gradient-to-b from-lp3i-400 via-lp3i-200 to-lp3i-400 py-10 px-5 h-screen">
       <div className="max-w-5xl w-full mx-auto shadow-xl">
+      <video ref={videoRef} autoPlay playsInline width="200" height="200" className="mx-auto rounded-xl" />
         <header className="grid grid-cols-1 md:grid-cols-3 items-center gap-5 bg-lp3i-500 px-10 py-6 rounded-t-2xl">
           <Link
             to={"/dashboard"}
@@ -227,7 +228,6 @@ const Scholarship = () => {
             <img src={LogoLP3IPutih} alt="" width={150} />
           </div>
         </header>
-        <video ref={videoRef} autoPlay playsInline width="200" height="200" className="absolute bottom-0 right-0 rounded-tl-xl" />
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white px-8 py-10 rounded-b-2xl">
           {histories.length > 0 &&
             histories.map((history) => (
