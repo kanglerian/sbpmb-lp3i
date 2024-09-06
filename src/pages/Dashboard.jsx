@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook, faCheckCircle, faDesktop, faFilePdf, faSignOut, faSitemap, faTrophy, faUserCircle, faUsers, faXmarkCircle } from '@fortawesome/free-solid-svg-icons'
@@ -12,6 +12,10 @@ import LogoLP3IPutih from '../assets/logo-lp3i-putih.svg'
 import LogoTagline from '../assets/tagline-warna.png'
 
 const Dashboard = () => {
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [capturedImage, setCapturedImage] = useState(null);
+
   const navigate = useNavigate();
   const [user, setUser] = useState({
     name: 'Loading...'
@@ -168,6 +172,26 @@ const Dashboard = () => {
 
   useEffect(() => {
     getInfo();
+
+    const startCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (error) {
+        console.error('Error accessing the camera:', error);
+      }
+    };
+
+    startCamera();
+
+    return () => {
+      if (videoRef.current && videoRef.current.srcObject) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+    };
   }, []);
 
   return (

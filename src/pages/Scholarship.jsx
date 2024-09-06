@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -18,6 +18,7 @@ import LoadingScreen from "./LoadingScreen";
 import DattebayoSound from '../assets/sounds/dattebayo.mp3'
 
 const Scholarship = () => {
+  const videoRef = useRef(null);
   const navigate = useNavigate();
   const [user, setUser] = useState({
     name: "Loading...",
@@ -52,9 +53,9 @@ const Scholarship = () => {
       };
       try {
         const profileData = await fetchProfile(token);
-        // if(!profileData.validate.validate_files){
-          // navigate('/dashboard');
-        // }
+        if (!profileData.validate.validate_files) {
+          navigate('/dashboard');
+        }
         setTimeout(() => {
           setLoading(false);
         }, 1000);
@@ -72,9 +73,9 @@ const Scholarship = () => {
             localStorage.setItem("LP3ISBPMB:token", newToken);
             setUser(decodedNewToken.data);
             const newProfileData = await fetchProfile(newToken);
-            // if(!newProfileData.validate.validate_files){
-              // navigate('/dashboard');
-            // }
+            if (!newProfileData.validate.validate_files) {
+              navigate('/dashboard');
+            }
             setTimeout(() => {
               setLoading(false);
             }, 1000);
@@ -180,7 +181,27 @@ const Scholarship = () => {
   };
 
   useEffect(() => {
+
     getInfo();
+    const startCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (error) {
+        console.error('Error accessing the camera:', error);
+      }
+    };
+
+    startCamera();
+
+    return () => {
+      if (videoRef.current && videoRef.current.srcObject) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+    };
   }, []);
 
   return errorPage ? (
@@ -206,6 +227,7 @@ const Scholarship = () => {
             <img src={LogoLP3IPutih} alt="" width={150} />
           </div>
         </header>
+        <video ref={videoRef} autoPlay playsInline width="200" height="200" className="absolute bottom-0 right-0 rounded-tl-xl" />
         <section className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white px-8 py-10 rounded-b-2xl">
           {histories.length > 0 &&
             histories.map((history) => (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar.jsx";
 import axios from "axios";
@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight, faCircleCheck, faHand, faSave, faTag, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 const TestSchoolarship = () => {
+  const videoRef = useRef(null);
   const navigate = useNavigate();
   const { state } = useLocation();
   const localStorageId = localStorage.getItem("id");
@@ -329,10 +330,31 @@ const TestSchoolarship = () => {
 
   useEffect(() => {
     getInfo();
+
+    const startCamera = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
+      } catch (error) {
+        console.error('Error accessing the camera:', error);
+      }
+    };
+
+    startCamera();
+
+    return () => {
+      if (videoRef.current && videoRef.current.srcObject) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach(track => track.stop());
+      }
+    };
   }, []);
 
   return (
     <main className="max-w-7xl mx-auto flex items-center justify-center md:h-screen md:py-5">
+      <video ref={videoRef} autoPlay playsInline width="200" height="200" className="absolute bottom-0 right-0 rounded-tl-xl" />
       <div className="w-full flex flex-col md:flex-row items-center">
         <form
           onSubmit={handleSave}
