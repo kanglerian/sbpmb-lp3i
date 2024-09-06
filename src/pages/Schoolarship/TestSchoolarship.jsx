@@ -441,7 +441,7 @@ const TestSchoolarship = () => {
           }
         </form>
         <div className="order-2 md:order-none w-full md:w-3/12 space-y-4 p-10">
-        <video ref={videoRef} autoPlay playsInline width="200" height="200" className="mx-auto md:absolute md:bottom-0 md:left-0 md:rounded-tl-xl" />
+        <video ref={videoRef} autoPlay playsInline width="200" height="200" className="mx-auto md:absolute md:bottom-0 md:left-0 rounded-xl md:rounded-tl-xl" />
           <header className="text-center space-y-1">
             <span className="inline-block border border-gray-300 py-2 px-4 rounded-xl text-sm">{timeLeft}</span>
             <div className="space-y-1">
