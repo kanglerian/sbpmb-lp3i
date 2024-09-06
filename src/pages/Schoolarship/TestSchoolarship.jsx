@@ -354,7 +354,6 @@ const TestSchoolarship = () => {
 
   return (
     <main className="max-w-7xl mx-auto flex items-center justify-center md:h-screen md:py-5">
-      <video ref={videoRef} autoPlay playsInline width="200" height="200" className="absolute bottom-0 right-0 rounded-tl-xl" />
       <div className="w-full flex flex-col md:flex-row items-center">
         <form
           onSubmit={handleSave}
@@ -368,6 +367,7 @@ const TestSchoolarship = () => {
             ) : (
               <section>
                 <header className="flex items-center justify-between">
+      <video ref={videoRef} autoPlay playsInline width="200" height="200" className="md:absolute md:bottom-0 md:left-0 md:rounded-tl-xl" />
                   <h2 className="font-bold text-lg text-lp3i-100 space-x-2">
                     <FontAwesomeIcon icon={faTag} />
                     <span>{active.category ?? ""}</span>
