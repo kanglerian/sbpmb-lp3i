@@ -24,8 +24,6 @@ const Scholarship = () => {
     name: "Loading...",
   });
   const [loading, setLoading] = useState(false);
-  const [modal, setModal] = useState(false);
-
   const [errorPage, setErrorPage] = useState(false);
 
   const [categories, setCategories] = useState([]);
@@ -43,7 +41,7 @@ const Scholarship = () => {
       getHistories(decoded.data.identity);
       const fetchProfile = async (token) => {
         const response = await axios.get(
-          "https://api.politekniklp3i-tasikmalaya.ac.id/pmb/profiles/v1",
+          "https://pmb-api.politekniklp3i-tasikmalaya.ac.id/profiles/v1",
           {
             headers: { Authorization: token },
             withCredentials: true,
@@ -63,7 +61,7 @@ const Scholarship = () => {
         if (profileError.response && profileError.response.status === 403) {
           try {
             const response = await axios.get(
-              "https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3",
+              "https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/token/v3",
               {
                 withCredentials: true,
               }
@@ -114,34 +112,13 @@ const Scholarship = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const data = {
-      identity_user: user.identity,
-      name: e.target.elements.name.value,
-      level: e.target.elements.level.value,
-      year: e.target.elements.year.value,
-      result: e.target.elements.result.value
-    }
-    await axios
-      .post(`https://api.politekniklp3i-tasikmalaya.ac.id/pmb/achievements`, data)
-      .then((response) => {
-        alert(response.data.message);
-        setModal(false);
-        getInfo();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
-
   const getHistories = async (identity) => {
     try {
       const categoriesResponse = await axios.get(
-        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/categories`
+        `https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/categories`
       );
       const historiesResponse = await axios.get(
-        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories?identity_user=${identity}`
+        `https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/histories?identity_user=${identity}`
       );
       const filterResponse = categoriesResponse.data.filter(
         (question) =>
@@ -167,7 +144,7 @@ const Scholarship = () => {
 
   const handleSelect = async (id) => {
     await axios
-      .post(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories`, {
+      .post(`https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/histories`, {
         identity_user: user.identity,
         category_id: id,
       })
@@ -246,104 +223,6 @@ const Scholarship = () => {
         </section>
       </div>
 
-      {
-        modal &&
-        <div className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-50">
-          <div className="relative p-4 w-full max-w-md bg-white rounded-3xl">
-            {/* Modal header */}
-            <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-              <h3 className="text-lg font-semibold text-gray-900">
-                Tambah Prestasi
-              </h3>
-              <button
-                onClick={() => setModal(false)}
-                type="button"
-                className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-xl text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
-              >
-                <FontAwesomeIcon icon={faXmark} />
-              </button>
-            </div>
-            {/* Modal body */}
-            <form onSubmit={handleSubmit} className="p-4 md:p-5">
-              <div className="grid gap-4 mb-4 grid-cols-2">
-                <div className="col-span-2">
-                  <label
-                    htmlFor="name"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Nama kegiatan
-                  </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full px-3.5 py-2.5"
-                    placeholder="Nama kegiatan"
-                    required
-                  />
-                </div>
-                <div className="col-span-1">
-                  <label
-                    htmlFor="year"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Tahun
-                  </label>
-                  <input
-                    type="date"
-                    name="year"
-                    id="year"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full px-3.5 py-2.5"
-                    placeholder="Tahun"
-                    required
-                  />
-                </div>
-                <div className="col-span-1">
-                  <label
-                    htmlFor="level"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Tingkat
-                  </label>
-                  <select id="level" name="level" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-lp3i-100 focus:border-lp3i-200 block w-full px-3 py-2.5">
-                    <option selected>Pilih tingkat</option>
-                    <option value="International">International</option>
-                    <option value="Nasional">Nasional</option>
-                    <option value="Kota / Kabupaten">Kota / Kabupaten</option>
-                    <option value="Kecamatan">Kecamatan</option>
-                    <option value="Desa / Kelurahan">Desa / Kelurahan</option>
-                    <option value="Sekolah">Sekolah</option>
-                    <option value="Jurusan">Jurusan</option>
-                  </select>
-                </div>
-                <div className="col-span-2">
-                  <label
-                    htmlFor="result"
-                    className="block mb-2 text-sm font-medium text-gray-900"
-                  >
-                    Hasil
-                  </label>
-                  <input
-                    type="text"
-                    name="result"
-                    id="result"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-primary-600 focus:border-primary-600 block w-full px-3.5 py-2.5"
-                    placeholder="Hasil"
-                    required
-                  />
-                </div>
-              </div>
-              <button
-                type="submit"
-                className="text-white inline-flex items-center bg-lp3i-100 hover:bg-lp3i-200 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-xl text-sm px-3.5 py-2.5 space-x-2 text-center"
-              >
-                <FontAwesomeIcon icon={faPlus} />
-                <span>Tambahkan</span>
-              </button>
-            </form>
-          </div>
-        </div>
-      }
     </main>
   );
 };

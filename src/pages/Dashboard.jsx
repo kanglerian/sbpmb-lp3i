@@ -44,7 +44,7 @@ const Dashboard = () => {
       setUser(decoded.data);
 
       const fetchProfile = async (token) => {
-        const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/profiles/v1', {
+        const response = await axios.get('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/profiles/v1', {
           headers: { Authorization: token },
           withCredentials: true,
         });
@@ -62,7 +62,7 @@ const Dashboard = () => {
       } catch (profileError) {
         if (profileError.response && profileError.response.status === 403) {
           try {
-            const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3', {
+            const response = await axios.get('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/token/v3', {
               withCredentials: true,
             });
             const newToken = response.data;
@@ -125,7 +125,7 @@ const Dashboard = () => {
           navigate('/login');
           return;
         }
-        const responseData = await axios.delete('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/logout/v3', {
+        const responseData = await axios.delete('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/logout/v3', {
           headers: {
             Authorization: token
           }
@@ -138,12 +138,12 @@ const Dashboard = () => {
       } catch (error) {
         if (error.response && error.response.status === 403) {
           try {
-            const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3', {
+            const response = await axios.get('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/token/v3', {
               withCredentials: true,
             });
 
             const newToken = response.data;
-            const responseData = await axios.delete('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/logout/v3', {
+            const responseData = await axios.delete('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/logout/v3', {
               headers: {
                 Authorization: newToken
               }
@@ -210,10 +210,9 @@ const Dashboard = () => {
             <div className='flex flex-col items-center justify-center gap-5 md:gap-8 max-w-3xl w-full mx-auto px-5 md:h-screen'>
               <section className='flex flex-col items-center text-center gap-1'>
                 <h1 className='text-white text-xl font-medium'>Halo, {user.name}! 👋</h1>
-                {/* <p className='text-gray-200 text-sm'>Selamat datang <span className='underline'>{user.name}</span> dengan email <span className='underline'>{user.email}</span>. Lakukan registrasi mahasiswa baru dengan melengkapi isian dan langkah-langkah berikut.</p> */}
                 <p className='text-gray-200 text-sm'>Selamat datang <span className='underline'>{user.name}</span> dengan email <span className='underline'>{user.email}</span>. Silahkan untuk masuk ke menu CAT dan memilih kategori soal!</p>
               </section>
-              {/* <section className='w-full grid grid-cols-1 items-center gap-3'> */}
+              {/* <section className='w-full grid grid-cols-5 items-center gap-3'> */}
               {/* <Link to={`/pribadi`} className='flex flex-col items-center gap-1 shadow-xl bg-gray-50 hover:bg-lp3i-400 text-gray-800 hover:text-white border-4 hover:border-lp3i-200 px-5 py-4 cursor-pointer transition-all rounded-2xl space-y-1'>
                   <FontAwesomeIcon icon={faUserCircle} size='lg' className={validateData ? 'text-emerald-600' : 'text-red-600'} />
                   <p className='text-xs'>Data Pribadi</p>

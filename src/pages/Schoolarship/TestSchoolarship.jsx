@@ -86,10 +86,10 @@ const TestSchoolarship = () => {
     const stateId = localStorage.getItem("id");
     if (stateId) {
       const recordResponse = await axios.get(
-        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/records?identity_user=${identity}&category=${stateId}`
+        `https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/records?identity_user=${identity}&category=${stateId}`
       );
       const questionResponse = await axios.get(
-        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/questions?category=${stateId}`
+        `https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/questions?category=${stateId}`
       );
       if (recordResponse.data && questionResponse.data) {
         const filterResponse = questionResponse.data.filter(
@@ -101,7 +101,7 @@ const TestSchoolarship = () => {
         if (filterResponse.length > 0) {
           let id = filterResponse[0].id;
           const answerResponse = await axios.get(
-            `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/answers/question/${id}`
+            `https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/answers/question/${id}`
           );
           let bucket = localStorage.getItem("LP3ISBPMB:bucket");
           if (bucket) {
@@ -120,7 +120,7 @@ const TestSchoolarship = () => {
               .sort(() => Math.random() - 0.5);
             if (questionNotAnswer.length > 0) {
               const answerResponse = await axios.get(
-                `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/answers/question/${questionNotAnswer[0].id}`
+                `https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/answers/question/${questionNotAnswer[0].id}`
               );
               setActive({
                 category: questionNotAnswer[0].category.name,
@@ -189,7 +189,7 @@ const TestSchoolarship = () => {
       }
     }
     await axios
-      .get(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/answers/question/${question.id}`)
+      .get(`https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/answers/question/${question.id}`)
       .then((response) => {
         setAnswers(response.data);
       })
@@ -200,8 +200,8 @@ const TestSchoolarship = () => {
 
   const updateQuestion = async (record) => {
     try {
-      const questionResponse = await axios.get(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/questions/${record.question_id}`);
-      const answersResponse = await axios.get(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/answers/question/${record.question_id}`);
+      const questionResponse = await axios.get(`https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/questions/${record.question_id}`);
+      const answersResponse = await axios.get(`https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/answers/question/${record.question_id}`);
       setActive({
         category: questionResponse.data.category.name,
         question: questionResponse.data.question,
@@ -282,7 +282,7 @@ const TestSchoolarship = () => {
   const checkMiddleware = async () => {
     let bucket = localStorage.getItem('LP3ISBPMB:bucket');
     bucket = JSON.parse(bucket);
-    await axios.post(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/records`, bucket)
+    await axios.post(`https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/records`, bucket)
       .then((response) => {
         alert(response.data.message);
         WinSoundPlay();

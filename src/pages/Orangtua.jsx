@@ -101,7 +101,7 @@ const Orangtua = () => {
       const decoded = jwtDecode(token);
       setUser(decoded.data);
       const fetchProfile = async (token) => {
-        const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/profiles/v1', {
+        const response = await axios.get('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/profiles/v1', {
           headers: { Authorization: token },
           withCredentials: true,
         });
@@ -141,7 +141,7 @@ const Orangtua = () => {
       } catch (profileError) {
         if (profileError.response && profileError.response.status === 403) {
           try {
-            const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3', {
+            const response = await axios.get('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/token/v3', {
               withCredentials: true,
             });
             const newToken = response.data;
@@ -250,7 +250,7 @@ const Orangtua = () => {
     });
 
     const token = localStorage.getItem('LP3ISBPMB:token');
-    await axios.patch(`https://api.politekniklp3i-tasikmalaya.ac.id/pmb/applicants/updatefamily/v1/${user.identity}`, formData, {
+    await axios.patch(`https://pmb-api.politekniklp3i-tasikmalaya.ac.id/applicants/updatefamily/v1/${user.identity}`, formData, {
       headers: {
         Authorization: token
       },
@@ -267,7 +267,7 @@ const Orangtua = () => {
       .catch(async (error) => {
         if (error.response && error.response.status === 403) {
           try {
-            const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3', {
+            const response = await axios.get('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/token/v3', {
               withCredentials: true,
             });
 
@@ -276,7 +276,7 @@ const Orangtua = () => {
             localStorage.setItem('LP3ISBPMB:token', newToken);
             setUser(decodedNewToken.data);
 
-            const responseData = await axios.patch(`https://api.politekniklp3i-tasikmalaya.ac.id/pmb/applicants/updatefamily/v1/${user.identity}`, formData, {
+            const responseData = await axios.patch(`https://pmb-api.politekniklp3i-tasikmalaya.ac.id/applicants/updatefamily/v1/${user.identity}`, formData, {
               headers: {
                 Authorization: newToken
               },

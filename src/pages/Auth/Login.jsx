@@ -24,7 +24,7 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     if (email !== '' && password !== '') {
-      await axios.post('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/login/v3', {
+      await axios.post('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/login/v3', {
         email: email,
         password: password,
       }, { withCredentials: true })
@@ -59,10 +59,11 @@ const Login = () => {
       }
 
       const fetchProfile = async (token) => {
-        const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/profiles/v1', {
+        const response = await axios.get('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/profiles/v1', {
           headers: { Authorization: token },
           withCredentials: true,
         });
+        console.log(response.data);
         return response.data;
       };
 
@@ -74,7 +75,7 @@ const Login = () => {
       } catch (profileError) {
         if (profileError.response && profileError.response.status === 403) {
           try {
-            const response = await axios.get('https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3', {
+            const response = await axios.get('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/token/v3', {
               withCredentials: true,
             });
 
@@ -179,10 +180,10 @@ const Login = () => {
                     </button>
                   )
                 }
-                <Link to={`/register`} className="text-gray-700 font-medium rounded-xl text-sm text-center">
+                {/* <Link to={`/register`} className="text-gray-700 font-medium rounded-xl text-sm text-center">
                   <span>Belum punya akun? </span>
                   <span className='underline font-semibold'>Daftar disini</span>
-                </Link>
+                </Link> */}
               </div>
             </form>
           </div>

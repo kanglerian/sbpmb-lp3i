@@ -36,7 +36,7 @@ const Organisasi = () => {
       setUser(decoded.data);
       const fetchProfile = async (token) => {
         const response = await axios.get(
-          "https://api.politekniklp3i-tasikmalaya.ac.id/pmb/profiles/v1",
+          "https://pmb-api.politekniklp3i-tasikmalaya.ac.id/profiles/v1",
           {
             headers: { Authorization: token },
             withCredentials: true,
@@ -54,7 +54,7 @@ const Organisasi = () => {
         if (profileError.response && profileError.response.status === 403) {
           try {
             const response = await axios.get(
-              "https://api.politekniklp3i-tasikmalaya.ac.id/pmb/auth/token/v3",
+              "https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/token/v3",
               {
                 withCredentials: true,
               }
@@ -105,35 +105,90 @@ const Organisasi = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     const data = {
       identity_user: user.identity,
       name: e.target.elements.name.value,
       position: e.target.elements.position.value,
       year: e.target.elements.year.value,
     }
-    await axios
-      .post(`https://api.politekniklp3i-tasikmalaya.ac.id/pmb/organizations`, data)
-      .then((response) => {
+
+    const submitData = async (token) => {
+      try {
+        const response = await axios.post("https://pmb-api.politekniklp3i-tasikmalaya.ac.id/organizations", data, {
+          headers: { Authorization: token },
+          withCredentials: true,
+        });
         alert(response.data.message);
         setModal(false);
         getInfo();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      } catch (error) {
+        if (error.response && error.response.status === 403) {
+          try {
+            const response = await axios.get("https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/token/v3", {
+              withCredentials: true,
+            });
+            const newToken = response.data;
+            localStorage.setItem("LP3ISBPMB:token", newToken);
+            await submitData(newToken);
+          } catch (refreshError) {
+            console.error("Error refreshing token:", refreshError);
+            localStorage.removeItem("LP3ISBPMB:token");
+            navigate("/login");
+          }
+        } else {
+          console.error("Error submitting data:", error);
+        }
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    const token = localStorage.getItem("LP3ISBPMB:token");
+    if (token) {
+      await submitData(token);
+    } else {
+      navigate("/login");
+    }
   }
 
   const handleDelete = async (organization) => {
-    if (confirm("Apakah anda yakin akan menghapus organisasi ini?")) {
-      await axios
-        .delete(`https://api.politekniklp3i-tasikmalaya.ac.id/pmb/organizations/${organization.id}`)
-        .then((response) => {
-          alert(response.data.message);
-          getInfo();
-        })
-        .catch((error) => {
-          console.log(error);
+    if (!confirm("Apakah anda yakin akan menghapus organisasi ini?")) return;
+  
+    const deleteOrganization = async (token) => {
+      try {
+        const response = await axios.delete(`https://pmb-api.politekniklp3i-tasikmalaya.ac.id/organizations/${organization.id}`, {
+          headers: { Authorization: token },
+          withCredentials: true,
         });
+        alert(response.data.message);
+        getInfo();
+      } catch (error) {
+        if (error.response && error.response.status === 403) {
+          try {
+            const refreshResponse = await axios.get("https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/token/v3", {
+              withCredentials: true,
+            });
+            const newToken = refreshResponse.data;
+            localStorage.setItem("LP3ISBPMB:token", newToken);
+            await deleteOrganization(newToken);
+          } catch (refreshError) {
+            console.error("Error refreshing token:", refreshError);
+            localStorage.removeItem("LP3ISBPMB:token");
+            navigate("/login");
+          }
+        } else {
+          console.error("Error deleting achievement:", error);
+        }
+      }
+    };
+  
+    const token = localStorage.getItem("LP3ISBPMB:token");
+    if (token) {
+      await deleteOrganization(token);
+    } else {
+      navigate("/login");
     }
   };
 
