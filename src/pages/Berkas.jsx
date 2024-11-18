@@ -114,7 +114,11 @@ const Berkas = () => {
           typefile: targetFile.name.split(".").pop(),
         };
         const token = localStorage.getItem('LP3ISBPMB:token');
-        await axios.post(`https://api.politekniklp3i-tasikmalaya.ac.id//pmbonline/upload`, data)
+        await axios.post(`https://uploadhub.politekniklp3i-tasikmalaya.ac.id/upload`, data, {
+          headers: {
+            'lp3i-api-key': 'cdbdb5ea29b98565'
+          }
+        })
           .then(async () => {
             await axios.post(`https://pmb-api.politekniklp3i-tasikmalaya.ac.id/userupload`, status, {
               headers: { Authorization: token },
@@ -185,7 +189,7 @@ const Berkas = () => {
       setLoading(true);
       await axios
         .delete(
-          `https://api.politekniklp3i-tasikmalaya.ac.id//pmbonline/delete`,
+          `https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/delete`,
           {
             params: data,
           }

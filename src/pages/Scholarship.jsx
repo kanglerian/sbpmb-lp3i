@@ -115,10 +115,10 @@ const Scholarship = () => {
   const getHistories = async (identity) => {
     try {
       const categoriesResponse = await axios.get(
-        `https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/categories`
+        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/categories`
       );
       const historiesResponse = await axios.get(
-        `https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/histories?identity_user=${identity}`
+        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories?identity_user=${identity}`
       );
       const filterResponse = categoriesResponse.data.filter(
         (question) =>
@@ -144,7 +144,7 @@ const Scholarship = () => {
 
   const handleSelect = async (id) => {
     await axios
-      .post(`https://api.politekniklp3i-tasikmalaya.ac.id//scholarship/histories`, {
+      .post(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/histories`, {
         identity_user: user.identity,
         category_id: id,
       })
