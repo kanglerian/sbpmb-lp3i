@@ -212,8 +212,8 @@ const Dashboard = () => {
                 <h1 className='text-white text-xl font-medium'>Halo, {user.name}! 👋</h1>
                 <p className='text-gray-200 text-sm'>Selamat datang <span className='underline'>{user.name}</span> dengan email <span className='underline'>{user.email}</span>. Silahkan untuk masuk ke menu CAT dan memilih kategori soal!</p>
               </section>
-              <section className='w-full grid grid-cols-5 items-center gap-3'>
-              <Link to={`/pribadi`} className='flex flex-col items-center gap-1 shadow-xl bg-gray-50 hover:bg-lp3i-400 text-gray-800 hover:text-white border-4 hover:border-lp3i-200 px-5 py-4 cursor-pointer transition-all rounded-2xl space-y-1'>
+              {/* <section className='w-full grid grid-cols-5 items-center gap-3'> */}
+              {/* <Link to={`/pribadi`} className='flex flex-col items-center gap-1 shadow-xl bg-gray-50 hover:bg-lp3i-400 text-gray-800 hover:text-white border-4 hover:border-lp3i-200 px-5 py-4 cursor-pointer transition-all rounded-2xl space-y-1'>
                   <FontAwesomeIcon icon={faUserCircle} size='lg' className={validateData ? 'text-emerald-600' : 'text-red-600'} />
                   <p className='text-xs'>Data Pribadi</p>
                 </Link>
@@ -236,7 +236,7 @@ const Dashboard = () => {
                 <Link to={`/organisasi`} className='flex flex-col items-center gap-1 shadow-xl bg-gray-50 hover:bg-lp3i-400 text-gray-800 hover:text-white border-4 hover:border-lp3i-200 px-5 py-4 cursor-pointer transition-all rounded-2xl space-y-1'>
                   <FontAwesomeIcon icon={faSitemap} size='lg' />
                   <p className='text-xs'>Organisasi</p>
-                </Link>
+                </Link> */}
               {/* {
                   validateData && validateFather && validateMother && validateProgram && validateFiles &&
                   <Link to={`/scholarship`} className='flex flex-col items-center gap-1 shadow-xl bg-gray-50 hover:bg-lp3i-400 text-gray-800 hover:text-white border-4 hover:border-lp3i-200 px-5 py-4 cursor-pointer transition-all rounded-2xl space-y-1'>
@@ -244,7 +244,7 @@ const Dashboard = () => {
                     <p className='text-xs'>CAT</p>
                   </Link>
                 } */}
-              </section>
+              {/* </section> */}
               <section className="w-full flex justify-center">
                 <Link to={`/scholarship`} className='w-full md:w-1/3 flex flex-col items-center gap-1 shadow-xl bg-gray-50 hover:bg-lp3i-400 text-gray-800 hover:text-white border-4 hover:border-lp3i-200 px-5 py-4 cursor-pointer transition-all rounded-2xl space-y-1'>
                   <FontAwesomeIcon icon={faDesktop} size='lg' />
