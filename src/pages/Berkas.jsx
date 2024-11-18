@@ -189,8 +189,11 @@ const Berkas = () => {
       setLoading(true);
       await axios
         .delete(
-          `https://api.politekniklp3i-tasikmalaya.ac.id/pmbonline/delete`,
+          `https://uploadhub.politekniklp3i-tasikmalaya.ac.id/delete`,
           {
+            headers: {
+              'lp3i-api-key': 'cdbdb5ea29b98565'
+            },
             params: data,
           }
         )
