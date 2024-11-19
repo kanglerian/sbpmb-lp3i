@@ -86,11 +86,17 @@ const TestSchoolarship = () => {
     const stateId = localStorage.getItem("id");
     if (stateId) {
       const recordResponse = await axios.get(
-        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/records?identity_user=${identity}&category=${stateId}`
-      );
+        `https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/records?identity_user=${identity}&category=${stateId}`, {
+        headers: {
+          'lp3i-api-key': '5070de3b8c238dc6'
+        }
+      });
       const questionResponse = await axios.get(
-        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/questions?category=${stateId}`
-      );
+        `https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/questions?category=${stateId}`, {
+        headers: {
+          'lp3i-api-key': '5070de3b8c238dc6'
+        }
+      });
       if (recordResponse.data && questionResponse.data) {
         const filterResponse = questionResponse.data.filter(
           (question) =>
@@ -101,8 +107,12 @@ const TestSchoolarship = () => {
         if (filterResponse.length > 0) {
           let id = filterResponse[0].id;
           const answerResponse = await axios.get(
-            `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/answers/question/${id}`
-          );
+            `https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/answers/question/${id}`,
+            {
+              headers: {
+                'lp3i-api-key': '5070de3b8c238dc6'
+              }
+            });
           let bucket = localStorage.getItem("LP3ISBPMB:bucket");
           if (bucket) {
             bucket = JSON.parse(bucket);
@@ -120,8 +130,11 @@ const TestSchoolarship = () => {
               .sort(() => Math.random() - 0.5);
             if (questionNotAnswer.length > 0) {
               const answerResponse = await axios.get(
-                `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/answers/question/${questionNotAnswer[0].id}`
-              );
+                `https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/answers/question/${questionNotAnswer[0].id}`, {
+                headers: {
+                  'lp3i-api-key': '5070de3b8c238dc6'
+                }
+              });
               setActive({
                 category: questionNotAnswer[0].category.name,
                 question: questionNotAnswer[0].question,
@@ -189,7 +202,11 @@ const TestSchoolarship = () => {
       }
     }
     await axios
-      .get(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/answers/question/${question.id}`)
+      .get(`https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/answers/question/${question.id}`, {
+        headers: {
+          'lp3i-api-key': '5070de3b8c238dc6'
+        }
+      })
       .then((response) => {
         setAnswers(response.data);
       })
@@ -200,8 +217,16 @@ const TestSchoolarship = () => {
 
   const updateQuestion = async (record) => {
     try {
-      const questionResponse = await axios.get(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/questions/${record.question_id}`);
-      const answersResponse = await axios.get(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/answers/question/${record.question_id}`);
+      const questionResponse = await axios.get(`https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/questions/${record.question_id}`, {
+        headers: {
+          'lp3i-api-key': '5070de3b8c238dc6'
+        }
+      });
+      const answersResponse = await axios.get(`https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/answers/question/${record.question_id}`, {
+        headers: {
+          'lp3i-api-key': '5070de3b8c238dc6'
+        }
+      });
       setActive({
         category: questionResponse.data.category.name,
         question: questionResponse.data.question,
@@ -282,7 +307,11 @@ const TestSchoolarship = () => {
   const checkMiddleware = async () => {
     let bucket = localStorage.getItem('LP3ISBPMB:bucket');
     bucket = JSON.parse(bucket);
-    await axios.post(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/records`, bucket)
+    await axios.post(`https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/records`, bucket, {
+      headers: {
+        'lp3i-api-key': '5070de3b8c238dc6'
+      }
+    })
       .then((response) => {
         alert(response.data.message);
         WinSoundPlay();
@@ -441,7 +470,7 @@ const TestSchoolarship = () => {
           }
         </form>
         <div className="order-2 md:order-none w-full md:w-3/12 space-y-4 p-10">
-        <video ref={videoRef} autoPlay playsInline width="200" height="200" className="mx-auto md:absolute md:bottom-0 md:left-0 rounded-xl md:rounded-tl-xl" />
+          <video ref={videoRef} autoPlay playsInline width="200" height="200" className="mx-auto md:absolute md:bottom-0 md:left-0 rounded-xl md:rounded-tl-xl" />
           <header className="text-center space-y-1">
             <span className="inline-block border border-gray-300 py-2 px-4 rounded-xl text-sm">{timeLeft}</span>
             <div className="space-y-1">
