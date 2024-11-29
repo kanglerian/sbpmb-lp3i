@@ -236,9 +236,9 @@ const Prodi = () => {
 
   const getPrograms = async () => {
     await axios
-      .get(`https://pmb-api.politekniklp3i-tasikmalaya.ac.id/schools`,{
+      .get(`https://endpoint.politekniklp3i-tasikmalaya.ac.id/programs`,{
         headers: {
-          'lp3i-api-key': 'aEof9XqcH34k3g6IbJcQLxGY'
+          'lp3i-api-key': 'b35e0a901904d293'
         }
       })
       .then((res) => {
