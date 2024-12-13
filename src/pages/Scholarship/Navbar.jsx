@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import logoLP3I from "../../assets/logo/logo-child.svg";
 import { Link, useNavigate } from "react-router-dom";
 
 const Navbar = (props) => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("LP3ISBPMB:token");
 
   useEffect(() => {
     if (!token) {
@@ -13,7 +13,7 @@ const Navbar = (props) => {
   }, []);
 
   return (
-    <nav className="bg-white border-gray-200 dark:bg-gray-900">
+    <nav className="bg-white border-gray-200">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto pt-4 pb-2 px-2">
         <Link to={`/dashboard`} className="flex gap-5 items-center">
           <img src={logoLP3I} alt="" className="h-[55px]" />

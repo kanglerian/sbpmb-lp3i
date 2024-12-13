@@ -9,23 +9,18 @@ import Home from './pages/Home'
 import Dashboard from './pages/Dashboard'
 import Login from './pages/Auth/Login'
 import Register from './pages/Auth/Register'
-import Biodata from './pages/Biodata'
-import Program from './pages/Program'
-import Keluarga from './pages/Keluarga'
-import Prestasi from './pages/Prestasi'
-import Organisasi from './pages/Organisasi'
-import Berkas from './pages/Berkas'
-import TestSchoolarship from './pages/Schoolarship/TestSchoolarship'
+import TestSchoolarship from './pages/Scholarship/TestScholarship'
 import Scholarship from './pages/Scholarship'
+import Pribadi from './pages/Pribadi'
+import Orangtua from './pages/Orangtua'
 import './input.css'
+import Prodi from './pages/Prodi'
+import Berkas from './pages/Berkas'
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home/>,
-  },{
-    path: "/dashboard",
-    element: <Dashboard/>,
   },{
     path: "/login",
     element: <Login/>,
@@ -33,20 +28,17 @@ const router = createBrowserRouter([
     path: "/register",
     element: <Register/>,
   },{
-    path: "/biodata",
-    element: <Biodata/>,
+    path: "/dashboard",
+    element: <Dashboard/>,
+  },{
+    path: "/pribadi",
+    element: <Pribadi/>,
+  },{
+    path: "/orangtua",
+    element: <Orangtua/>,
   },{
     path: "/programstudi",
-    element: <Program/>,
-  },{
-    path: "/keluarga",
-    element: <Keluarga/>,
-  },{
-    path: "/prestasi",
-    element: <Prestasi/>,
-  },{
-    path: "/organisasi",
-    element: <Organisasi/>,
+    element: <Prodi/>,
   },{
     path: "/berkas",
     element: <Berkas/>,

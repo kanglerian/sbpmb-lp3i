@@ -1,26 +1,31 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import Navbar from "./Navbar.jsx";
 import axios from "axios";
+import Navbar from "./Navbar.jsx";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronRight, faCircleCheck, faHand, faSave, faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import CointSound from '../../assets/sounds/coin.mp3';
 import GameOverSound from '../../assets/sounds/gameover.mp3';
 import WinSound from '../../assets/sounds/win.mp3';
-import Loading from "../../components/Loading.jsx";
 
-const TestSchoolarship = () => {
+import Loading from "../../components/Loading.jsx";
+import ServerError from "../../errors/ServerError.jsx";
+
+const TestScholarship = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const localStorageId = localStorage.getItem("id");
+  const localStorageId = localStorage.getItem("LP3ISBPMB:id");
 
   const [loading, setLoading] = useState(false);
+  const [errorPage, setErrorPage] = useState(false);
 
   const [buttonActive, setButtonActive] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!localStorageId) {
     if (state && state.id) {
-      localStorage.setItem("id", state.id);
+      localStorage.setItem("LP3ISBPMB:id", state.id);
     }
   }
 
@@ -33,8 +38,6 @@ const TestSchoolarship = () => {
   const [recordStudent, setRecordStudent] = useState(null);
   const [idUpdate, setIdUpdate] = useState(null);
   const [isUpdate, setIsUpdate] = useState(false);
-
-  const token = localStorage.getItem("token");
 
   const coinPlay = () => {
     let audio = new Audio(CointSound);
@@ -51,37 +54,22 @@ const TestSchoolarship = () => {
     audio.play();
   }
 
-
-  const getUser = async () => {
-    await axios
-      .get("https://database.politekniklp3i-tasikmalaya.ac.id/api/user", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        let identityVal = response.data.user.identity;
-        setIdentity(response.data.user.identity);
-        getQuestions(identityVal);
-      })
-      .catch((error) => {
-        if (error.response.status == 401) {
-          localStorage.removeItem("token");
-          navigate("/");
-        } else {
-          console.log(error);
-        }
-      });
-  };
-
   const getQuestions = async (identity) => {
-    const stateId = localStorage.getItem("id");
+    const stateId = localStorage.getItem("LP3ISBPMB:id");
     if (stateId) {
       const recordResponse = await axios.get(
-        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/records?identity_user=${identity}&category=${stateId}`
+        `https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/records?identity_user=${identity}&category=${stateId}`, {
+        headers: {
+          'lp3i-api-key': '5070de3b8c238dc6'
+        }
+      }
       );
       const questionResponse = await axios.get(
-        `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/questions?category=${stateId}`
+        `https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/questions?category=${stateId}`, {
+        headers: {
+          'lp3i-api-key': '5070de3b8c238dc6'
+        }
+      }
       );
       if (recordResponse.data && questionResponse.data) {
         const filterResponse = questionResponse.data.filter(
@@ -93,7 +81,11 @@ const TestSchoolarship = () => {
         if (filterResponse.length > 0) {
           let id = filterResponse[0].id;
           const answerResponse = await axios.get(
-            `https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/answers/question/${id}`
+            `https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/answers/question/${id}`, {
+            headers: {
+              'lp3i-api-key': '5070de3b8c238dc6'
+            }
+          }
           );
           setActive({
             category: filterResponse[0].category.name,
@@ -126,7 +118,11 @@ const TestSchoolarship = () => {
     setIdUpdate(null);
     setIsUpdate(false);
     await axios
-      .get(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/answers/question/${question.id}`)
+      .get(`https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/answers/question/${question.id}`, {
+        headers: {
+          'lp3i-api-key': '5070de3b8c238dc6'
+        }
+      })
       .then((response) => {
         setAnswers(response.data);
       })
@@ -143,7 +139,11 @@ const TestSchoolarship = () => {
     setIdUpdate(record.id);
     setIsUpdate(true);
     await axios
-      .get(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/answers/question/${record.question_id}`)
+      .get(`https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/answers/question/${record.question_id}`, {
+        headers: {
+          'lp3i-api-key': '5070de3b8c238dc6'
+        }
+      })
       .then((response) => {
         setAnswers(response.data);
         setSelected(record.answer.answer);
@@ -180,8 +180,13 @@ const TestSchoolarship = () => {
     if (recordStudent) {
       if (isUpdate) {
         await axios
-          .patch(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/records/${idUpdate}`, recordStudent)
+          .patch(`https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/records/${idUpdate}`, recordStudent, {
+            headers: {
+              'lp3i-api-key': '5070de3b8c238dc6'
+            }
+          })
           .then((response) => {
+            console.log(response);
             setSelected(null);
             setIsUpdate(false);
             setIdUpdate(null);
@@ -197,8 +202,13 @@ const TestSchoolarship = () => {
       } else {
         if (questions.length > 0) {
           await axios
-            .post(`https://api.politekniklp3i-tasikmalaya.ac.id/scholarship/records`, recordStudent)
+            .post(`https://sbpmb-backend.politekniklp3i-tasikmalaya.ac.id/records`, recordStudent, {
+              headers: {
+                'lp3i-api-key': '5070de3b8c238dc6'
+              }
+            })
             .then((response) => {
+              console.log(response);
               getQuestions(identity);
               setRecordStudent(null);
               coinPlay();
@@ -219,9 +229,9 @@ const TestSchoolarship = () => {
 
   const checkMiddleware = () => {
     let confirmAlert = confirm('Yakin gasih mau nyerah?');
-    if(confirmAlert){
-      localStorage.removeItem("id");
-      localStorage.removeItem("timeLeft");
+    if (confirmAlert) {
+      localStorage.removeItem("LP3ISBPMB:id");
+      localStorage.removeItem("LP3ISBPMB:timeLeft");
       navigate("/scholarship");
     } else {
       alert('Yowis, mantap nih. Gas terooss! 💪')
@@ -230,18 +240,18 @@ const TestSchoolarship = () => {
 
   useEffect(() => {
     if (!state) {
-      // navigate("/dashboard");
+      navigate("/dashboard");
     }
   }, [state, navigate]);
 
-  const initialTime = parseInt(localStorage.getItem("timeLeft")) || 1800;
+  const initialTime = parseInt(localStorage.getItem("LP3ISBPMB:timeLeft")) || 1800;
   const [timeLeft, setTimeLeft] = useState(initialTime);
   let interval;
 
   useEffect(() => {
-    const stateId = localStorage.getItem("id");
+    const stateId = localStorage.getItem("LP3ISBPMB:id");
     if (stateId) {
-      localStorage.setItem("timeLeft", timeLeft.toString());
+      localStorage.setItem("LP3ISBPMB:timeLeft", timeLeft.toString());
     }
   }, [timeLeft]);
 
@@ -260,12 +270,95 @@ const TestSchoolarship = () => {
     }
   }, [timeLeft]);
 
+  const getInfo = async () => {
+    setLoading(true);
+
+    try {
+      const token = localStorage.getItem('LP3ISBPMB:token');
+      if (!token) {
+        throw new Error('Token tidak ditemukan');
+      }
+
+      const fetchProfile = async (token) => {
+        const response = await axios.get('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/profiles/v1', {
+          headers: { Authorization: token },
+          withCredentials: true,
+        });
+        return response.data;
+      };
+
+      try {
+        const profileData = await fetchProfile(token);
+        setIdentity(profileData.applicant.identity);
+        getQuestions(profileData.applicant.identity);
+        if (!profileData.validate.validate) {
+          return navigate('/dashboard');
+        }
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      } catch (profileError) {
+        if (profileError.response && profileError.response.status === 403) {
+          try {
+            const response = await axios.get('https://pmb-api.politekniklp3i-tasikmalaya.ac.id/auth/token/v1', {
+              withCredentials: true,
+            });
+
+            const newToken = response.data;
+            localStorage.setItem('LP3ISBPMB:token', newToken);
+            const newProfileData = await fetchProfile(newToken);
+            setIdentity(newProfileData.applicant.identity);
+            getQuestions(newProfileData.applicant.identity);
+            if (!newProfileData.validate.validate) {
+              return navigate('/dashboard');
+            }
+            setTimeout(() => {
+              setLoading(false);
+            }, 1000);
+          } catch (error) {
+            console.error('Error refreshing token or fetching profile:', error);
+            if (error.response && error.response.status === 400) {
+              localStorage.removeItem('LP3ISBPMB:token');
+            } else {
+              setErrorPage(true);
+            }
+          }
+        } else {
+          console.error('Error fetching profile:', profileError);
+          setErrorPage(true);
+        }
+      }
+    } catch (error) {
+      if (error.response) {
+        if ([400, 403].includes(error.response.status)) {
+          localStorage.removeItem('LP3ISBPMB:token');
+          navigate('/login');
+        } else {
+          console.error('Unexpected HTTP error:', error);
+        }
+      } else if (error.request) {
+        console.error('Network error:', error);
+      } else {
+        console.error('Error:', error);
+        setErrorPage(true);
+      }
+      navigate('/login');
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
+
   useEffect(() => {
-    getUser();
+    getInfo();
   }, []);
 
   return (
-    <div>
+    errorPage ? (
+      <ServerError />
+    ) : (
+      <div>
       <Navbar timeleft={timeLeft} />
       <section className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row">
@@ -285,9 +378,9 @@ const TestSchoolarship = () => {
                       type="submit"
                       className="bg-sky-500 hover:bg-sky-600 px-4 py-2 rounded-xl text-white flex items-center gap-2"
                     >
-                      { loading && <Loading width={5} height={5} fill="fill-sky-400" color="text-white" />}
+                      {loading && <Loading width={5} height={5} fill="fill-sky-400" color="text-white" />}
                       <span className="text-sm">Lanjutkan</span>
-                      <i className="fa-solid fa-chevron-right"></i>
+                      <FontAwesomeIcon icon={faChevronRight} />
                     </button>
                   ) : (
                     <button
@@ -296,7 +389,7 @@ const TestSchoolarship = () => {
                       className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-xl text-white flex items-center gap-2"
                     >
                       <span className="text-sm">Selesai</span>
-                      <i className="fa-solid fa-save"></i>
+                      <FontAwesomeIcon icon={faSave} />
                     </button>
                   )
                 ) : (
@@ -306,7 +399,7 @@ const TestSchoolarship = () => {
                     className="bg-emerald-500 hover:bg-emerald-600 px-4 py-2 rounded-xl text-white flex items-center gap-2"
                   >
                     <span className="text-sm">Ubah Jawaban</span>
-                    <i className="fa-solid fa-save"></i>
+                    <FontAwesomeIcon icon={faSave} />
                   </button>
                 )}
               </div>
@@ -316,7 +409,7 @@ const TestSchoolarship = () => {
             <div className="mt-5 space-y-4">
               {selected && (
                 <p className="text-sm">
-                  <i className="fa-solid fa-circle-check text-emerald-500"></i>{" "}
+                  <FontAwesomeIcon icon={faCircleCheck} className="text-emerald-600" />{" "}
                   <span>Anda memilih {selected}</span>
                 </p>
               )}
@@ -352,7 +445,7 @@ const TestSchoolarship = () => {
             </header>
             <div className="flex flex-col gap-2">
               <button onClick={() => { checkMiddleware(); gameOverPlay(); }} className="bg-red-500 hover:bg-red-600 text-white py-2 text-sm rounded-xl">
-                <i className="fa-solid fa-hand mr-2"></i>
+                <FontAwesomeIcon icon={faHand} className="mr-2" />
                 <span>Menyerah</span>
               </button>
             </div>
@@ -372,7 +465,7 @@ const TestSchoolarship = () => {
                       onClick={() => changeQuestion(question)}
                       className="bg-gray-100 hover:bg-gray-200 text-base px-4 py-2 rounded-xl"
                     >
-                      <i className="fa-solid fa-xmark"></i>
+                      <FontAwesomeIcon icon={faXmark} />
                     </button>
                   ))}
                 </div>
@@ -396,7 +489,7 @@ const TestSchoolarship = () => {
                       onClick={() => updateQuestion(record)}
                       className="bg-emerald-500 hover:bg-emerald-600 text-white text-base px-4 py-2 rounded-xl"
                     >
-                      <i className="fa-solid fa-circle-check"></i>
+                      <FontAwesomeIcon icon={faCircleCheck} />
                     </button>
                   ))}
                 </div>
@@ -408,7 +501,8 @@ const TestSchoolarship = () => {
         </div>
       </section>
     </div>
-  );
+    )
+  )
 };
 
-export default TestSchoolarship;
+export default TestScholarship;
