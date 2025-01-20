@@ -291,9 +291,9 @@ const TestScholarship = () => {
         const profileData = await fetchProfile(token);
         setIdentity(profileData.applicant.identity);
         getQuestions(profileData.applicant.identity);
-        if (!profileData.validate.validate) {
-          return navigate('/dashboard');
-        }
+        // if (!profileData.validate.validate) {
+        //   return navigate('/dashboard');
+        // }
         setTimeout(() => {
           setLoading(false);
         }, 1000);
@@ -309,9 +309,9 @@ const TestScholarship = () => {
             const newProfileData = await fetchProfile(newToken);
             setIdentity(newProfileData.applicant.identity);
             getQuestions(newProfileData.applicant.identity);
-            if (!newProfileData.validate.validate) {
-              return navigate('/dashboard');
-            }
+            // if (!newProfileData.validate.validate) {
+            //   return navigate('/dashboard');
+            // }
             setTimeout(() => {
               setLoading(false);
             }, 1000);
