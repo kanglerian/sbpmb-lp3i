@@ -239,14 +239,14 @@ const Dashboard = () => {
               </Link>
             </section>
             <section className='flex flex-col md:flex-row items-center gap-4'>
-              {
-                validate && (
+              {/* {
+                validate && ( */}
                   <Link to={`/scholarship`} className="text-white bg-emerald-500 hover:bg-emerald-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5 space-x-2">
                     <span className='text-sm'>Mulai Tes Sekarang</span>
                     <FontAwesomeIcon icon={faComputer} size='sm' />
                   </Link>
-                )
-              }
+                {/* )
+              } */}
               <button type="button" onClick={logoutHandle} className="text-white bg-red-500 hover:bg-red-600 focus:ring-4 focus:ring-blue-300 font-medium rounded-xl text-sm px-5 py-2.5 space-x-2">
                 <span className='text-sm'>Keluar</span>
                 <FontAwesomeIcon icon={faSignOut} size='sm' />

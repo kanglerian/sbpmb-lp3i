@@ -89,9 +89,9 @@ const Scholarship = () => {
       try {
         const profileData = await fetchProfile(token);
         getHistories(profileData.applicant.identity);
-        if (!profileData.validate.validate) {
-          return navigate('/dashboard');
-        }
+        // if (!profileData.validate.validate) {
+        //   return navigate('/dashboard');
+        // }
         const data = {
           id: decoded.data.id,
           identity: profileData.applicant.identity,
